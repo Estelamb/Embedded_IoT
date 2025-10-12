@@ -3,23 +3,18 @@
 
 #include "sensors/rgb_led/rgb_led.h"
 #include "sensors/adc/adc.h"
-#include "sensors/button/button.h"
+#include "sensors/user_button/user_button.h"
 
 // Phototransistor
-#define INVALID_VOLTAGE -1
-#define BUFFER_SIZE 1
-#define RESOLUTION 12
-#define CHANNEL_ID 0
-
-static const struct device *pt = DEVICE_DT_GET(DT_NODELABEL(adc1));
-static int16_t sample_buffer[BUFFER_SIZE];
-
-static struct adc_channel_cfg channel_cfg = {
-    .gain = ADC_GAIN_1,
-    .reference = ADC_REF_INTERNAL,
-    .acquisition_time = ADC_ACQ_TIME_DEFAULT,
-    .channel_id = CHANNEL_ID,
-};
+struct adc_config pt = {
+        .dev = DEVICE_DT_GET(DT_NODELABEL(adc1)),
+        .channel_id = 0,
+        .resolution = 12,
+        .gain = ADC_GAIN_1,
+        .ref = ADC_REF_INTERNAL,
+        .acquisition_time = ADC_ACQ_TIME_DEFAULT,
+        .vref_mv = 3300,
+    };
 
 // RGB LED
 struct bus_rgb_led rgb_led = {
@@ -36,9 +31,6 @@ static struct user_button button = {
     .spec = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios),
 };
 
-/**
- * @brief ISR called when the button is pressed.
- */
 static void button_pressed_isr(const struct device *dev,
                                struct gpio_callback *cb,
                                uint32_t pins)
@@ -49,16 +41,13 @@ static void button_pressed_isr(const struct device *dev,
     btn->pressed = true;
 }
 
-Ticker tick;
 
-void handler() {
-    float normalized = adc_read_normalized(pt, RESOLUTION, CHANNEL_ID, sample_buffer, BUFFER_SIZE);
-    int32_t voltage_mv = 0;
-    adc_read_voltage(pt, &channel_cfg, &voltage_mv, RESOLUTION, CHANNEL_ID, sample_buffer, BUFFER_SIZE);
-    
-    printk("Normalized value: %f, Voltage: %d mV\n", (double)normalized, voltage_mv);
+// Timer to read phototransistor periodically
+void ticker_handler(struct k_timer *timer_id) {
+    printk("Ticker fired\n");
 }
 
+K_TIMER_DEFINE(my_ticker, ticker_handler, NULL);
 
 int main(void)
 {
@@ -73,7 +62,7 @@ int main(void)
     rgb_led_off(&rgb_led);
 
     // Initialize phototransistor
-    if (adc_init(pt, &channel_cfg) != 0) {
+    if (adc_init(&pt) != 0) {
         printk("Error: Failed to initialize phototransistor\n");
         return 0;
     }
@@ -89,16 +78,20 @@ int main(void)
         return 0;
     }
 
-    tick.attach(&handler, 2); // every 2 seconds
+    k_timer_start(&my_ticker, K_MSEC(2000), K_MSEC(2000));
 
     int count = 0;
 
     while (1) {
         if (button_was_pressed(&button)) {
+            count++;
             rgb_led_write(&rgb_led, count);
             printk("Button pressed, RGB LED changed\n");
-            count++;
         }
+
+        int32_t mv;
+        adc_read_voltage(&mv);
+        printk("Voltage: %d mV\n", mv);
 
         k_sleep(K_MSEC(1000));
     }

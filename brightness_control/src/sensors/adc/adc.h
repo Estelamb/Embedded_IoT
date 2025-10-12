@@ -3,68 +3,50 @@
 
 #include <zephyr/drivers/adc.h>
 #include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+
+#define BUFFER_SIZE 1
+
+struct adc_config {
+    const struct device *dev;
+    uint8_t channel_id;
+    uint8_t resolution;
+    enum adc_gain gain;
+    enum adc_reference ref;
+    uint32_t acquisition_time;
+    int32_t vref_mv; // por ejemplo, 3300 mV
+};
 
 /**
- * @brief Initialize the ADC.
+ * @brief Inicializa el ADC con la configuración indicada.
  *
- * @param dev Pointer to the ADC device.
- * @param cfg Pointer to the ADC channel configuration structure.
- * @return 0 on success, negative error code on failure.
+ * @param cfg Puntero a la configuración del ADC.
+ * @return 0 si tuvo éxito, o un código de error.
  */
-int adc_init(const struct device *dev, const struct adc_channel_cfg *cfg);
+int adc_init(const struct adc_config *cfg);
 
 /**
- * @brief Read the raw ADC value.
+ * @brief Lee el valor RAW del ADC.
  *
- * @param dev Pointer to the ADC device.
- * @param raw_val Pointer to store raw ADC sample.
- * @param resolution ADC resolution (bits).
- * @param channel_id ADC channel ID.
- * @param buffer Pointer to buffer to store sample.
- * @param buffer_size Buffer size.
- * @return 0 on success, negative error code on failure.
+ * @param raw_val Puntero donde se almacenará la lectura RAW.
+ * @return 0 si tuvo éxito, o un código de error.
  */
-int adc_read_raw(const struct device *dev,
-                             int16_t *raw_val,
-                             int resolution,
-                             int channel_id,
-                             int16_t *buffer,
-                             size_t buffer_size);
+int adc_read_raw(int16_t *raw_val);
 
 /**
- * @brief Read normalized ADC value between 0.0 and 1.0.
+ * @brief Lee el valor normalizado (0.0 a 1.0).
  *
- * @param dev Pointer to the ADC device.
- * @param resolution ADC resolution (bits).
- * @param channel_id ADC channel ID.
- * @param buffer Pointer to buffer to store sample.
- * @param buffer_size Buffer size.
- * @return Normalized value (0–1), or -1.0 on failure.
+ * @return Valor normalizado, o -1.0 en caso de error.
  */
-float adc_read_normalized(const struct device *dev,
-                                      int resolution,
-                                      int channel_id,
-                                      int16_t *buffer,
-                                      size_t buffer_size);
+float adc_read_normalized(void);
 
 /**
- * @brief Read ADC value in millivolts.
+ * @brief Lee el voltaje en milivoltios.
  *
- * @param dev Pointer to the ADC device.
- * @param cfg Pointer to ADC channel configuration.
- * @param out_mv Pointer to store result in millivolts.
- * @param resolution ADC resolution (bits).
- * @param channel_id ADC channel ID.
- * @param buffer Pointer to buffer to store sample.
- * @param buffer_size Buffer size.
- * @return 0 on success, negative error code on failure.
+ * @param out_mv Puntero donde se almacenará el voltaje (mV).
+ * @return 0 si tuvo éxito, o un código de error.
  */
-int adc_read_voltage(const struct device *dev,
-                                 const struct adc_channel_cfg *cfg,
-                                 int32_t *out_mv,
-                                 int resolution,
-                                 int channel_id,
-                                 int16_t *buffer,
-                                 size_t buffer_size);
+int adc_read_voltage(int32_t *out_mv);
+
 
 #endif // ADC_H
