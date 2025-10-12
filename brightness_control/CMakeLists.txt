@@ -8,12 +8,12 @@ project(brightness_control)
 target_sources(app PRIVATE 
     src/main.c
     src/sensors/rgb_led/rgb_led.c
-    src/sensors/phototransistor/phototransistor.c
+    src/sensors/adc/adc.c
     src/sensors/user_button/user_button.c
 )
 
 target_include_directories(app PRIVATE
     src/sensors/rgb_led
-    src/sensors/phototransistor
+    src/sensors/adc
     src/sensors/user_button
 )

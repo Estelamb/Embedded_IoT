@@ -1,7 +1,7 @@
-#include "phototransistor.h"
+#include "adc.h"
 #include <zephyr/sys/printk.h>
 
-int phototransistor_init(const struct device *dev, const struct adc_channel_cfg *cfg) {
+int adc_init(const struct device *dev, const struct adc_channel_cfg *cfg) {
     if (!device_is_ready(dev)) {
         printk("Error: ADC device not ready\n");
         return -ENODEV;
@@ -13,11 +13,11 @@ int phototransistor_init(const struct device *dev, const struct adc_channel_cfg 
         return ret;
     }
 
-    printk("Phototransistor ADC initialized successfully\n");
+    printk("ADC initialized successfully\n");
     return 0;
 }
 
-int phototransistor_read_raw(const struct device *dev,
+int adc_read_raw(const struct device *dev,
                              int16_t *raw_val,
                              int resolution,
                              int channel_id,
@@ -45,20 +45,20 @@ int phototransistor_read_raw(const struct device *dev,
     return 0;
 }
 
-float phototransistor_read_normalized(const struct device *dev,
+float adc_read_normalized(const struct device *dev,
                                       int resolution,
                                       int channel_id,
                                       int16_t *buffer,
                                       size_t buffer_size) {
     int16_t raw = 0;
-    if (phototransistor_read_raw(dev, &raw, resolution, channel_id, buffer, buffer_size) != 0) {
+    if (adc_read_raw(dev, &raw, resolution, channel_id, buffer, buffer_size) != 0) {
         return -1.0f;
     }
 
     return (float)raw / ((1 << resolution) - 1);
 }
 
-int phototransistor_read_voltage(const struct device *dev,
+int adc_read_voltage(const struct device *dev,
                                  const struct adc_channel_cfg *cfg,
                                  int32_t *out_mv,
                                  int resolution,
@@ -66,7 +66,7 @@ int phototransistor_read_voltage(const struct device *dev,
                                  int16_t *buffer,
                                  size_t buffer_size) {
     int16_t raw;
-    int ret = phototransistor_read_raw(dev, &raw, resolution, channel_id, buffer, buffer_size);
+    int ret = adc_read_raw(dev, &raw, resolution, channel_id, buffer, buffer_size);
     if (ret < 0) {
         return ret;
     }

@@ -1,17 +1,17 @@
-#ifndef PHOTOTRANSISTOR_H
-#define PHOTOTRANSISTOR_H
+#ifndef ADC_H
+#define ADC_H
 
 #include <zephyr/drivers/adc.h>
 #include <zephyr/kernel.h>
 
 /**
- * @brief Initialize the phototransistor ADC.
+ * @brief Initialize the ADC.
  *
  * @param dev Pointer to the ADC device.
  * @param cfg Pointer to the ADC channel configuration structure.
  * @return 0 on success, negative error code on failure.
  */
-int phototransistor_init(const struct device *dev, const struct adc_channel_cfg *cfg);
+int adc_init(const struct device *dev, const struct adc_channel_cfg *cfg);
 
 /**
  * @brief Read the raw ADC value.
@@ -24,7 +24,7 @@ int phototransistor_init(const struct device *dev, const struct adc_channel_cfg 
  * @param buffer_size Buffer size.
  * @return 0 on success, negative error code on failure.
  */
-int phototransistor_read_raw(const struct device *dev,
+int adc_read_raw(const struct device *dev,
                              int16_t *raw_val,
                              int resolution,
                              int channel_id,
@@ -41,7 +41,7 @@ int phototransistor_read_raw(const struct device *dev,
  * @param buffer_size Buffer size.
  * @return Normalized value (0–1), or -1.0 on failure.
  */
-float phototransistor_read_normalized(const struct device *dev,
+float adc_read_normalized(const struct device *dev,
                                       int resolution,
                                       int channel_id,
                                       int16_t *buffer,
@@ -59,7 +59,7 @@ float phototransistor_read_normalized(const struct device *dev,
  * @param buffer_size Buffer size.
  * @return 0 on success, negative error code on failure.
  */
-int phototransistor_read_voltage(const struct device *dev,
+int adc_read_voltage(const struct device *dev,
                                  const struct adc_channel_cfg *cfg,
                                  int32_t *out_mv,
                                  int resolution,
@@ -67,4 +67,4 @@ int phototransistor_read_voltage(const struct device *dev,
                                  int16_t *buffer,
                                  size_t buffer_size);
 
-#endif // PHOTOTRANSISTOR_H
+#endif // ADC_H

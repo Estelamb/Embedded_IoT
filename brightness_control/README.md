@@ -15,6 +15,6 @@ In **BLUE mode** the **RGB LED** is **BLUE** and **no brightness measures** are 
 
 In both modes the information is displayed on the Zephyr terminal.
 
-To control **brightness measure** and **serial connexion** with an independent thread (using a new file for it).
+To control **brightness measure** and **serial connection** with an independent thread (using a new file for it).
 
-If a long press (1 second long) is detected in the **USER button**, the system enters **OFF mode**. In such case, **RGB LED** turns OFF and **serial connexion** sends the message “System OFF”.
+If a long press (1 second long) is detected in the **USER button**, the system enters **OFF mode**. In such case, **RGB LED** turns OFF and **serial connection** sends the message “System OFF”.
