@@ -1,0 +1,33 @@
+name: Doxygen Documentation
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Instalar Doxygen
+      run: sudo apt-get update && sudo apt-get install -y doxygen
+
+    - name: Generar documentación de brightness_control
+      run: |
+        cd brightness_control
+        doxygen Doxyfile
+
+    - name: Verificar si se generaron archivos HTML
+      run: |
+        ls -la ./brightness_control/docs/
+        ls -la ./brightness_control/docs/html
+
+    - name: Deploy a GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./brightness_control/docs/html

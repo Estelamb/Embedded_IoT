@@ -1,0 +1,13 @@
+{
+  // Environment variables for the integrated terminal in VS Code (Windows)
+  "terminal.integrated.env.windows": {
+    "ZEPHYR_TOOLCHAIN_VARIANT": "zephyr",
+    "ZEPHYR_SDK_INSTALL_DIR": "C:/Users/Estela/zephyr-sdk-0.17.4",
+    "PROJECT_DIR": "C:/Users/Estela/Embedded/blink_modified",
+    "ZEPHYR_DIR": "C:/Users/Estela/zephyrproject",
+},
+"files.associations": {
+  "*.py": "python",
+  "rgb_led.h": "c"
+},
+}
