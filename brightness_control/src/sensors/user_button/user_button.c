@@ -1,8 +1,22 @@
+/**
+ * @file user_button.c
+ * @brief Implementation of GPIO-based user button handling.
+ *
+ * This module provides initialization, interrupt callback registration,
+ * and press-detection utilities for a user button connected via GPIO.
+ */
+
 #include "user_button.h"
 #include <zephyr/sys/printk.h>
 
 /**
- * @brief Initialize the user button GPIO and interrupt.
+ * @brief Initialize the user button GPIO and configure interrupt triggering.
+ *
+ * Configures the GPIO pin as input and sets it to trigger interrupts
+ * on the active edge. Also clears the internal `pressed` flag.
+ *
+ * @param button Pointer to the user_button structure.
+ * @return 0 on success, or a negative error code on failure.
  */
 int button_init(struct user_button *button)
 {
@@ -30,7 +44,13 @@ int button_init(struct user_button *button)
 }
 
 /**
- * @brief Attach ISR callback to button interrupt.
+ * @brief Attach an ISR callback function to the button interrupt.
+ *
+ * The provided handler will be called whenever the button is pressed.
+ *
+ * @param button Pointer to the user_button structure.
+ * @param handler Function pointer to the interrupt handler.
+ * @return 0 on success, or a negative error code on failure.
  */
 int button_set_callback(struct user_button *button, gpio_callback_handler_t handler)
 {
@@ -47,6 +67,12 @@ int button_set_callback(struct user_button *button, gpio_callback_handler_t hand
 
 /**
  * @brief Check and clear the button pressed flag.
+ *
+ * If the flag is set (indicating a press was detected), it is reset and `true` is returned.
+ * Otherwise, `false` is returned without modifying the flag.
+ *
+ * @param button Pointer to the user_button structure.
+ * @return `true` if the button was pressed, `false` otherwise.
  */
 bool button_was_pressed(struct user_button *button)
 {

@@ -10,6 +10,7 @@ target_sources(app PRIVATE
     src/sensors/rgb_led/rgb_led.c
     src/sensors/adc/adc.c
     src/sensors/user_button/user_button.c
+    src/brightness_thread.c
 )
 
 target_include_directories(app PRIVATE

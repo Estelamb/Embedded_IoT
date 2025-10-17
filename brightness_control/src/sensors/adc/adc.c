@@ -1,9 +1,23 @@
+/**
+ * @file adc.c
+ * @brief Implementation of ADC initialization and reading functions.
+ *
+ * This module provides routines to configure and read data from an
+ * analog-to-digital converter (ADC) device using Zephyr's ADC API.
+ */
+
 #include "adc.h"
 
 static const struct adc_config *adc_cfg_ptr = NULL;
 static int16_t sample_buffer[BUFFER_SIZE];
 static struct adc_channel_cfg channel_cfg;
 
+/**
+ * @brief Initialize the ADC with the given configuration.
+ *
+ * @param cfg Pointer to an adc_config structure with ADC parameters.
+ * @return 0 on success, or a negative error code on failure.
+ */
 int adc_init(const struct adc_config *cfg) {
     if (!device_is_ready(cfg->dev)) {
         printk("ADC device not ready\n");
@@ -29,6 +43,12 @@ int adc_init(const struct adc_config *cfg) {
     return 0;
 }
 
+/**
+ * @brief Read a raw ADC value from the configured channel.
+ *
+ * @param raw_val Pointer where the raw ADC sample will be stored.
+ * @return 0 on success, or a negative error code on failure.
+ */
 int adc_read_raw(int16_t *raw_val) {
     if (!adc_cfg_ptr) {
         printk("ADC not initialized\n");
@@ -52,6 +72,11 @@ int adc_read_raw(int16_t *raw_val) {
     return 0;
 }
 
+/**
+ * @brief Read a normalized ADC value between 0.0 and 1.0.
+ *
+ * @return Normalized floating-point value, or -1.0 on error.
+ */
 float adc_read_normalized(void) {
     int16_t raw;
     if (adc_read_raw(&raw) != 0) {
@@ -60,6 +85,14 @@ float adc_read_normalized(void) {
     return (float)raw / (float)((1 << adc_cfg_ptr->resolution) - 1);
 }
 
+/**
+ * @brief Read the ADC voltage in millivolts.
+ *
+ * Converts the raw ADC sample to a voltage using the configured reference.
+ *
+ * @param out_mv Pointer where the result voltage (mV) will be stored.
+ * @return 0 on success, or a negative error code on failure.
+ */
 int adc_read_voltage(int32_t *out_mv) {
     int16_t raw;
     int ret = adc_read_raw(&raw);
