@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">Simple Brightness Control System </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_doxygen_2main"></a> </p>
+<div class="textblock"><p><a class="anchor" id="md_main"></a> </p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Problem statement</h1>
 <p>Two working modes: <b>NORMAL</b> and <b>BLUE</b> modes. The <b>USER button</b> switches the working mode.</p>
@@ -140,13 +140,14 @@ Problem statement</h1>
 <p>In both modes the information is displayed on the Zephyr terminal.</p>
 <p>To control <b>brightness measure</b> and <b>serial connection</b> with an independent thread (using a new file for it).</p>
 <p>If a long press (1 second long) is detected in the <b>USER button</b>, the system enters <b>OFF mode</b>. In such case, <b>RGB LED</b> turns OFF and <b>serial connection</b> sends the message “System OFF”.</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<hr  />
+<h1><a class="anchor" id="autotoc_md3"></a>
 Overview</h1>
 <p>This system reads ambient brightness using a <b>phototransistor</b> and controls an <b>RGB LED</b> based on the measured light. A <b>user button</b> allows switching between different modes and turning the system ON/OFF. The system is built using <b>Zephyr RTOS</b>, with a separate thread for brightness measurement.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md4"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Components</h1>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 1. RGB LED</h2>
 <ul>
 <li>Connected via three GPIO pins (Red, Green, Blue). <br  />
@@ -161,7 +162,7 @@ Components</h1>
 </li>
 <li>Can be controlled using either digital or bus outputs.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 2. Phototransistor (Light Sensor)</h2>
 <ul>
 <li>Connected to an ADC channel. <br  />
@@ -174,7 +175,7 @@ Components</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 3. User Button</h2>
 <ul>
 <li>Connected via a GPIO pin with interrupt capability. <br  />
@@ -190,7 +191,7 @@ Components</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
 4. Brightness Thread</h2>
 <ul>
 <li>Runs independently from the main loop. <br  />
@@ -201,7 +202,7 @@ Components</h1>
 <li>Serially prints brightness information to the Zephyr terminal for debugging.</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 System Modes</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -218,7 +219,7 @@ System Modes</h1>
 <td class="markdownTableBodyNone"><b>BLUE</b>   </td><td class="markdownTableBodyNone">RGB LED turns blue. No brightness measurements are performed until returning to NORMAL mode.   </td></tr>
 </table>
 <hr  />
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 System Operation</h1>
 <ol type="1">
 <li><b>Initialization</b><ul>
@@ -288,7 +289,7 @@ System Operation</h1>
 </li>
 </ol>
 <hr  />
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Two Working Modes (Summary)</h1>
 <ul>
 <li><b>NORMAL mode</b>: brightness is measured every 2 seconds. LED changes color based on brightness:<ul>
@@ -311,7 +312,7 @@ Two Working Modes (Summary)</h1>
 <li>The system initializes all components and starts in OFF mode.</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md16"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Thread &amp; Main Separation</h1>
 <ul>
 <li><b>Main thread</b>:<ul>
@@ -332,12 +333,8 @@ Thread &amp; Main Separation</h1>
 <p>This separation ensures:</p><ul>
 <li>Responsive button handling and LED updates. <br  />
 </li>
-<li>Independent brightness measurement without blocking the main loop.</li>
+<li>Independent brightness measurement without blocking the main loop. </li>
 </ul>
-<hr  />
-<h1><a class="anchor" id="autotoc_md18"></a>
-Visual Workflow</h1>
-<p>```text +------------------&mdash;+ | User Button ISR | +------------------&mdash;+ | v Short press / Long press | v +------------------&mdash;+ | Main Loop | | - Read mode | | - Update RGB LED | | - Print mode | +------------------&mdash;+ ^ | Mutex protected | +------------------&mdash;+ | Brightness Thread | | - Read ADC | | - Update brightness | | - Print brightness | +------------------&mdash;+ </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -3,7 +3,7 @@ var searchData=
   ['ref_0',['ref',['../structadc__config.html#afc43c6ed07214f3167ed6223ba3f7cba',1,'adc_config']]],
   ['request_5fbrightness_5fmeasurement_1',['request_brightness_measurement',['../brightness__thread_8c.html#aba4ccd6b5fa69dbb9fcb0a7d06195dcb',1,'request_brightness_measurement(struct system_context *ctx):&#160;brightness_thread.c'],['../brightness__thread_8h.html#aba4ccd6b5fa69dbb9fcb0a7d06195dcb',1,'request_brightness_measurement(struct system_context *ctx):&#160;brightness_thread.c']]],
   ['resolution_2',['resolution',['../structadc__config.html#a3b3cfed37e9b901905b7a3c6a45ad14c',1,'adc_config']]],
-  ['rgb_20led_3',['1. RGB LED',['../index.html#autotoc_md5',1,'']]],
+  ['rgb_20led_3',['1. RGB LED',['../index.html#autotoc_md6',1,'']]],
   ['rgb_5fblack_4',['rgb_black',['../rgb__led_8c.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
   ['rgb_5fblue_5',['rgb_blue',['../rgb__led_8c.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
   ['rgb_5fcyan_6',['rgb_cyan',['../rgb__led_8c.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
