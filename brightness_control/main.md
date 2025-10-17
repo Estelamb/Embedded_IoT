@@ -21,6 +21,8 @@ To control **brightness measure** and **serial connection** with an independent 
 
 If a long press (1 second long) is detected in the **USER button**, the system enters **OFF mode**. In such case, **RGB LED** turns OFF and **serial connection** sends the message “System OFF”.
 
+---
+
 ## Overview
 
 This system reads ambient brightness using a **phototransistor** and controls an **RGB LED** based on the measured light. A **user button** allows switching between different modes and turning the system ON/OFF. The system is built using **Zephyr RTOS**, with a separate thread for brightness measurement.
@@ -144,33 +146,3 @@ This system reads ambient brightness using a **phototransistor** and controls an
 This separation ensures:
 - Responsive button handling and LED updates.  
 - Independent brightness measurement without blocking the main loop.
-
----
-
-## Visual Workflow
-
-```text
-         +---------------------+
-         |   User Button ISR   |
-         +---------------------+
-                   |
-                   v
-       Short press / Long press
-                   |
-                   v
-         +---------------------+
-         |     Main Loop       |
-         |  - Read mode        |
-         |  - Update RGB LED   |
-         |  - Print mode       |
-         +---------------------+
-                   ^
-                   |
-           Mutex protected
-                   |
-         +---------------------+
-         | Brightness Thread   |
-         | - Read ADC          |
-         | - Update brightness |
-         | - Print brightness  |
-         +---------------------+
