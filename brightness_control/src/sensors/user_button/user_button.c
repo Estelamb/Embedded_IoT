@@ -64,21 +64,3 @@ int button_set_callback(struct user_button *button, gpio_callback_handler_t hand
 
     return 0;
 }
-
-/**
- * @brief Check and clear the button pressed flag.
- *
- * If the flag is set (indicating a press was detected), it is reset and `true` is returned.
- * Otherwise, `false` is returned without modifying the flag.
- *
- * @param button Pointer to the user_button structure.
- * @return `true` if the button was pressed, `false` otherwise.
- */
-bool button_was_pressed(struct user_button *button)
-{
-    if (button->pressed) {
-        button->pressed = false;
-        return true;
-    }
-    return false;
-}

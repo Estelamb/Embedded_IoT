@@ -144,7 +144,7 @@ int main(void)
 
     while (1) {
         /* --- Button handling --- */
-        if (gpio_pin_get_dt(&button.spec)) {
+        if (gpio_pin_get_dt(&button.spec)) { /* 1 if button is pressed */
             /* Button is currently pressed */
             if (!button_held) {
                 button_held = true;
@@ -175,9 +175,6 @@ int main(void)
                     printk("Switched to NORMAL MODE\n");
                 }
             }
-
-            /* Small debounce delay */
-            k_sleep(K_MSEC(200));
         }
 
         /* --- Periodic brightness measurement request --- */

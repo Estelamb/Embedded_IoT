@@ -38,12 +38,4 @@ int button_init(struct user_button *button);
  */
 int button_set_callback(struct user_button *button, gpio_callback_handler_t handler);
 
-/**
- * @brief Check and clear the button pressed flag.
- *
- * @param button Pointer to the user_button structure.
- * @return true if the button was pressed, false otherwise.
- */
-bool button_was_pressed(struct user_button *button);
-
 #endif // USER_BUTTON_H
