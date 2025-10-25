@@ -17,8 +17,8 @@
 #include "sensors/adc/adc.h"
 #include "sensors/user_button/user_button.h"
 
-#define LONG_PRESS_MS 1000  /**< Long press duration to toggle ON/OFF. */
-#define BRIGHTNESS_REQUEST_INTERVAL_MS 2000 /**< Interval between brightness requests. */
+#define LONG_PRESS_MS 1000  /**< Long press duration threshold (in ms). */
+#define BRIGHTNESS_REQUEST_INTERVAL_MS 2000 /**< Interval between brightness requests (in ms). */
 
 /**
  * @brief System operating modes.
@@ -36,6 +36,7 @@ typedef enum {
 
 
 /* --- Peripheral configuration --- */
+
 /**
  * @brief Phototransistor ADC configuration.
  *
@@ -112,6 +113,13 @@ static void button_pressed_isr(const struct device *dev, struct gpio_callback *c
  * and updates the LED color according to the selected mode and measured
  * brightness.
  *
+ * The button supports:
+ * - Short press: Toggles between NORMAL and BLUE modes.
+ * - Long press: Turns the system ON or OFF.
+ *
+ * To prevent accidental double toggling, the mode change occurs only
+ * when the button is released (not while it's being held).
+ *
  * @return This function does not return under normal operation.
  */
 int main(void)
@@ -125,10 +133,10 @@ int main(void)
     button_init(&button);
     button_set_callback(&button, button_pressed_isr);
 
-    /* Start the brightness thread which will perform ADC sampling on demand */
+    /* Start the brightness thread (performs ADC sampling on request) */
     start_brightness_thread(&ctx);
 
-    /* Initial mode is OFF */
+    /* Initial state */
     system_mode_t mode = OFF_MODE;
     bool button_held = false;
     int64_t press_start = 0;
@@ -137,10 +145,17 @@ int main(void)
     while (1) {
         /* --- Button handling --- */
         if (gpio_pin_get_dt(&button.spec)) {
+            /* Button is currently pressed */
             if (!button_held) {
                 button_held = true;
                 press_start = k_uptime_get();
-            } else if (k_uptime_get() - press_start > LONG_PRESS_MS) {
+            }
+        } else if (button_held) {
+            /* Button was just released → determine short or long press */
+            int64_t press_duration = k_uptime_get() - press_start;
+            button_held = false;
+
+            if (press_duration > LONG_PRESS_MS) {
                 /* Long press → toggle ON/OFF */
                 if (mode == OFF_MODE) {
                     mode = NORMAL_MODE;
@@ -150,12 +165,7 @@ int main(void)
                     rgb_led_off(&rgb_led);
                     printk("System OFF\n");
                 }
-                button_held = false;
-                k_sleep(K_MSEC(500)); /* debounce */
-            }
-        } else if (button_held) {
-            button_held = false;
-            if (k_uptime_get() - press_start < LONG_PRESS_MS) {
+            } else {
                 /* Short press → toggle NORMAL/BLUE */
                 if (mode == NORMAL_MODE) {
                     mode = BLUE_MODE;
@@ -165,9 +175,12 @@ int main(void)
                     printk("Switched to NORMAL MODE\n");
                 }
             }
+
+            /* Small debounce delay */
+            k_sleep(K_MSEC(200));
         }
 
-        /* --- Request brightness measurement periodically --- */
+        /* --- Periodic brightness measurement request --- */
         if (mode == NORMAL_MODE && (k_uptime_get() - last_measure_time) >= BRIGHTNESS_REQUEST_INTERVAL_MS) {
             request_brightness_measurement(&ctx);
             last_measure_time = k_uptime_get();
@@ -198,6 +211,7 @@ int main(void)
                 break;
         }
 
+        /* Small delay to reduce CPU usage */
         k_sleep(K_MSEC(100));
     }
 }
