@@ -105,11 +105,9 @@ var NAVTREEINDEX0 =
 "structuser__button.html#a6087456e616aba49dc6ea53d3d901e38":[1,0,3,0],
 "structuser__button.html#aa0f3ab66c6e9ff937542d8f9fa057dd3":[1,0,3,2],
 "user__button_8c.html":[2,0,0,0,2,0],
-"user__button_8c.html#a0f326192f8b672df67d3b4b5aabcbf8a":[2,0,0,0,2,0,2],
 "user__button_8c.html#a62624520184701e58bcb7fb0f8de1fb8":[2,0,0,0,2,0,1],
 "user__button_8c.html#a9866fa1d764ff7d9dc0e3706b7eb6dff":[2,0,0,0,2,0,0],
 "user__button_8h.html":[2,0,0,0,2,1],
-"user__button_8h.html#a0f326192f8b672df67d3b4b5aabcbf8a":[2,0,0,0,2,1,3],
 "user__button_8h.html#a62624520184701e58bcb7fb0f8de1fb8":[2,0,0,0,2,1,2],
 "user__button_8h.html#a9866fa1d764ff7d9dc0e3706b7eb6dff":[2,0,0,0,2,1,1],
 "user__button_8h_source.html":[2,0,0,0,2,1]
