@@ -144,11 +144,11 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 Macros</h2></td></tr>
 <tr class="memitem:a61271b2f6973cde7a3b2c4c6541026c8" id="r_a61271b2f6973cde7a3b2c4c6541026c8"><td class="memItemLeft" align="right" valign="top"><a id="a61271b2f6973cde7a3b2c4c6541026c8" name="a61271b2f6973cde7a3b2c4c6541026c8"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>LONG_PRESS_MS</b>&#160;&#160;&#160;1000</td></tr>
-<tr class="memdesc:a61271b2f6973cde7a3b2c4c6541026c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long press duration to toggle ON/OFF. <br /></td></tr>
+<tr class="memdesc:a61271b2f6973cde7a3b2c4c6541026c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long press duration threshold (in ms). <br /></td></tr>
 <tr class="separator:a61271b2f6973cde7a3b2c4c6541026c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ab34d57a13fbb531fa7422d5c5e908f" id="r_a6ab34d57a13fbb531fa7422d5c5e908f"><td class="memItemLeft" align="right" valign="top"><a id="a6ab34d57a13fbb531fa7422d5c5e908f" name="a6ab34d57a13fbb531fa7422d5c5e908f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BRIGHTNESS_REQUEST_INTERVAL_MS</b>&#160;&#160;&#160;2000</td></tr>
-<tr class="memdesc:a6ab34d57a13fbb531fa7422d5c5e908f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval between brightness requests. <br /></td></tr>
+<tr class="memdesc:a6ab34d57a13fbb531fa7422d5c5e908f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interval between brightness requests (in ms). <br /></td></tr>
 <tr class="separator:a6ab34d57a13fbb531fa7422d5c5e908f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -210,6 +210,11 @@ Functions</h2></td></tr>
 
 <p>Main application entry point. </p>
 <p>Initializes peripherals (RGB LED, ADC, user button), starts the brightness thread, and runs the main loop which handles button input and updates the LED color according to the selected mode and measured brightness.</p>
+<p>The button supports:</p><ul>
+<li>Short press: Toggles between NORMAL and BLUE modes.</li>
+<li>Long press: Turns the system ON or OFF.</li>
+</ul>
+<p>To prevent accidental double toggling, the mode change occurs only when the button is released (not while it's being held).</p>
 <dl class="section return"><dt>Returns</dt><dd>This function does not return under normal operation. </dd></dl>
 
 </div>
