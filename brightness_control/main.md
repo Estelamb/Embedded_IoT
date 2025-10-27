@@ -53,7 +53,6 @@ This system reads ambient brightness using a **phototransistor** and controls an
 - Handled via `user_button.c`:
   - `button_init()` → initialize GPIO.
   - `button_set_callback()` → attach ISR.
-  - `button_was_pressed()` → check if pressed.
 
 ### 4. Brightness Thread
 - Runs independently from the main loop.  
