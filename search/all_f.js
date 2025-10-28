@@ -11,5 +11,5 @@ var searchData=
   ['system_20modes_8',['System Modes',['../index.html#autotoc_md11',1,'']]],
   ['system_20operation_9',['System Operation',['../index.html#autotoc_md13',1,'']]],
   ['system_5fcontext_10',['system_context',['../structsystem__context.html',1,'']]],
-  ['system_5fmode_5ft_11',['system_mode_t',['../main_8c.html#a6e4cea4b6246f491c526211f5405627d',1,'main.c']]]
+  ['system_5fmode_5ft_11',['system_mode_t',['../main_8h.html#a6e4cea4b6246f491c526211f5405627d',1,'main.h']]]
 ];

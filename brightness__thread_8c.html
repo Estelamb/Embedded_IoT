@@ -144,6 +144,10 @@ Macros</h2></td></tr>
 <tr class="memitem:a6d879722308a7182e7b5d8947dc4f268" id="r_a6d879722308a7182e7b5d8947dc4f268"><td class="memItemLeft" align="right" valign="top"><a id="a6d879722308a7182e7b5d8947dc4f268" name="a6d879722308a7182e7b5d8947dc4f268"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BRIGHTNESS_THREAD_PRIORITY</b>&#160;&#160;&#160;5</td></tr>
 <tr class="separator:a6d879722308a7182e7b5d8947dc4f268"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7cb0e4c7b02afacde25490d942065c5" id="r_ac7cb0e4c7b02afacde25490d942065c5"><td class="memItemLeft" align="right" valign="top"><a id="ac7cb0e4c7b02afacde25490d942065c5" name="ac7cb0e4c7b02afacde25490d942065c5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BRIGHTNESS_MEASURE_INTERVAL_MS</b>&#160;&#160;&#160;2000</td></tr>
+<tr class="memdesc:ac7cb0e4c7b02afacde25490d942065c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval when in NORMAL mode. <br /></td></tr>
+<tr class="separator:ac7cb0e4c7b02afacde25490d942065c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -154,35 +158,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ab2b89a29a90fbc8dadd3564119a33679" id="r_ab2b89a29a90fbc8dadd3564119a33679"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="brightness__thread_8c.html#ab2b89a29a90fbc8dadd3564119a33679">start_brightness_thread</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx)</td></tr>
 <tr class="memdesc:ab2b89a29a90fbc8dadd3564119a33679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the brightness measurement thread.  <br /></td></tr>
 <tr class="separator:ab2b89a29a90fbc8dadd3564119a33679"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba4ccd6b5fa69dbb9fcb0a7d06195dcb" id="r_aba4ccd6b5fa69dbb9fcb0a7d06195dcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="brightness__thread_8c.html#aba4ccd6b5fa69dbb9fcb0a7d06195dcb">request_brightness_measurement</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx)</td></tr>
-<tr class="memdesc:aba4ccd6b5fa69dbb9fcb0a7d06195dcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends a measurement request to the brightness thread.  <br /></td></tr>
-<tr class="separator:aba4ccd6b5fa69dbb9fcb0a7d06195dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the brightness measurement thread. </p>
-<p>The brightness thread waits for measurement requests (via semaphore), reads the ADC value corresponding to the ambient light level, converts it to a percentage based on the ADC reference voltage, and updates the shared context. </p>
+<p>The brightness thread runs continuously, checking the current operating mode stored in the shared context. When the mode is NORMAL, it periodically reads the ADC value corresponding to the ambient light level, converts it to a percentage, and updates the shared context. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="aba4ccd6b5fa69dbb9fcb0a7d06195dcb" name="aba4ccd6b5fa69dbb9fcb0a7d06195dcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba4ccd6b5fa69dbb9fcb0a7d06195dcb">&#9670;&#160;</a></span>request_brightness_measurement()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void request_brightness_measurement </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structsystem__context.html">system_context</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sends a measurement request to the brightness thread. </p>
-<p>Requests a brightness measurement. </p>
-
-</div>
-</div>
 <a id="ab2b89a29a90fbc8dadd3564119a33679" name="ab2b89a29a90fbc8dadd3564119a33679"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab2b89a29a90fbc8dadd3564119a33679">&#9670;&#160;</a></span>start_brightness_thread()</h2>
 

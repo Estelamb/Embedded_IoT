@@ -3,7 +3,7 @@ var searchData=
   ['brightness_0',['brightness',['../structsystem__context.html#a395f70731160e4e9f83dea97482f2b04',1,'system_context']]],
   ['brightness_20control_20system_1',['Simple Brightness Control System',['../index.html',1,'']]],
   ['brightness_20thread_2',['4. Brightness Thread',['../index.html#autotoc_md9',1,'']]],
-  ['brightness_5frequest_5finterval_5fms_3',['BRIGHTNESS_REQUEST_INTERVAL_MS',['../main_8c.html#a6ab34d57a13fbb531fa7422d5c5e908f',1,'main.c']]],
+  ['brightness_5fmeasure_5finterval_5fms_3',['BRIGHTNESS_MEASURE_INTERVAL_MS',['../brightness__thread_8c.html#ac7cb0e4c7b02afacde25490d942065c5',1,'brightness_thread.c']]],
   ['brightness_5fthread_2ec_4',['brightness_thread.c',['../brightness__thread_8c.html',1,'']]],
   ['brightness_5fthread_2eh_5',['brightness_thread.h',['../brightness__thread_8h.html',1,'']]],
   ['buffer_5fsize_6',['BUFFER_SIZE',['../adc_8h.html#a6b20d41d6252e9871430c242cb1a56e7',1,'adc.h']]],
