@@ -4,36 +4,21 @@
  *
  * This application reads ambient light using a phototransistor connected
  * to an ADC and controls an RGB LED accordingly. A user button toggles
- * the operating mode (OFF, NORMAL, BLUE). The main loop requests
- * brightness measurements periodically while a separate brightness
- * thread performs the ADC sampling and updates the shared context.
+ * the operating mode (OFF, NORMAL, BLUE). The main loop updates the mode
+ * and LED color, while the brightness thread autonomously performs
+ * periodic brightness measurements when the system is in NORMAL mode.
  */
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
+#include "main.h"
 #include "brightness_thread.h"
 #include "sensors/rgb_led/rgb_led.h"
 #include "sensors/adc/adc.h"
 #include "sensors/user_button/user_button.h"
 
 #define LONG_PRESS_MS 1000  /**< Long press duration threshold (in ms). */
-#define BRIGHTNESS_REQUEST_INTERVAL_MS 2000 /**< Interval between brightness requests (in ms). */
-
-/**
- * @brief System operating modes.
- *
- * - OFF_MODE: Device is turned off and LEDs are off.
- * - NORMAL_MODE: Normal operation where ambient brightness is measured
- *   and the LED color indicates the brightness level.
- * - BLUE_MODE: Special mode where the blue LED is shown continuously.
- */
-typedef enum {
-    OFF_MODE = 0,
-    NORMAL_MODE,
-    BLUE_MODE
-} system_mode_t;
-
 
 /* --- Peripheral configuration --- */
 
@@ -76,13 +61,14 @@ static struct user_button button = {
  * @brief Shared context with the brightness thread.
  *
  * The `system_context` holds references to the ADC configuration,
- * current brightness value, and synchronization primitives. The mutex
- * is initialized by `start_brightness_thread()` when the thread starts.
+ * current brightness value, and synchronization primitives.
+ * The brightness thread reads this structure to determine the
+ * system mode and update the brightness value.
  */
 static struct system_context ctx = {
     .adc = &pt,
     .brightness = 0.0f,
-    /* lock and semaphore initialized in start_brightness_thread() */
+    /* lock initialized in start_brightness_thread() */
 };
 
 /**
@@ -133,14 +119,13 @@ int main(void)
     button_init(&button);
     button_set_callback(&button, button_pressed_isr);
 
-    /* Start the brightness thread (performs ADC sampling on request) */
+    /* Start the brightness thread (handles its own timing internally) */
     start_brightness_thread(&ctx);
 
     /* Initial state */
-    system_mode_t mode = OFF_MODE;
+    system_mode_t mode = NORMAL_MODE;
     bool button_held = false;
     int64_t press_start = 0;
-    int64_t last_measure_time = 0;
 
     while (1) {
         /* --- Button handling --- */
@@ -175,12 +160,9 @@ int main(void)
                     printk("Switched to NORMAL MODE\n");
                 }
             }
-        }
 
-        /* --- Periodic brightness measurement request --- */
-        if (mode == NORMAL_MODE && (k_uptime_get() - last_measure_time) >= BRIGHTNESS_REQUEST_INTERVAL_MS) {
-            request_brightness_measurement(&ctx);
-            last_measure_time = k_uptime_get();
+            /* Update shared mode so the brightness thread knows current state */
+            ctx.mode = mode;
         }
 
         /* --- LED control according to mode and brightness --- */
