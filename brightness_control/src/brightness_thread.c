@@ -76,9 +76,6 @@ static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
  */
 void start_brightness_thread(struct system_context *ctx)
 {
-    k_mutex_init(&ctx->lock);
-    ctx->mode = OFF_MODE;
-
     k_thread_create(&brightness_thread_data,
                     brightness_stack,
                     K_THREAD_STACK_SIZEOF(brightness_stack),
