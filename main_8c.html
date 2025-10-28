@@ -144,18 +144,22 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 Macros</h2></td></tr>
 <tr class="memitem:a61271b2f6973cde7a3b2c4c6541026c8" id="r_a61271b2f6973cde7a3b2c4c6541026c8"><td class="memItemLeft" align="right" valign="top"><a id="a61271b2f6973cde7a3b2c4c6541026c8" name="a61271b2f6973cde7a3b2c4c6541026c8"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>LONG_PRESS_MS</b>&#160;&#160;&#160;1000</td></tr>
-<tr class="memdesc:a61271b2f6973cde7a3b2c4c6541026c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long press duration threshold (in ms). <br /></td></tr>
+<tr class="memdesc:a61271b2f6973cde7a3b2c4c6541026c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long press duration threshold (in milliseconds). <br /></td></tr>
 <tr class="separator:a61271b2f6973cde7a3b2c4c6541026c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a840291bc02cba5474a4cb46a9b9566fe" id="r_a840291bc02cba5474a4cb46a9b9566fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a840291bc02cba5474a4cb46a9b9566fe">main</a> (void)</td></tr>
-<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main application entry point.  <br /></td></tr>
+<tr class="memdesc:a840291bc02cba5474a4cb46a9b9566fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main entry point for the brightness control system.  <br /></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main application for the simple brightness control system. </p>
-<p>This application reads ambient light using a phototransistor connected to an ADC and controls an RGB LED accordingly. A user button toggles the operating mode (OFF, NORMAL, BLUE). The main loop updates the mode and LED color, while the brightness thread autonomously performs periodic brightness measurements when the system is in NORMAL mode. </p>
+<p>This application reads ambient light using a phototransistor connected to an ADC and controls an RGB LED accordingly. A user button toggles the operating mode (OFF, NORMAL, BLUE). The main loop updates the mode and LED color, while the brightness thread autonomously performs periodic brightness measurements when the system is in NORMAL mode.</p>
+<p>The button supports:</p><ul>
+<li>Short press (&lt; 1 s): Toggles between NORMAL and BLUE modes.</li>
+<li>Long press (≥ 1 s): Turns the system ON or OFF immediately, even if the button remains pressed. </li>
+</ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a840291bc02cba5474a4cb46a9b9566fe" name="a840291bc02cba5474a4cb46a9b9566fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a840291bc02cba5474a4cb46a9b9566fe">&#9670;&#160;</a></span>main()</h2>
@@ -173,13 +177,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Main application entry point. </p>
-<p>Initializes peripherals (RGB LED, ADC, user button), starts the brightness thread, and runs the main loop which handles button input and updates the LED color according to the selected mode and measured brightness.</p>
-<p>The button supports:</p><ul>
-<li>Short press: Toggles between NORMAL and BLUE modes.</li>
-<li>Long press: Turns the system ON or OFF.</li>
-</ul>
-<p>To prevent accidental double toggling, the mode change occurs only when the button is released (not while it's being held).</p>
+<p>Main entry point for the brightness control system. </p>
+<p>Initializes peripherals (RGB LED, ADC, user button), starts the brightness thread, and executes the main control loop.</p>
+<p>The loop performs three main tasks:</p><ol type="1">
+<li>Detects short and long button presses.</li>
+<li>Updates the system mode accordingly.</li>
+<li>Controls the RGB LED color based on brightness and mode.</li>
+</ol>
 <dl class="section return"><dt>Returns</dt><dd>This function does not return under normal operation. </dd></dl>
 
 </div>
