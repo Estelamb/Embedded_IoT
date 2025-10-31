@@ -181,10 +181,8 @@ int main(void)
 
     /* --- Main control loop --- */
     while (1) {
-        bool pressed = gpio_pin_get_dt(&button.spec);
-
         /* --- Button handling --- */
-        if (pressed) {
+        if (gpio_pin_get_dt(&button.spec)) { /* 1 if button is pressed */
             if (!button_held) {
                 /* Button was just pressed */
                 button_held = true;
