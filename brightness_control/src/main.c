@@ -226,6 +226,20 @@ int main(void)
                     }
 
                     set_system_mode(&ctx, mode);
+                } else {
+                    /* Long press detected */
+                    long_press_handled = true;
+
+                    if (mode == OFF_MODE) {
+                        mode = NORMAL_MODE;
+                        printk("System ON (NORMAL MODE)\n");
+                    } else {
+                        mode = OFF_MODE;
+                        rgb_led_off(&rgb_led);
+                        printk("System OFF\n");
+                    }
+
+                    set_system_mode(&ctx, mode);
                 }
             }
         }
