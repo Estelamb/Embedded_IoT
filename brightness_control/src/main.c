@@ -156,6 +156,12 @@ int main(void)
 {
     printk("==== Simple Brightness Control System ====\n");
 
+    /* --- Local state variables --- */
+    system_mode_t mode = NORMAL_MODE;
+    bool button_held = false;
+    bool long_press_handled = false;
+    int64_t press_start = 0;
+
     /* --- Peripheral initialization --- */
     rgb_led_init(&rgb_led);
     rgb_led_off(&rgb_led);
@@ -165,19 +171,13 @@ int main(void)
 
     /* --- Initialize shared context BEFORE starting brightness thread --- */
     k_mutex_init(&ctx.lock);
-    ctx.mode = NORMAL_MODE;
+    ctx.mode = mode;
     ctx.brightness = 0.0f;
 
     /* Start brightness measurement thread */
     start_brightness_thread(&ctx);
 
     printk("System ON (NORMAL MODE)\n");
-
-    /* --- Local state variables --- */
-    system_mode_t mode = NORMAL_MODE;
-    bool button_held = false;
-    bool long_press_handled = false;
-    int64_t press_start = 0;
 
     /* --- Main control loop --- */
     while (1) {
