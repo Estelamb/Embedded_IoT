@@ -33,6 +33,7 @@ typedef enum {
 struct system_context {
     struct adc_config *phototransistor;   /**< Phototransistor ADC configuration */
     atomic_t brightness;      /**< Latest brightness percent (0-100, atomic) */
+    struct k_sem *brightness_sem;  /**< Semaphore for brightness measurement */
     atomic_t mode;            /**< Current operating mode (atomic enum) */
 };
 

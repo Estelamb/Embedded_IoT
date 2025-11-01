@@ -61,6 +61,9 @@ static struct user_button button = {
     .spec = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios),
 };
 
+/* Semaphore to trigger brightness measurement in NORMAL mode */
+static K_SEM_DEFINE(brightness_sem, 0, 1);
+
 /**
  * @brief Shared context with the brightness thread.
  *
@@ -71,6 +74,7 @@ static struct user_button button = {
 static struct system_context ctx = {
     .phototransistor = &pt,
     .brightness = ATOMIC_INIT(0),
+    .brightness_sem = &brightness_sem,
     .mode = ATOMIC_INIT(INITIAL_MODE),
 };
 
@@ -97,6 +101,7 @@ static void button_work_handler(struct k_work *work)
             printk("System OFF\n");
         } else {
             atomic_set(&ctx.mode, NORMAL_MODE);
+            k_sem_give(ctx.brightness_sem);
             printk("NORMAL MODE\n");
         }
     } else {
@@ -105,6 +110,7 @@ static void button_work_handler(struct k_work *work)
             printk("BLUE MODE\n");
         } else if (atomic_get(&ctx.mode) == BLUE_MODE) {
             atomic_set(&ctx.mode, NORMAL_MODE);
+            k_sem_give(ctx.brightness_sem);
             printk("NORMAL MODE\n");
         }
     }

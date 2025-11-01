@@ -18,8 +18,21 @@
 
 /** Stack allocation for the brightness thread. */
 K_THREAD_STACK_DEFINE(brightness_stack, BRIGHTNESS_THREAD_STACK_SIZE);
+
 /** Thread control block. */
 static struct k_thread brightness_thread_data;
+
+/* Timer to trigger brightness measurements */
+static struct k_timer brightness_timer;
+
+/* Semaphore to wake up the thread when the timer expires */
+static struct k_sem brightness_timer_sem;
+
+/* Timer handler: Give semaphore when the timer expires */
+static void brightness_timer_handler(struct k_timer *timer_id)
+{
+    k_sem_give(&brightness_timer_sem);
+}
 
 /**
  * @brief Brightness measurement thread function.
@@ -35,10 +48,24 @@ static struct k_thread brightness_thread_data;
 static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
 {
     struct system_context *ctx = (struct system_context *)arg1;
+    int previous_mode = atomic_get(&ctx->mode);
+    int actual_mode = atomic_get(&ctx->mode);
+
+    if (actual_mode == NORMAL_MODE) {
+        k_timer_start(&brightness_timer, K_NO_WAIT, K_MSEC(BRIGHTNESS_MEASURE_INTERVAL_MS));
+    }
 
     while (1) {
+        actual_mode = atomic_get(&ctx->mode);
+
         /* Perform measurement only if system is in NORMAL mode */
-        if (atomic_get(&ctx->mode) == NORMAL_MODE) {
+        if (actual_mode == NORMAL_MODE) {
+            if (previous_mode != NORMAL_MODE) {
+                k_timer_start(&brightness_timer, K_NO_WAIT, K_MSEC(BRIGHTNESS_MEASURE_INTERVAL_MS));
+            }
+
+            previous_mode = NORMAL_MODE;
+
             int32_t mv = 0;
             if (adc_read_voltage(&mv) == 0) {
                 float percent = ((float)mv / ctx->phototransistor->vref_mv) * 100.0f;
@@ -54,10 +81,16 @@ static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
             }
 
             /* Wait the defined interval before the next measurement */
-            k_sleep(K_MSEC(BRIGHTNESS_MEASURE_INTERVAL_MS));
+            k_sem_take(&brightness_timer_sem, K_FOREVER);
         } else {
-            /* Idle mode: sleep briefly before rechecking */
-            k_sleep(K_MSEC(100));
+            if (previous_mode == NORMAL_MODE) {
+                k_timer_stop(&brightness_timer);
+            }
+
+            previous_mode = actual_mode;
+            
+            /* Wait until NORMAL mode is activated */
+            k_sem_take(ctx->brightness_sem, K_FOREVER);
         }
     }
 }
@@ -67,6 +100,11 @@ static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
  */
 void start_brightness_thread(struct system_context *ctx)
 {
+    /* Init timer and measurement semaphore */
+    k_sem_init(&brightness_timer_sem, 0, 1);
+    k_timer_init(&brightness_timer, brightness_timer_handler, NULL);
+
+    /* Start thread */
     k_thread_create(&brightness_thread_data,
                     brightness_stack,
                     K_THREAD_STACK_SIZEOF(brightness_stack),
