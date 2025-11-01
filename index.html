@@ -184,8 +184,8 @@ Components</h1>
 </li>
 <li>Long press (1 second) → toggles <b>OFF mode</b>. <br  />
 </li>
-<li>Handled via <code><a class="el" href="user__button_8c.html" title="Implementation of GPIO-based user button handling.">user_button.c</a></code>:<ul>
-<li><code><a class="el" href="user__button_8c.html#a9866fa1d764ff7d9dc0e3706b7eb6dff" title="Initialize the user button GPIO and configure interrupt triggering.">button_init()</a></code> → initialize GPIO.</li>
+<li>Handled via <code><a class="el" href="user__button_8c.html" title="GPIO-based user button initialization with interrupt support.">user_button.c</a></code>:<ul>
+<li><code><a class="el" href="user__button_8c.html#a9866fa1d764ff7d9dc0e3706b7eb6dff" title="Initialize the user button GPIO and configure edge interrupts.">button_init()</a></code> → initialize GPIO.</li>
 <li><code><a class="el" href="user__button_8c.html#a62624520184701e58bcb7fb0f8de1fb8" title="Attach an ISR callback function to the button interrupt.">button_set_callback()</a></code> → attach ISR.</li>
 </ul>
 </li>

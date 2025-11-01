@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('user__button_8h.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for handling a user button via GPIO with interrupt support.  
+<p>Interface for GPIO-based user button handling with interrupt support.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/drivers/gpio.h&gt;</code><br />
 <code>#include &lt;zephyr/kernel.h&gt;</code><br />
@@ -146,14 +146,15 @@ Data Structures</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a9866fa1d764ff7d9dc0e3706b7eb6dff" id="r_a9866fa1d764ff7d9dc0e3706b7eb6dff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__button_8h.html#a9866fa1d764ff7d9dc0e3706b7eb6dff">button_init</a> (struct <a class="el" href="structuser__button.html">user_button</a> *button)</td></tr>
-<tr class="memdesc:a9866fa1d764ff7d9dc0e3706b7eb6dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the user button GPIO and configure interrupt triggering.  <br /></td></tr>
+<tr class="memdesc:a9866fa1d764ff7d9dc0e3706b7eb6dff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the user button GPIO and configure edge interrupts.  <br /></td></tr>
 <tr class="separator:a9866fa1d764ff7d9dc0e3706b7eb6dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62624520184701e58bcb7fb0f8de1fb8" id="r_a62624520184701e58bcb7fb0f8de1fb8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="user__button_8h.html#a62624520184701e58bcb7fb0f8de1fb8">button_set_callback</a> (struct <a class="el" href="structuser__button.html">user_button</a> *button, gpio_callback_handler_t handler)</td></tr>
 <tr class="memdesc:a62624520184701e58bcb7fb0f8de1fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attach an ISR callback function to the button interrupt.  <br /></td></tr>
 <tr class="separator:a62624520184701e58bcb7fb0f8de1fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for handling a user button via GPIO with interrupt support. </p>
+<div class="textblock"><p>Interface for GPIO-based user button handling with interrupt support. </p>
+<p>This driver configures a GPIO input pin for interrupt-triggered events (both rising and falling edges). Button press logic must be implemented by the application through a provided ISR callback. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a9866fa1d764ff7d9dc0e3706b7eb6dff" name="a9866fa1d764ff7d9dc0e3706b7eb6dff"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9866fa1d764ff7d9dc0e3706b7eb6dff">&#9670;&#160;</a></span>button_init()</h2>
@@ -171,15 +172,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialize the user button GPIO and configure interrupt triggering. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">button</td><td>Pointer to the <a class="el" href="structuser__button.html" title="Structure representing a user button connected via GPIO.">user_button</a> structure. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure.</dd></dl>
-<p>Configures the GPIO pin as input and sets it to trigger interrupts on the active edge. Also clears the internal <code>pressed</code> flag.</p>
+<p>Initialize the user button GPIO and configure edge interrupts. </p>
+<p>The pin is configured as input and interrupt triggers are enabled on both rising and falling edges to detect press and release transitions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">button</td><td>Pointer to the <a class="el" href="structuser__button.html" title="Structure representing a user button connected via GPIO.">user_button</a> structure. </td></tr>
@@ -217,15 +211,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Attach an ISR callback function to the button interrupt. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">button</td><td>Pointer to the <a class="el" href="structuser__button.html" title="Structure representing a user button connected via GPIO.">user_button</a> structure. </td></tr>
-    <tr><td class="paramname">handler</td><td>Function pointer to the interrupt handler. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure.</dd></dl>
-<p>The provided handler will be called whenever the button is pressed.</p>
+<p>The handler function is invoked directly in interrupt context on detected edge transitions.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">button</td><td>Pointer to the <a class="el" href="structuser__button.html" title="Structure representing a user button connected via GPIO.">user_button</a> structure. </td></tr>

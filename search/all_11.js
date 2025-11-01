@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['user_20button_0',['3. User Button',['../index.html#autotoc_md8',1,'']]],
-  ['user_5fbutton_1',['user_button',['../structuser__button.html',1,'']]],
-  ['user_5fbutton_2ec_2',['user_button.c',['../user__button_8c.html',1,'']]],
-  ['user_5fbutton_2eh_3',['user_button.h',['../user__button_8h.html',1,'']]]
+  ['thread_0',['4. Brightness Thread',['../index.html#autotoc_md9',1,'']]],
+  ['thread_20main_20separation_1',['Thread &amp; Main Separation',['../index.html#autotoc_md17',1,'']]],
+  ['two_20working_20modes_20summary_2',['Two Working Modes (Summary)',['../index.html#autotoc_md15',1,'']]]
 ];

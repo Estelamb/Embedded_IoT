@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['main_0',['main',['../main_8c.html#a840291bc02cba5474a4cb46a9b9566fe',1,'main.c']]],
-  ['main_20separation_1',['Thread &amp; Main Separation',['../index.html#autotoc_md17',1,'']]],
-  ['main_2ec_2',['main.c',['../main_8c.html',1,'']]],
-  ['main_2eh_3',['main.h',['../main_8h.html',1,'']]],
-  ['mode_4',['mode',['../structsystem__context.html#a87a9b68ca6cd7696787ad189bf20b987',1,'system_context']]],
-  ['modes_5',['System Modes',['../index.html#autotoc_md11',1,'']]],
-  ['modes_20summary_6',['Two Working Modes (Summary)',['../index.html#autotoc_md15',1,'']]]
+  ['led_0',['1. RGB LED',['../index.html#autotoc_md6',1,'']]],
+  ['light_20sensor_1',['2. Phototransistor (Light Sensor)',['../index.html#autotoc_md7',1,'']]],
+  ['long_5fpress_5fms_2',['LONG_PRESS_MS',['../main_8c.html#a61271b2f6973cde7a3b2c4c6541026c8',1,'main.c']]]
 ];

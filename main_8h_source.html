@@ -136,34 +136,33 @@ $(document).ready(function(){initNavTree('main_8h_source.html',''); initResizabl
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define MAIN_H</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;zephyr/kernel.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="adc_8h.html">sensors/adc/adc.h</a>&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">   23</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    OFF_MODE = 0,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    NORMAL_MODE,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    BLUE_MODE</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>} <a class="code hl_enumeration" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;zephyr/sys/atomic.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="adc_8h.html">sensors/adc/adc.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">   24</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    OFF_MODE = 0,</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    NORMAL_MODE,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    BLUE_MODE</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>} <a class="code hl_enumeration" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a>;</div>
 </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="foldopen" id="foldopen00032" data-start="{" data-end="};">
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="structsystem__context.html">   32</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structsystem__context.html">system_context</a> {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structsystem__context.html#a4d9f9763331dcdd995131b0de52aea03">   34</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structadc__config.html">adc_config</a> *<a class="code hl_variable" href="structsystem__context.html#a4d9f9763331dcdd995131b0de52aea03">adc</a>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structsystem__context.html#a395f70731160e4e9f83dea97482f2b04">   36</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structsystem__context.html#a395f70731160e4e9f83dea97482f2b04">brightness</a>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structsystem__context.html#a82a5cc8c841df4a53344e08cc7701a5c">   38</a></span>    <span class="keyword">struct </span>k_mutex <a class="code hl_variable" href="structsystem__context.html#a82a5cc8c841df4a53344e08cc7701a5c">lock</a>;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structsystem__context.html#a87a9b68ca6cd7696787ad189bf20b987">   40</a></span>    <a class="code hl_enumeration" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a> <a class="code hl_variable" href="structsystem__context.html#a87a9b68ca6cd7696787ad189bf20b987">mode</a>;</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structsystem__context.html">   33</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structsystem__context.html">system_context</a> {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0">   34</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structadc__config.html">adc_config</a> *<a class="code hl_variable" href="structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0">phototransistor</a>;   </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structsystem__context.html#a9009362f41ad83f73535239e36aad2e3">   35</a></span>    atomic_t <a class="code hl_variable" href="structsystem__context.html#a9009362f41ad83f73535239e36aad2e3">brightness</a>;      </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structsystem__context.html#a497903b46418329ff77e573fe793a374">   36</a></span>    atomic_t <a class="code hl_variable" href="structsystem__context.html#a497903b46418329ff77e573fe793a374">mode</a>;            </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>};</div>
 </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#endif </span><span class="comment">/* MAIN_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#endif </span><span class="comment">/* MAIN_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aadc_8h_html"><div class="ttname"><a href="adc_8h.html">adc.h</a></div><div class="ttdoc">Interface for ADC initialization and sampling using Zephyr drivers.</div></div>
-<div class="ttc" id="amain_8h_html_a6e4cea4b6246f491c526211f5405627d"><div class="ttname"><a href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a></div><div class="ttdeci">system_mode_t</div><div class="ttdoc">System operating modes.</div><div class="ttdef"><b>Definition</b> main.h:23</div></div>
+<div class="ttc" id="amain_8h_html_a6e4cea4b6246f491c526211f5405627d"><div class="ttname"><a href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a></div><div class="ttdeci">system_mode_t</div><div class="ttdoc">System operating modes.</div><div class="ttdef"><b>Definition</b> main.h:24</div></div>
 <div class="ttc" id="astructadc__config_html"><div class="ttname"><a href="structadc__config.html">adc_config</a></div><div class="ttdoc">ADC configuration structure.</div><div class="ttdef"><b>Definition</b> adc.h:18</div></div>
-<div class="ttc" id="astructsystem__context_html"><div class="ttname"><a href="structsystem__context.html">system_context</a></div><div class="ttdoc">Shared system context between main and brightness thread.</div><div class="ttdef"><b>Definition</b> main.h:32</div></div>
-<div class="ttc" id="astructsystem__context_html_a395f70731160e4e9f83dea97482f2b04"><div class="ttname"><a href="structsystem__context.html#a395f70731160e4e9f83dea97482f2b04">system_context::brightness</a></div><div class="ttdeci">float brightness</div><div class="ttdoc">Latest measured brightness value (0.0 - 100.0%).</div><div class="ttdef"><b>Definition</b> main.h:36</div></div>
-<div class="ttc" id="astructsystem__context_html_a4d9f9763331dcdd995131b0de52aea03"><div class="ttname"><a href="structsystem__context.html#a4d9f9763331dcdd995131b0de52aea03">system_context::adc</a></div><div class="ttdeci">struct adc_config * adc</div><div class="ttdoc">Pointer to ADC configuration and device information.</div><div class="ttdef"><b>Definition</b> main.h:34</div></div>
-<div class="ttc" id="astructsystem__context_html_a82a5cc8c841df4a53344e08cc7701a5c"><div class="ttname"><a href="structsystem__context.html#a82a5cc8c841df4a53344e08cc7701a5c">system_context::lock</a></div><div class="ttdeci">struct k_mutex lock</div><div class="ttdoc">Mutex to protect shared data.</div><div class="ttdef"><b>Definition</b> main.h:38</div></div>
-<div class="ttc" id="astructsystem__context_html_a87a9b68ca6cd7696787ad189bf20b987"><div class="ttname"><a href="structsystem__context.html#a87a9b68ca6cd7696787ad189bf20b987">system_context::mode</a></div><div class="ttdeci">system_mode_t mode</div><div class="ttdoc">Current operating mode.</div><div class="ttdef"><b>Definition</b> main.h:40</div></div>
+<div class="ttc" id="astructsystem__context_html"><div class="ttname"><a href="structsystem__context.html">system_context</a></div><div class="ttdoc">Shared system context between main and brightness thread.</div><div class="ttdef"><b>Definition</b> main.h:33</div></div>
+<div class="ttc" id="astructsystem__context_html_a497903b46418329ff77e573fe793a374"><div class="ttname"><a href="structsystem__context.html#a497903b46418329ff77e573fe793a374">system_context::mode</a></div><div class="ttdeci">atomic_t mode</div><div class="ttdoc">Current operating mode (atomic enum)</div><div class="ttdef"><b>Definition</b> main.h:36</div></div>
+<div class="ttc" id="astructsystem__context_html_a74975195688a51fa8ccb033b4a75dbe0"><div class="ttname"><a href="structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0">system_context::phototransistor</a></div><div class="ttdeci">struct adc_config * phototransistor</div><div class="ttdoc">Phototransistor ADC configuration.</div><div class="ttdef"><b>Definition</b> main.h:34</div></div>
+<div class="ttc" id="astructsystem__context_html_a9009362f41ad83f73535239e36aad2e3"><div class="ttname"><a href="structsystem__context.html#a9009362f41ad83f73535239e36aad2e3">system_context::brightness</a></div><div class="ttdeci">atomic_t brightness</div><div class="ttdoc">Latest brightness percent (0-100, atomic)</div><div class="ttdef"><b>Definition</b> main.h:35</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

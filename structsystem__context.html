@@ -136,22 +136,18 @@ $(document).ready(function(){initNavTree('structsystem__context.html',''); initR
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
-<tr class="memitem:a4d9f9763331dcdd995131b0de52aea03" id="r_a4d9f9763331dcdd995131b0de52aea03"><td class="memItemLeft" align="right" valign="top"><a id="a4d9f9763331dcdd995131b0de52aea03" name="a4d9f9763331dcdd995131b0de52aea03"></a>
-struct <a class="el" href="structadc__config.html">adc_config</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>adc</b></td></tr>
-<tr class="memdesc:a4d9f9763331dcdd995131b0de52aea03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to ADC configuration and device information. <br /></td></tr>
-<tr class="separator:a4d9f9763331dcdd995131b0de52aea03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a395f70731160e4e9f83dea97482f2b04" id="r_a395f70731160e4e9f83dea97482f2b04"><td class="memItemLeft" align="right" valign="top"><a id="a395f70731160e4e9f83dea97482f2b04" name="a395f70731160e4e9f83dea97482f2b04"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>brightness</b></td></tr>
-<tr class="memdesc:a395f70731160e4e9f83dea97482f2b04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest measured brightness value (0.0 - 100.0%). <br /></td></tr>
-<tr class="separator:a395f70731160e4e9f83dea97482f2b04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82a5cc8c841df4a53344e08cc7701a5c" id="r_a82a5cc8c841df4a53344e08cc7701a5c"><td class="memItemLeft" align="right" valign="top"><a id="a82a5cc8c841df4a53344e08cc7701a5c" name="a82a5cc8c841df4a53344e08cc7701a5c"></a>
-struct k_mutex&#160;</td><td class="memItemRight" valign="bottom"><b>lock</b></td></tr>
-<tr class="memdesc:a82a5cc8c841df4a53344e08cc7701a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mutex to protect shared data. <br /></td></tr>
-<tr class="separator:a82a5cc8c841df4a53344e08cc7701a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87a9b68ca6cd7696787ad189bf20b987" id="r_a87a9b68ca6cd7696787ad189bf20b987"><td class="memItemLeft" align="right" valign="top"><a id="a87a9b68ca6cd7696787ad189bf20b987" name="a87a9b68ca6cd7696787ad189bf20b987"></a>
-<a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
-<tr class="memdesc:a87a9b68ca6cd7696787ad189bf20b987"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current operating mode. <br /></td></tr>
-<tr class="separator:a87a9b68ca6cd7696787ad189bf20b987"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74975195688a51fa8ccb033b4a75dbe0" id="r_a74975195688a51fa8ccb033b4a75dbe0"><td class="memItemLeft" align="right" valign="top"><a id="a74975195688a51fa8ccb033b4a75dbe0" name="a74975195688a51fa8ccb033b4a75dbe0"></a>
+struct <a class="el" href="structadc__config.html">adc_config</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>phototransistor</b></td></tr>
+<tr class="memdesc:a74975195688a51fa8ccb033b4a75dbe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Phototransistor ADC configuration. <br /></td></tr>
+<tr class="separator:a74975195688a51fa8ccb033b4a75dbe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9009362f41ad83f73535239e36aad2e3" id="r_a9009362f41ad83f73535239e36aad2e3"><td class="memItemLeft" align="right" valign="top"><a id="a9009362f41ad83f73535239e36aad2e3" name="a9009362f41ad83f73535239e36aad2e3"></a>
+atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>brightness</b></td></tr>
+<tr class="memdesc:a9009362f41ad83f73535239e36aad2e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest brightness percent (0-100, atomic) <br /></td></tr>
+<tr class="separator:a9009362f41ad83f73535239e36aad2e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a497903b46418329ff77e573fe793a374" id="r_a497903b46418329ff77e573fe793a374"><td class="memItemLeft" align="right" valign="top"><a id="a497903b46418329ff77e573fe793a374" name="a497903b46418329ff77e573fe793a374"></a>
+atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
+<tr class="memdesc:a497903b46418329ff77e573fe793a374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current operating mode (atomic enum) <br /></td></tr>
+<tr class="separator:a497903b46418329ff77e573fe793a374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Shared system context between main and brightness thread. </p>

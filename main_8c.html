@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
-<p>Main application for the simple brightness control system.  
+<p>Main application for the interrupt-driven brightness control system.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/kernel.h&gt;</code><br />
 <code>#include &lt;zephyr/sys/printk.h&gt;</code><br />
@@ -146,6 +146,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>LONG_PRESS_MS</b>&#160;&#160;&#160;1000</td></tr>
 <tr class="memdesc:a61271b2f6973cde7a3b2c4c6541026c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long press duration threshold (in milliseconds). <br /></td></tr>
 <tr class="separator:a61271b2f6973cde7a3b2c4c6541026c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6018ed5003208d951b462b7afb4390f9" id="r_a6018ed5003208d951b462b7afb4390f9"><td class="memItemLeft" align="right" valign="top"><a id="a6018ed5003208d951b462b7afb4390f9" name="a6018ed5003208d951b462b7afb4390f9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INITIAL_MODE</b>&#160;&#160;&#160;NORMAL_MODE</td></tr>
+<tr class="memdesc:a6018ed5003208d951b462b7afb4390f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial operating mode at startup. <br /></td></tr>
+<tr class="separator:a6018ed5003208d951b462b7afb4390f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -154,11 +158,12 @@ Functions</h2></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Main application for the simple brightness control system. </p>
-<p>This application reads ambient light using a phototransistor connected to an ADC and controls an RGB LED accordingly. A user button toggles the operating mode (OFF, NORMAL, BLUE). The main loop updates the mode and LED color, while the brightness thread autonomously performs periodic brightness measurements when the system is in NORMAL mode.</p>
-<p>The button supports:</p><ul>
+<div class="textblock"><p>Main application for the interrupt-driven brightness control system. </p>
+<p>This application reads ambient light using a phototransistor connected to an ADC and controls an RGB LED accordingly. A user button toggles the operating mode (OFF, NORMAL, BLUE). Button presses are processed via interrupts and deferred work. Press duration determines action.</p>
+<p>A brightness thread autonomously performs periodic brightness measurements in NORMAL mode.</p>
+<p>Button behavior:</p><ul>
 <li>Short press (&lt; 1 s): Toggles between NORMAL and BLUE modes.</li>
-<li>Long press (≥ 1 s): Turns the system ON or OFF immediately, even if the button remains pressed. </li>
+<li>Long press (≥ 1 s): Turns the system ON or OFF immediately. </li>
 </ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a840291bc02cba5474a4cb46a9b9566fe" name="a840291bc02cba5474a4cb46a9b9566fe"></a>
@@ -178,12 +183,8 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Main entry point for the brightness control system. </p>
-<p>Initializes peripherals (RGB LED, ADC, user button), starts the brightness thread, and executes the main control loop.</p>
-<p>The loop performs three main tasks:</p><ol type="1">
-<li>Detects short and long button presses.</li>
-<li>Updates the system mode accordingly.</li>
-<li>Controls the RGB LED color based on brightness and mode.</li>
-</ol>
+<p>Initializes peripherals (RGB LED, ADC, user button), starts the brightness thread, and executes the LED update loop.</p>
+<p>Button input is interrupt-driven; all press logic is handled by ISR and workqueue.</p>
 <dl class="section return"><dt>Returns</dt><dd>This function does not return under normal operation. </dd></dl>
 
 </div>

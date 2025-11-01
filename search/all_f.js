@@ -1,15 +1,20 @@
 var searchData=
 [
-  ['sensor_0',['2. Phototransistor (Light Sensor)',['../index.html#autotoc_md7',1,'']]],
-  ['separation_1',['Thread &amp; Main Separation',['../index.html#autotoc_md17',1,'']]],
-  ['simple_20brightness_20control_20system_2',['Simple Brightness Control System',['../index.html',1,'']]],
-  ['spec_3',['spec',['../structuser__button.html#aa0f3ab66c6e9ff937542d8f9fa057dd3',1,'user_button']]],
-  ['start_5fbrightness_5fthread_4',['start_brightness_thread',['../brightness__thread_8c.html#ab2b89a29a90fbc8dadd3564119a33679',1,'start_brightness_thread(struct system_context *ctx):&#160;brightness_thread.c'],['../brightness__thread_8h.html#ab2b89a29a90fbc8dadd3564119a33679',1,'start_brightness_thread(struct system_context *ctx):&#160;brightness_thread.c']]],
-  ['statement_5',['Problem statement',['../index.html#autotoc_md1',1,'']]],
-  ['summary_6',['Two Working Modes (Summary)',['../index.html#autotoc_md15',1,'']]],
-  ['system_7',['Simple Brightness Control System',['../index.html',1,'']]],
-  ['system_20modes_8',['System Modes',['../index.html#autotoc_md11',1,'']]],
-  ['system_20operation_9',['System Operation',['../index.html#autotoc_md13',1,'']]],
-  ['system_5fcontext_10',['system_context',['../structsystem__context.html',1,'']]],
-  ['system_5fmode_5ft_11',['system_mode_t',['../main_8h.html#a6e4cea4b6246f491c526211f5405627d',1,'main.h']]]
+  ['ref_0',['ref',['../structadc__config.html#afc43c6ed07214f3167ed6223ba3f7cba',1,'adc_config']]],
+  ['resolution_1',['resolution',['../structadc__config.html#a3b3cfed37e9b901905b7a3c6a45ad14c',1,'adc_config']]],
+  ['rgb_20led_2',['1. RGB LED',['../index.html#autotoc_md6',1,'']]],
+  ['rgb_5fblack_3',['rgb_black',['../rgb__led_8c.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fblue_4',['rgb_blue',['../rgb__led_8c.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fcyan_5',['rgb_cyan',['../rgb__led_8c.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fgreen_6',['rgb_green',['../rgb__led_8c.html#a8105a65c9b53c677e01817aaa41d1228',1,'rgb_green(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a8105a65c9b53c677e01817aaa41d1228',1,'rgb_green(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fled_2ec_7',['rgb_led.c',['../rgb__led_8c.html',1,'']]],
+  ['rgb_5fled_2eh_8',['rgb_led.h',['../rgb__led_8h.html',1,'']]],
+  ['rgb_5fled_5finit_9',['rgb_led_init',['../rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848',1,'rgb_led_init(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8c.html#a4d37c0e4277f62fd9cff6431baf6a848',1,'rgb_led_init(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fled_5foff_10',['rgb_led_off',['../rgb__led_8c.html#a85db3995642fedac5456fef4bd9ecf49',1,'rgb_led_off(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49',1,'rgb_led_off(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fled_5fon_11',['rgb_led_on',['../rgb__led_8c.html#ad71ce397299423dc9d86d40a866e64e1',1,'rgb_led_on(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1',1,'rgb_led_on(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fled_5fwrite_12',['rgb_led_write',['../rgb__led_8c.html#a8253ee4c4326d609825b1f6df5329749',1,'rgb_led_write(struct bus_rgb_led *rgb_led, int value):&#160;rgb_led.c'],['../rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749',1,'rgb_led_write(struct bus_rgb_led *rgb_led, int value):&#160;rgb_led.c']]],
+  ['rgb_5fpurple_13',['rgb_purple',['../rgb__led_8c.html#a8241f3fcf6f859124c2e1304b00220e2',1,'rgb_purple(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2',1,'rgb_purple(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fred_14',['rgb_red',['../rgb__led_8c.html#a2a7489c0dc86c85076b62d0e32b08060',1,'rgb_red(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060',1,'rgb_red(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fwhite_15',['rgb_white',['../rgb__led_8c.html#a0867d776bfa4f41e533e8be89a54b02e',1,'rgb_white(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0867d776bfa4f41e533e8be89a54b02e',1,'rgb_white(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
+  ['rgb_5fyellow_16',['rgb_yellow',['../rgb__led_8c.html#acadd86c2ce8020db57b8b0a1afcde95f',1,'rgb_yellow(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#acadd86c2ce8020db57b8b0a1afcde95f',1,'rgb_yellow(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['brightness_0',['brightness',['../structsystem__context.html#a395f70731160e4e9f83dea97482f2b04',1,'system_context']]]
+  ['brightness_0',['brightness',['../structsystem__context.html#a9009362f41ad83f73535239e36aad2e3',1,'system_context']]]
 ];
