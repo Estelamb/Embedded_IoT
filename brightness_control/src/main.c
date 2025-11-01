@@ -1,17 +1,18 @@
 /**
  * @file main.c
- * @brief Main application for the simple brightness control system.
+ * @brief Main application for the interrupt-driven brightness control system.
  *
  * This application reads ambient light using a phototransistor connected
  * to an ADC and controls an RGB LED accordingly. A user button toggles
- * the operating mode (OFF, NORMAL, BLUE). The main loop updates the mode
- * and LED color, while the brightness thread autonomously performs
- * periodic brightness measurements when the system is in NORMAL mode.
+ * the operating mode (OFF, NORMAL, BLUE). Button presses are processed
+ * via interrupts and deferred work. Press duration determines action.
  *
- * The button supports:
+ * A brightness thread autonomously performs periodic brightness
+ * measurements in NORMAL mode.
+ *
+ * Button behavior:
  * - Short press (< 1 s): Toggles between NORMAL and BLUE modes.
- * - Long press (≥ 1 s): Turns the system ON or OFF immediately,
- *   even if the button remains pressed.
+ * - Long press (≥ 1 s): Turns the system ON or OFF immediately.
  */
 
 #include <zephyr/kernel.h>
@@ -23,7 +24,8 @@
 #include "sensors/adc/adc.h"
 #include "sensors/user_button/user_button.h"
 
-#define LONG_PRESS_MS 1000  /**< Long press duration threshold (in milliseconds). */
+#define LONG_PRESS_MS 1000 /**< Long press duration threshold (in milliseconds). */
+#define INITIAL_MODE NORMAL_MODE /**< Initial operating mode at startup. */
 
 /* --- Peripheral configuration ------------------------------------------------ */
 
@@ -62,80 +64,95 @@ static struct user_button button = {
 /**
  * @brief Shared context with the brightness thread.
  *
- * The @ref system_context structure holds references to the ADC configuration,
- * current brightness value, and synchronization primitives.
+ * The @ref system_context structure holds references to the peripheral configuration.
  * Both the main thread and the brightness thread use this structure to
  * coordinate mode and brightness updates.
  */
 static struct system_context ctx = {
-    .adc = &pt,
-    .brightness = 0.0f,
+    .phototransistor = &pt,
+    .brightness = ATOMIC_INIT(0),
+    .mode = ATOMIC_INIT(INITIAL_MODE),
 };
 
-/* --- Button ISR -------------------------------------------------------------- */
+
+/* --- Button timing & state -------------------------------------------------- */
+static struct k_timer press_timer;
+static struct k_work button_work;
+
+static bool button_pressed = false;
+static bool long_press_fired = false;
+static bool ignore_release = false; 
 
 /**
- * @brief Button interrupt service routine.
+ * @brief Deferred work handler for processing button events.
  *
- * Sets the @ref user_button.pressed flag so the main loop can process
- * the event outside of interrupt context.
- *
- * @param dev Pointer to the GPIO device (unused).
- * @param cb Pointer to the gpio_callback structure associated with the button.
- * @param pins Bitmask of the pins that triggered the interrupt (unused).
+ * Determines if the event to process is a short or long press
+ * based on the state of long_press_fired flag.
  */
-static void button_pressed_isr(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+static void button_work_handler(struct k_work *work)
 {
-    ARG_UNUSED(dev);
-    ARG_UNUSED(pins);
-    struct user_button *btn = CONTAINER_OF(cb, struct user_button, callback);
-    btn->pressed = true;
-}
+    if (long_press_fired) {
+        if (atomic_get(&ctx.mode) == NORMAL_MODE || atomic_get(&ctx.mode) == BLUE_MODE) {
+            atomic_set(&ctx.mode, OFF_MODE);
+            printk("System OFF\n");
+        } else {
+            atomic_set(&ctx.mode, NORMAL_MODE);
+            printk("NORMAL MODE\n");
+        }
+    } else {
+        if (atomic_get(&ctx.mode) == NORMAL_MODE) {
+            atomic_set(&ctx.mode, BLUE_MODE);
+            printk("BLUE MODE\n");
+        } else if (atomic_get(&ctx.mode) == BLUE_MODE) {
+            atomic_set(&ctx.mode, NORMAL_MODE);
+            printk("NORMAL MODE\n");
+        }
+    }
 
-/* --- Helper functions -------------------------------------------------------- */
-
-/**
- * @brief Safely update the system mode with mutex protection.
- *
- * @param ctx Pointer to the shared system context.
- * @param new_mode New mode to set.
- */
-static void set_system_mode(struct system_context *ctx, system_mode_t new_mode)
-{
-    k_mutex_lock(&ctx->lock, K_FOREVER);
-    ctx->mode = new_mode;
-    k_mutex_unlock(&ctx->lock);
-}
-
-/**
- * @brief Safely retrieve the current system mode with mutex protection.
- *
- * @param ctx Pointer to the shared system context.
- * @return The current system mode.
- */
-static system_mode_t get_system_mode(struct system_context *ctx)
-{
-    system_mode_t mode_copy;
-    k_mutex_lock(&ctx->lock, K_FOREVER);
-    mode_copy = ctx->mode;
-    k_mutex_unlock(&ctx->lock);
-    return mode_copy;
+    /* Reset flags after handling */
+    long_press_fired = false;
 }
 
 /**
- * @brief Safely retrieve the current brightness value with mutex protection.
+ * @brief Timer callback for detecting a long press.
  *
- * @param ctx Pointer to the shared system context.
- * @return The last measured brightness percentage.
+ * Invoked automatically after LONG_PRESS_MS milliseconds have passed
+ * since the button was pressed.
  */
-static float get_brightness(struct system_context *ctx)
+static void button_timer_handler(struct k_timer *timer)
 {
-    float brightness_copy;
-    k_mutex_lock(&ctx->lock, K_FOREVER);
-    brightness_copy = ctx->brightness;
-    k_mutex_unlock(&ctx->lock);
-    return brightness_copy;
+    if (button_pressed && !long_press_fired) {
+        long_press_fired = true;
+        ignore_release = true;     // Ignore release after a long press
+        k_work_submit(&button_work);
+    }
 }
+
+/**
+ * @brief ISR callback for button press/release events.
+ *
+ * Detects the press (active low) and release edges and manages
+ * the press timer accordingly.
+ */
+static void button_isr(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
+{
+    if (gpio_pin_get_dt(&button.spec)) {
+        button_pressed = true;
+        long_press_fired = false;
+        ignore_release = false;
+        k_timer_start(&press_timer, K_MSEC(LONG_PRESS_MS), K_NO_WAIT);
+    } else {
+        k_timer_stop(&press_timer);
+
+        if (button_pressed && !long_press_fired && !ignore_release) {
+            k_work_submit(&button_work);  // Short press
+        }
+
+        button_pressed = false;
+        ignore_release = false;   // Reset after release
+    }
+}
+
 
 /* --- Main Application -------------------------------------------------------- */
 
@@ -143,131 +160,51 @@ static float get_brightness(struct system_context *ctx)
  * @brief Main entry point for the brightness control system.
  *
  * Initializes peripherals (RGB LED, ADC, user button), starts the
- * brightness thread, and executes the main control loop.
+ * brightness thread, and executes the LED update loop.
  *
- * The loop performs three main tasks:
- * 1. Detects short and long button presses.
- * 2. Updates the system mode accordingly.
- * 3. Controls the RGB LED color based on brightness and mode.
+ * Button input is interrupt-driven; all press logic is handled by ISR and workqueue.
  *
  * @return This function does not return under normal operation.
  */
 int main(void)
 {
-    printk("==== Simple Brightness Control System ====\n");
+    printk("==== Brightness Control System ====\n");
+    int mode = INITIAL_MODE;
+    int brightness = 0;
 
-    /* --- Local state variables --- */
-    system_mode_t mode = NORMAL_MODE;
-    bool button_held = false;
-    bool long_press_handled = false;
-    int64_t press_start = 0;
+    /* Initialize peripherals */
+    if (rgb_led_init(&rgb_led) || rgb_led_off(&rgb_led)) return -1;
+    if (adc_init(&pt)) return -1;
+    if (button_init(&button)) return -1;
+    if (button_set_callback(&button, button_isr)) return -1;
 
-    /* --- Peripheral initialization --- */
-    rgb_led_init(&rgb_led);
-    rgb_led_off(&rgb_led);
-    adc_init(&pt);
-    button_init(&button);
-    button_set_callback(&button, button_pressed_isr);
-
-    /* --- Initialize shared context BEFORE starting brightness thread --- */
-    k_mutex_init(&ctx.lock);
-    ctx.mode = mode;
-    ctx.brightness = 0.0f;
+    /* Button handling */
+    k_timer_init(&press_timer, button_timer_handler, NULL);
+    k_work_init(&button_work, button_work_handler);
 
     /* Start brightness measurement thread */
     start_brightness_thread(&ctx);
 
     printk("System ON (NORMAL MODE)\n");
 
-    /* --- Main control loop --- */
     while (1) {
-        /* --- Button handling --- */
-        if (gpio_pin_get_dt(&button.spec)) { /* 1 if button is pressed */
-            if (!button_held) {
-                /* Button was just pressed */
-                button_held = true;
-                long_press_handled = false;
-                press_start = k_uptime_get();
-            } else if (!long_press_handled) {
-                /* Button is being held → check duration */
-                int64_t press_duration = k_uptime_get() - press_start;
-
-                if (press_duration >= LONG_PRESS_MS) {
-                    /* Long press detected (trigger immediately) */
-                    long_press_handled = true;
-
-                    if (mode == OFF_MODE) {
-                        mode = NORMAL_MODE;
-                        printk("System ON (NORMAL MODE)\n");
-                    } else {
-                        mode = OFF_MODE;
-                        rgb_led_off(&rgb_led);
-                        printk("System OFF\n");
-                    }
-
-                    set_system_mode(&ctx, mode);
-                }
-            }
-        } else if (button_held) {
-            /* Button has just been released */
-            button_held = false;
-
-            if (!long_press_handled) {
-                /* Short press detected */
-                int64_t press_duration = k_uptime_get() - press_start;
-
-                if (press_duration < LONG_PRESS_MS) {
-                    if (mode == NORMAL_MODE) {
-                        mode = BLUE_MODE;
-                        printk("Switched to BLUE MODE\n");
-                    } else if (mode == BLUE_MODE) {
-                        mode = NORMAL_MODE;
-                        printk("Switched to NORMAL MODE\n");
-                    }
-
-                    set_system_mode(&ctx, mode);
-                } else {
-                    /* Long press detected */
-                    long_press_handled = true;
-
-                    if (mode == OFF_MODE) {
-                        mode = NORMAL_MODE;
-                        printk("System ON (NORMAL MODE)\n");
-                    } else {
-                        mode = OFF_MODE;
-                        rgb_led_off(&rgb_led);
-                        printk("System OFF\n");
-                    }
-
-                    set_system_mode(&ctx, mode);
-                }
-            }
-        }
-
-        /* --- LED control according to mode and brightness --- */
-        mode = get_system_mode(&ctx);
-        float brightness_copy = get_brightness(&ctx);
+        mode = atomic_get(&ctx.mode);
+        brightness = atomic_get(&ctx.brightness);
 
         switch (mode) {
             case OFF_MODE:
                 rgb_led_off(&rgb_led);
                 break;
-
             case BLUE_MODE:
                 rgb_blue(&rgb_led);
                 break;
-
             case NORMAL_MODE:
-                if (brightness_copy < 33.0f)
-                    rgb_red(&rgb_led);
-                else if (brightness_copy < 66.0f)
-                    rgb_yellow(&rgb_led);
-                else
-                    rgb_green(&rgb_led);
+                if (brightness < 33) rgb_red(&rgb_led);
+                else if (brightness < 66) rgb_yellow(&rgb_led);
+                else rgb_green(&rgb_led);
                 break;
         }
 
-        /* Small delay to reduce CPU usage */
         k_sleep(K_MSEC(100));
     }
 }

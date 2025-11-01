@@ -38,35 +38,26 @@ static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
 
     while (1) {
         /* Perform measurement only if system is in NORMAL mode */
-        if (ctx->mode == NORMAL_MODE) {
+        if (atomic_get(&ctx->mode) == NORMAL_MODE) {
             int32_t mv = 0;
             if (adc_read_voltage(&mv) == 0) {
-                float percent = ((float)mv / ctx->adc->vref_mv) * 100.0f;
-                if (percent > 100.0f) {
-                    percent = 100.0f;
-                } else if (percent < 0.0f) {
-                    percent = 0.0f;
-                }
-
-                /* Update shared context safely */
-                k_mutex_lock(&ctx->lock, K_FOREVER);
-                ctx->brightness = percent;
-                k_mutex_unlock(&ctx->lock);
-
+                float percent = ((float)mv / ctx->phototransistor->vref_mv) * 100.0f;
+                if (percent < 0) percent = 0;
+                if (percent > 100) percent = 100;
+            
+                atomic_set(&ctx->brightness, (int)percent);
+            
                 int int_part = (int)percent;
                 int frac_part = (int)((percent - int_part) * 10); // 1 decimal
 
                 printk("[BRIGHTNESS THREAD] Brightness: %d.%d%% (%d mV)\n", int_part, frac_part, mv);
-
-            } else {
-                printk("[BRIGHTNESS THREAD] ADC read error\n");
             }
 
             /* Wait the defined interval before the next measurement */
             k_sleep(K_MSEC(BRIGHTNESS_MEASURE_INTERVAL_MS));
         } else {
             /* Idle mode: sleep briefly before rechecking */
-            k_sleep(K_MSEC(200));
+            k_sleep(K_MSEC(100));
         }
     }
 }

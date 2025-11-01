@@ -1,23 +1,16 @@
 /**
  * @file user_button.c
- * @brief Implementation of GPIO-based user button handling.
+ * @brief GPIO-based user button initialization with interrupt support.
  *
- * This module provides initialization, interrupt callback registration,
- * and press-detection utilities for a user button connected via GPIO.
+ * This module provides initialization and interrupt callback registration
+ * for a user button input. It configures the GPIO pin as input with pull-up and
+ * enables interrupts on both rising and falling edges. Actual button press logic
+ * must be implemented by the application.
  */
 
 #include "user_button.h"
 #include <zephyr/sys/printk.h>
 
-/**
- * @brief Initialize the user button GPIO and configure interrupt triggering.
- *
- * Configures the GPIO pin as input and sets it to trigger interrupts
- * on the active edge. Also clears the internal `pressed` flag.
- *
- * @param button Pointer to the user_button structure.
- * @return 0 on success, or a negative error code on failure.
- */
 int button_init(struct user_button *button)
 {
     if (!device_is_ready(button->spec.port)) {
@@ -25,33 +18,22 @@ int button_init(struct user_button *button)
         return -ENODEV;
     }
 
-    int ret = gpio_pin_configure_dt(&button->spec, GPIO_INPUT);
+    int ret = gpio_pin_configure_dt(&button->spec, GPIO_INPUT | GPIO_PULL_UP);
     if (ret != 0) {
         printk("Error: Failed to configure button pin (%d)\n", ret);
         return ret;
     }
 
-    ret = gpio_pin_interrupt_configure_dt(&button->spec, GPIO_INT_EDGE_TO_ACTIVE);
+    ret = gpio_pin_interrupt_configure_dt(&button->spec, GPIO_INT_EDGE_BOTH);
     if (ret != 0) {
         printk("Error: Failed to configure button interrupt (%d)\n", ret);
         return ret;
     }
 
-    button->pressed = false;
-
-    printk("User button initialized successfully\n");
+    printk("User button initialized (edge-interrupt mode)\n");
     return 0;
 }
 
-/**
- * @brief Attach an ISR callback function to the button interrupt.
- *
- * The provided handler will be called whenever the button is pressed.
- *
- * @param button Pointer to the user_button structure.
- * @param handler Function pointer to the interrupt handler.
- * @return 0 on success, or a negative error code on failure.
- */
 int button_set_callback(struct user_button *button, gpio_callback_handler_t handler)
 {
     gpio_init_callback(&button->callback, handler, BIT(button->spec.pin));

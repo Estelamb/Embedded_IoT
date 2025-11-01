@@ -10,6 +10,7 @@
 #define MAIN_H
 
 #include <zephyr/kernel.h>
+#include <zephyr/sys/atomic.h>
 #include "sensors/adc/adc.h"
 
 /**
@@ -30,14 +31,9 @@ typedef enum {
  * @brief Shared system context between main and brightness thread.
  */
 struct system_context {
-    /** Pointer to ADC configuration and device information. */
-    struct adc_config *adc;
-    /** Latest measured brightness value (0.0 - 100.0%). */
-    float brightness;
-    /** Mutex to protect shared data. */
-    struct k_mutex lock;
-    /** Current operating mode. */
-    system_mode_t mode;
+    struct adc_config *phototransistor;   /**< Phototransistor ADC configuration */
+    atomic_t brightness;      /**< Latest brightness percent (0-100, atomic) */
+    atomic_t mode;            /**< Current operating mode (atomic enum) */
 };
 
 #endif /* MAIN_H */

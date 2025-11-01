@@ -1,6 +1,10 @@
 /**
  * @file user_button.h
- * @brief Interface for handling a user button via GPIO with interrupt support.
+ * @brief Interface for GPIO-based user button handling with interrupt support.
+ *
+ * This driver configures a GPIO input pin for interrupt-triggered events
+ * (both rising and falling edges). Button press logic must be implemented
+ * by the application through a provided ISR callback.
  */
 
 #ifndef USER_BUTTON_H
@@ -12,17 +16,18 @@
 /**
  * @brief Structure representing a user button connected via GPIO.
  *
- * This structure holds the device tree specification, callback configuration,
- * and a volatile flag indicating whether the button was pressed.
+ * Holds the GPIO device specification and ISR callback structure.
  */
 struct user_button {
-    struct gpio_dt_spec spec;        /**< GPIO device specification. */
-    struct gpio_callback callback;   /**< GPIO callback structure. */
-    volatile bool pressed;           /**< Flag indicating button press event. */
+    struct gpio_dt_spec spec;      /**< GPIO device specification */
+    struct gpio_callback callback; /**< GPIO callback structure */
 };
 
 /**
- * @brief Initialize the user button GPIO and configure interrupt triggering.
+ * @brief Initialize the user button GPIO and configure edge interrupts.
+ *
+ * The pin is configured as input and interrupt triggers are enabled on
+ * both rising and falling edges to detect press and release transitions.
  *
  * @param button Pointer to the user_button structure.
  * @return 0 on success, or a negative error code on failure.
@@ -31,6 +36,9 @@ int button_init(struct user_button *button);
 
 /**
  * @brief Attach an ISR callback function to the button interrupt.
+ *
+ * The handler function is invoked directly in interrupt context on
+ * detected edge transitions.
  *
  * @param button Pointer to the user_button structure.
  * @param handler Function pointer to the interrupt handler.
