@@ -10,6 +10,7 @@
 
 #include "sensors_thread.h"
 #include "adc.h"
+#include "accel.h"
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
@@ -48,7 +49,7 @@ static void sensors_timer_handler(struct k_timer *timer_id)
  * @param target Pointer to the atomic variable to store the result.
  * @param label Label string for debugging output.
  */
-static void read_sensor_percentage(const struct adc_config *cfg,
+static void read_adc_percentage(const struct adc_config *cfg,
                                    atomic_t *target,
                                    const char *label,
                                    int32_t *mv,
@@ -63,6 +64,30 @@ static void read_sensor_percentage(const struct adc_config *cfg,
         printk("[SENSORS THREAD] %s: %d%% (%d mV)\n", label, *percent, *mv);
     }
 }
+
+static void read_accelerometer(const struct i2c_dt_spec *dev, uint8_t range, atomic_t *x_g, atomic_t *y_g, atomic_t *z_g)
+{
+    int16_t x_raw, y_raw, z_raw;
+    float x_g_val, y_g_val, z_g_val;
+
+    if (accel_read_xyz(dev, &x_raw, &y_raw, &z_raw) == 0) {
+        accel_convert_to_g(x_raw, range, &x_g_val);
+        accel_convert_to_g(y_raw, range, &y_g_val);
+        accel_convert_to_g(z_raw, range, &z_g_val);
+
+        atomic_set(x_g, *(atomic_t *)&x_g_val);
+        atomic_set(y_g, *(atomic_t *)&y_g_val);
+        atomic_set(z_g, *(atomic_t *)&z_g_val);
+
+        printk("[SENSORS THREAD] Accel X: %d.%03dg, Y: %d.%03dg, Z: %d.%03dg\n",
+                                            (int)x_g_val, (int)(x_g_val * 1000) % 1000,
+                                            (int)y_g_val, (int)(y_g_val * 1000) % 1000,
+                                            (int)z_g_val, (int)(z_g_val * 1000) % 1000);
+    } else {
+        printk("[SENSORS THREAD] Error reading accelerometer\n");
+    }
+}
+
 
 /**
  * @brief Sensors measurement thread function.
@@ -100,8 +125,11 @@ static void sensors_thread_fn(void *arg1, void *arg2, void *arg3)
             previous_mode = NORMAL_MODE;
 
             /* Read brightness and moisture */
-            read_sensor_percentage(ctx->phototransistor, &ctx->brightness, "Brightness", &mv, &percent);
-            read_sensor_percentage(ctx->soil_moisture, &ctx->moisture, "Moisture", &mv, &percent);
+            read_adc_percentage(ctx->phototransistor, &ctx->brightness, "Brightness", &mv, &percent);
+            read_adc_percentage(ctx->soil_moisture, &ctx->moisture, "Moisture", &mv, &percent);
+
+            /* Read accelerometer */
+            read_accelerometer(ctx->accelerometer, ctx->accel_range, &ctx->accel_x_g, &ctx->accel_y_g, &ctx->accel_z_g);
 
             /* Wait for next measurement */
             k_sem_take(&sensors_timer_sem, K_FOREVER);

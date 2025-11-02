@@ -20,12 +20,10 @@
 
 #include "main.h"
 #include "sensors_thread.h"
-#include "sensors/rgb_led/rgb_led.h"
-#include "sensors/adc/adc.h"
-#include "sensors/user_button/user_button.h"
 
-#define LONG_PRESS_MS 1000 /**< Long press duration threshold (in milliseconds). */
+#define LONG_PRESS_MS 1000       /**< Long press duration threshold (in milliseconds). */
 #define INITIAL_MODE NORMAL_MODE /**< Initial operating mode at startup. */
+#define ACCEL_RANGE ACCEL_FS_2G  /**< Accelerometer measurement range. */
 
 /* --- Peripheral configuration ------------------------------------------------ */
 
@@ -53,6 +51,14 @@ static struct adc_config sm = {
     .ref = ADC_REF_INTERNAL,
     .acquisition_time = ADC_ACQ_TIME_DEFAULT,
     .vref_mv = 3300,
+};
+
+/**
+ * @brief Accelerometer I2C device specification.
+ */
+static const struct i2c_dt_spec accel = {
+    .bus = DEVICE_DT_GET(DT_NODELABEL(i2c1)),
+    .addr = ACCEL_I2C_ADDR,
 };
 
 /**
@@ -87,8 +93,16 @@ static K_SEM_DEFINE(sensors_sem, 0, 1);
 static struct system_context ctx = {
     .phototransistor = &pt,
     .brightness = ATOMIC_INIT(0),
+
     .soil_moisture = &sm,
     .moisture = ATOMIC_INIT(0),
+
+    .accelerometer = &accel,
+    .accel_range = ACCEL_RANGE,
+    .accel_x_g = ATOMIC_INIT(0),
+    .accel_y_g = ATOMIC_INIT(0),
+    .accel_z_g = ATOMIC_INIT(0),
+
     .sensors_sem = &sensors_sem,
     .mode = ATOMIC_INIT(INITIAL_MODE),
 };
@@ -198,6 +212,7 @@ int main(void)
     if (rgb_led_init(&rgb_led) || rgb_led_off(&rgb_led)) return -1;
     if (adc_init(&pt)) return -1;
     if (adc_init(&sm)) return -1;
+    if (accel_init(&accel)) return -1;
     if (button_init(&button)) return -1;
     if (button_set_callback(&button, button_isr)) return -1;
 

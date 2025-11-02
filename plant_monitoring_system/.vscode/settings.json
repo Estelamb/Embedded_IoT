@@ -9,6 +9,7 @@
 "files.associations": {
   "*.py": "python",
   "rgb_led.h": "c",
-  "user_button.h": "c"
+  "user_button.h": "c",
+  "i2c.h": "c"
 },
 }
