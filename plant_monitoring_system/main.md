@@ -1,0 +1,2 @@
+# Plant Monitoring System
+This is the documentation for the Plant Monitoring System project. This system is designed to monitor various environmental parameters to ensure optimal conditions for plant growth. It includes sensors for soil moisture, temperature, humidity, and light intensity, and can send alerts when conditions fall outside of predefined thresholds.
