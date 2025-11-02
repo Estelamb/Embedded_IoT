@@ -175,8 +175,8 @@ static void button_isr(const struct device *dev, struct gpio_callback *cb, uint3
 int main(void)
 {
     printk("==== Brightness Control System ====\n");
-    int mode = INITIAL_MODE;
-    int brightness = 0;
+    system_mode_t mode = INITIAL_MODE;
+    uint8_t brightness = 0; /* Percentaje between 0 and 100 (uint8_t 0-255)*/
 
     /* Initialize peripherals */
     if (rgb_led_init(&rgb_led) || rgb_led_off(&rgb_led)) return -1;

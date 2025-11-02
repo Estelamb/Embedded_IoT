@@ -48,8 +48,10 @@ static void brightness_timer_handler(struct k_timer *timer_id)
 static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
 {
     struct system_context *ctx = (struct system_context *)arg1;
-    int previous_mode = atomic_get(&ctx->mode);
-    int actual_mode = atomic_get(&ctx->mode);
+    system_mode_t previous_mode = atomic_get(&ctx->mode);
+    system_mode_t actual_mode = atomic_get(&ctx->mode);
+    int32_t mv = 0;
+    uint8_t percent = 0; /* Percentage between 0 and 100 (uint8_t 0-255) */
 
     if (actual_mode == NORMAL_MODE) {
         k_timer_start(&brightness_timer, K_NO_WAIT, K_MSEC(BRIGHTNESS_MEASURE_INTERVAL_MS));
@@ -57,6 +59,7 @@ static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
 
     while (1) {
         actual_mode = atomic_get(&ctx->mode);
+        mv = 0;
 
         /* Perform measurement only if system is in NORMAL mode */
         if (actual_mode == NORMAL_MODE) {
@@ -66,18 +69,13 @@ static void brightness_thread_fn(void *arg1, void *arg2, void *arg3)
 
             previous_mode = NORMAL_MODE;
 
-            int32_t mv = 0;
             if (adc_read_voltage(&mv) == 0) {
-                float percent = ((float)mv / ctx->phototransistor->vref_mv) * 100.0f;
-                if (percent < 0) percent = 0;
+                percent = (mv * 100) / ctx->phototransistor->vref_mv;
                 if (percent > 100) percent = 100;
-            
-                atomic_set(&ctx->brightness, (int)percent);
-            
-                int int_part = (int)percent;
-                int frac_part = (int)((percent - int_part) * 10); // 1 decimal
 
-                printk("[BRIGHTNESS THREAD] Brightness: %d.%d%% (%d mV)\n", int_part, frac_part, mv);
+                atomic_set(&ctx->brightness, percent);
+
+                printk("[BRIGHTNESS THREAD] Brightness: %d%% (%d mV)\n", percent, mv);
             }
 
             /* Wait the defined interval before the next measurement */
