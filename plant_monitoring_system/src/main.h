@@ -87,7 +87,7 @@ struct system_measurement {
     atomic_t gps_lon;                   /**< Latest GPS longitude (atomic float) */
     atomic_t gps_alt;                   /**< Latest GPS altitude (atomic float) */
     atomic_t gps_sats;                  /**< Latest GPS satellites (atomic int) */
-    atomic_t gps_hdop;                  /**< Latest GPS HDOP (atomic float) */
+    atomic_t gps_time;                  /**< Latest GPS time (atomic float) */
 };
 
 #endif /* MAIN_H */

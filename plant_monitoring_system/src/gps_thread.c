@@ -91,16 +91,29 @@ static void read_gps_data(gps_data_t *data,
                           struct system_measurement *measure,
                           struct system_context *ctx) {
 
-    if (gps_wait_for_gga(data, K_MSEC(2000)) == 0) {
+    if (gps_wait_for_gga(data, K_MSEC(30000)) == 0) {
         atomic_set(&measure->gps_lat,  (int32_t)(data->lat  * 1e6f));
         atomic_set(&measure->gps_lon,  (int32_t)(data->lon  * 1e6f));
         atomic_set(&measure->gps_alt,  (int32_t)(data->alt  * 100.0f));
         atomic_set(&measure->gps_sats, (int32_t)data->sats);
-        atomic_set(&measure->gps_hdop, (int32_t)(data->hdop * 100.0f));
+
+        if (strlen(data->utc_time) >= 6) {
+            int hh = (data->utc_time[0] - '0') * 10 + (data->utc_time[1] - '0');
+            int mm = (data->utc_time[2] - '0') * 10 + (data->utc_time[3] - '0');
+            int ss = (data->utc_time[4] - '0') * 10 + (data->utc_time[5] - '0');
+                
+            int time_int = hh * 10000 + mm * 100 + ss; // entero HHMMSS
+            atomic_set(&measure->gps_time, time_int);
+        } else {
+            atomic_set(&measure->gps_time, -1); // valor inválido
+        }
+
+
     } else {
         printk("[GPS] - Timeout or invalid data\n");
     }
 }
+
 
 /* --------------------------------------------------------
  * Thread main function

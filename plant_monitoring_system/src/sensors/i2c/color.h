@@ -46,10 +46,12 @@
 
 /** @brief Structure for color sensor data */
 typedef struct {
-    float red;
-    float green;
-    float blue;
+    uint16_t clear;
+    uint16_t red;
+    uint16_t green;
+    uint16_t blue;
 } ColorSensorData;
+
 
 /* === Function prototypes === */
 int color_init(const struct i2c_dt_spec *dev);

@@ -85,16 +85,20 @@ int color_read_rgb(const struct i2c_dt_spec *dev, ColorSensorData *data)
         return ret;
     }
 
+    /* Combine low and high bytes */
     uint16_t clear = (buf[1] << 8) | buf[0];
     uint16_t red   = (buf[3] << 8) | buf[2];
     uint16_t green = (buf[5] << 8) | buf[4];
     uint16_t blue  = (buf[7] << 8) | buf[6];
 
+    /* Avoid divide-by-zero */
     if (clear == 0) clear = 1;
 
-    data->red   = (float)red   / clear;
-    data->green = (float)green / clear;
-    data->blue  = (float)blue  / clear;
+    /* Store raw values */
+    data->clear = clear;
+    data->red   = red;
+    data->green = green;
+    data->blue  = blue;
 
     return 0;
 }

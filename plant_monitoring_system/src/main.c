@@ -178,7 +178,7 @@ static struct system_measurement measure = {
     .gps_lon = ATOMIC_INIT(0),
     .gps_alt = ATOMIC_INIT(0),
     .gps_sats = ATOMIC_INIT(0),
-    .gps_hdop = ATOMIC_INIT(0),
+    .gps_time = ATOMIC_INIT(0),
 };
 
 
@@ -199,16 +199,16 @@ static void button_work_handler(struct k_work *work)
     switch (current_mode) {
         case TEST_MODE:
             next_mode = NORMAL_MODE;
-            printk("Switching to NORMAL MODE\n");
+            printk("\nNORMAL MODE\n");
             break;
         case NORMAL_MODE:
             next_mode = ADVANCED_MODE;
-            printk("Switching to ADVANCED MODE\n");
+            printk("\nADVANCED MODE\n");
             break;
         case ADVANCED_MODE:
         default:
             next_mode = TEST_MODE;
-            printk("Switching to TEST MODE\n");
+            printk("\nTEST MODE\n");
             break;
     }
 
@@ -248,6 +248,9 @@ int main(void)
 {
     printk("==== Plant Monitoring System ====\n");
     system_mode_t mode = INITIAL_MODE;
+    float light, moisture, lat, lon, alt, x_axis, y_axis, z_axis, hum, temp = 0;
+    int sats, time_int, hh, mm, ss, c, r, b, g = 0;
+    char dom_color[6], ns, ew;
 
     /* Initialize peripherals */
     if (gps_init(&gps)) return -1;
@@ -268,45 +271,88 @@ int main(void)
     start_sensors_thread(&ctx, &measure);
     start_gps_thread(&ctx, &measure);
 
-    printk("System ON (%s)\n", mode);
+    printk("System ON (TEST MODE)\n");
 
     while (1) {
         mode = atomic_get(&ctx.mode);
 
+        if (mode != ADVANCED_MODE) {
+            k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+            k_sem_take(ctx.main_gps_sem, K_FOREVER);
+        }
+
         switch (mode) {
             case TEST_MODE:
             case NORMAL_MODE:
-                if (mode == TEST_MODE)
-                    blue(&leds);
-                else
+                moisture = atomic_get(&measure.moisture) / 10.0f;
+
+                light = atomic_get(&measure.brightness) / 10.0f;
+
+                lat  = atomic_get(&measure.gps_lat) / 1e6f;
+                lon  = atomic_get(&measure.gps_lon) / 1e6f;
+                alt  = atomic_get(&measure.gps_alt) / 100.0f;
+                sats   = atomic_get(&measure.gps_sats);
+                time_int = atomic_get(&measure.gps_time);
+
+                ns = (lat >= 0) ? 'N' : 'S';
+                ew = (lon >= 0) ? 'E' : 'W';
+
+                lat = fabsf(lat);
+                lon = fabsf(lon);
+
+                if (time_int >= 0) {
+                    hh = time_int / 10000;
+                    mm = (time_int / 100) % 100;
+                    ss = time_int % 100;
+                } else {
+                    printk("GPS time: --:--:--\n");
+                }
+                r = atomic_get(&measure.red);
+                g = atomic_get(&measure.green);
+                b = atomic_get(&measure.blue);
+                c = atomic_get(&measure.clear);
+
+                x_axis = atomic_get(&measure.accel_x_g) / 100.0f;
+                y_axis = atomic_get(&measure.accel_y_g) / 100.0f;
+                z_axis = atomic_get(&measure.accel_z_g) / 100.0f;
+
+                temp = atomic_get(&measure.temp) / 100.0f;
+                hum = atomic_get(&measure.hum) / 100.0f;
+
+                if (mode == TEST_MODE) {
+                    if (r > g && r > b) {
+                        rgb_red(&rgb_leds);
+                        strcpy(dom_color, "RED");
+                    } else if (g > r && g > b) {
+                        rgb_green(&rgb_leds);
+                        strcpy(dom_color, "GREEN");
+                    } else {
+                        rgb_blue(&rgb_leds);
+                        strcpy(dom_color, "BLUE");
+                    }
+
+                } else {
                     green(&leds);
+                }
                 
-                printk("\n");
-                printk("Brightness: %d%%, Moisture: %d%%\n",
-                       atomic_get(&measure.brightness), atomic_get(&measure.moisture));
+                printk("SOIL MOISTURE: %.1f%%\n", moisture);
 
-                printk("Accelerometer: X=%.2f m/s^2, Y=%.2f m/s^2, Z=%.2f m/s^2\n",
-                       atomic_get(&measure.accel_x_g) / 100.0f,
-                       atomic_get(&measure.accel_y_g) / 100.0f,
-                       atomic_get(&measure.accel_z_g) / 100.0f);
+                printk("LIGHT: %.1f%%\n", light);
 
-                printk("Temp: %.2fC | Humidity: %.2f %%\n",
-                       atomic_get(&measure.temp) / 100.0f,
-                       atomic_get(&measure.hum) / 100.0f);
-
-                printk("Color Sensor: R=%d G=%d B=%d C=%d\n",
-                       atomic_get(&measure.red),
-                       atomic_get(&measure.green),
-                       atomic_get(&measure.blue),
-                       atomic_get(&measure.clear));
-
-                printk("GPS: Lat=%.6f Lon=%.6f Alt=%.1f m Sats=%d HDOP=%.1f\n",
-                       atomic_get(&measure.gps_lat) / 1e6f,
-                       atomic_get(&measure.gps_lon) / 1e6f,
-                       atomic_get(&measure.gps_alt) / 100.0f,
-                       atomic_get(&measure.gps_sats),
-                       atomic_get(&measure.gps_hdop) / 100.0f);
+                printk("GPS: #Sats: %d Lat(UTC): %.6f %c Long(UTC): %.6f %c Altitude: %.0f m GPS time: %02d:%02d:%02d\n",
+                        sats, lat, ns, lon, ew, alt,  hh, mm, ss);
+                
+                printk("COLOR SENSOR: Clear: %d Red: %d Green: %d Blue: %d Dominant color: %s \n",
+                        c, r, g, b, dom_color);
+                
+                printk("ACCELEROMETER: X_axis: %.2f m/s2, Y_axis: %.2f m/s2, Z_axis: %.2f m/s2 \n",
+                        x_axis, y_axis, z_axis);
+                
+                printk("TEMP/HUM: Temperature: %.1f C, Relative Humidity: %.1f%%\n\n",
+                        temp, hum);
+                
                 break;
+
             case ADVANCED_MODE:
                 red(&leds);
                 break;

@@ -90,12 +90,12 @@ static void update_sensors_timer(system_mode_t mode) {
  * @brief Read ADC-based sensor (brightness, moisture).
  */
 static void read_adc_percentage(const struct adc_config *cfg, atomic_t *target,
-                                const char *label, int32_t *mv, uint8_t *percent) {
+                                const char *label, int32_t *mv)
+{
     if (adc_read_voltage(cfg, mv) == 0) {
-        *percent = (*mv * 100) / cfg->vref_mv;
-        if (*percent > 100) *percent = 100;
-
-        atomic_set(target, *percent);
+        // porcentaje con 1 decimal, multiplicamos por 10
+        int32_t percent10 = ((*mv) * 1000) / cfg->vref_mv; // 1000 = 100 * 10
+        atomic_set(target, percent10);
     } else {
         printk("[ADC]: %s read error\n", label);
     }
@@ -131,13 +131,24 @@ static void read_temperature_humidity(const struct i2c_dt_spec *dev,
                                       atomic_t *temp, atomic_t *hum) {
     float temperature, humidity;
 
-    if (temp_hum_read_temperature(dev, &temperature) == 0 &&
-        temp_hum_read_humidity(dev, &humidity) == 0) {
+    // 🔹 Primero leer humedad (mide ambos internamente)
+    if (temp_hum_read_humidity(dev, &humidity) == 0) {
+        // 🔹 Luego leer temperatura desde la última medición de RH
+        uint8_t buf[2];
+        int ret = i2c_write_read_dt(dev, (uint8_t[]){ SI7021_READ_TEMP_FROM_RH }, 1, buf, 2);
+        if (ret == 0) {
+            uint16_t raw_temp = ((uint16_t)buf[0] << 8) | buf[1];
+            temperature = ((175.72f * raw_temp) / 65536.0f) - 46.85f;
+        } else {
+            printk("[TEMP/HUM SENSOR] - Error reading temperature from RH (%d)\n", ret);
+            return;
+        }
 
-        atomic_set(temp, (int32_t)(temperature * 100));
         atomic_set(hum,  (int32_t)(humidity * 100));
+        atomic_set(temp, (int32_t)(temperature * 100));
+
     } else {
-        printk("[TEMP/HUM SENSOR] - Read error\n");
+        printk("[TEMP/HUM SENSOR] - Read error (humidity)\n");
     }
 }
 
@@ -148,10 +159,10 @@ static void read_color_sensor(const struct i2c_dt_spec *dev, struct system_measu
     ColorSensorData color_data;
 
     if (color_read_rgb(dev, &color_data) == 0) {
-        atomic_set(&measure->red,   (int32_t)color_data.red);
-        atomic_set(&measure->green, (int32_t)color_data.green);
-        atomic_set(&measure->blue,  (int32_t)color_data.blue);
-        atomic_set(&measure->clear, 0);
+        atomic_set(&measure->red,   color_data.red);
+        atomic_set(&measure->green, color_data.green);
+        atomic_set(&measure->blue,  color_data.blue);
+        atomic_set(&measure->clear, color_data.clear);
     } else {
         printk("[COLOR SENSOR] - Read error\n");
     }
@@ -169,7 +180,6 @@ static void sensors_thread_fn(void *arg1, void *arg2, void *arg3) {
     system_mode_t current_mode  = previous_mode;
 
     int32_t mv = 0;
-    uint8_t percent = 0;
 
     init_sensors_poll_events(ctx);
     update_sensors_timer(current_mode);
@@ -185,8 +195,8 @@ static void sensors_thread_fn(void *arg1, void *arg2, void *arg3) {
         switch (current_mode) {
             case TEST_MODE:
             case NORMAL_MODE:
-                read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv, &percent);
-                read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv, &percent);
+                read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv);
+                read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv);
                 read_accelerometer(ctx->accelerometer, ctx->accel_range,
                                    &measure->accel_x_g, &measure->accel_y_g, &measure->accel_z_g);
                 read_temperature_humidity(ctx->temp_hum, &measure->temp, &measure->hum);
