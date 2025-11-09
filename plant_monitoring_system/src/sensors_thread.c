@@ -1,64 +1,110 @@
 /**
  * @file sensors_thread.c
  * @brief Implementation of the sensors measurement thread.
- *
- * The sensors thread runs continuously, checking the current
- * operating mode stored in the shared context. When the mode is NORMAL,
- * it periodically reads ADC values corresponding to brightness and soil moisture,
- * converts them to percentages, and updates the shared context.
  */
 
 #include "sensors_thread.h"
 #include "adc.h"
 #include "accel.h"
+#include "temp_hum.h"
+#include "color.h"
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
 #define SENSORS_THREAD_STACK_SIZE 1024
-#define SENSORS_THREAD_PRIORITY 5
-#define SENSORS_MEASURE_INTERVAL_MS 2000 /**< Measurement interval in NORMAL mode. */
+#define SENSORS_THREAD_PRIORITY   5
 
-/** Stack allocation for the sensors thread. */
 K_THREAD_STACK_DEFINE(sensors_stack, SENSORS_THREAD_STACK_SIZE);
-
-/** Thread control block. */
 static struct k_thread sensors_thread_data;
 
-/* Timer to trigger periodic sensor measurements */
+/* Timer and semaphore for periodic measurements */
 static struct k_timer sensors_timer;
-
-/* Semaphore to wake up the thread when the timer expires */
 static struct k_sem sensors_timer_sem;
 
+/* Poll events for timer and manual trigger */
+static struct k_poll_event sensors_poll_events[2];
+
+/* --------------------------------------------------------
+ * Helper functions
+ * --------------------------------------------------------*/
+
 /**
- * @brief Timer handler: Gives the semaphore when the timer expires.
+ * @brief Timer handler: wakes up the thread when it expires.
  */
 static void sensors_timer_handler(struct k_timer *timer_id) {
     k_sem_give(&sensors_timer_sem);
 }
 
 /**
- * @brief Read ADC sensor and convert to percentage.
- *
- * This function reads a voltage value from an ADC-configured sensor,
- * converts the voltage to a percentage (0-100), and writes it to a
- * target atomic variable.
- *
- * @param cfg Pointer to the ADC configuration for the sensor.
- * @param target Pointer to the atomic variable to store the result.
- * @param label Label string for debugging output.
+ * @brief Initialize the poll events for sensors thread.
  */
-static void read_adc_percentage(const struct adc_config *cfg, atomic_t *target, const char *label, int32_t *mv, uint8_t *percent) {
+static void init_sensors_poll_events(struct system_context *ctx) {
+    sensors_poll_events[0].type  = K_POLL_TYPE_SEM_AVAILABLE;
+    sensors_poll_events[0].mode  = K_POLL_MODE_NOTIFY_ONLY;
+    sensors_poll_events[0].sem   = &sensors_timer_sem;
+    sensors_poll_events[0].state = K_POLL_STATE_NOT_READY;
+
+    sensors_poll_events[1].type  = K_POLL_TYPE_SEM_AVAILABLE;
+    sensors_poll_events[1].mode  = K_POLL_MODE_NOTIFY_ONLY;
+    sensors_poll_events[1].sem   = ctx->sensors_sem;
+    sensors_poll_events[1].state = K_POLL_STATE_NOT_READY;
+}
+
+/**
+ * @brief Waits for either timer or external semaphore event.
+ */
+static void wait_for_sensors_event(void) {
+    k_poll(sensors_poll_events, 2, K_FOREVER);
+
+    if (sensors_poll_events[0].state == K_POLL_STATE_SEM_AVAILABLE) {
+        k_sem_take(&sensors_timer_sem, K_NO_WAIT);
+    }
+    if (sensors_poll_events[1].state == K_POLL_STATE_SEM_AVAILABLE) {
+        k_sem_take(sensors_poll_events[1].sem, K_NO_WAIT);
+    }
+
+    sensors_poll_events[0].state = K_POLL_STATE_NOT_READY;
+    sensors_poll_events[1].state = K_POLL_STATE_NOT_READY;
+}
+
+/**
+ * @brief Configure sensor timer based on current mode.
+ */
+static void update_sensors_timer(system_mode_t mode) {
+    k_timer_stop(&sensors_timer);
+
+    switch (mode) {
+        case TEST_MODE:
+            k_timer_start(&sensors_timer, K_NO_WAIT, K_MSEC(TEST_MODE_CADENCE));
+            break;
+        case NORMAL_MODE:
+            k_timer_start(&sensors_timer, K_NO_WAIT, K_MSEC(NORMAL_MODE_CADENCE));
+            break;
+        default:
+            /* ADVANCED or other modes: timer disabled */
+            break;
+    }
+}
+
+/**
+ * @brief Read ADC-based sensor (brightness, moisture).
+ */
+static void read_adc_percentage(const struct adc_config *cfg, atomic_t *target,
+                                const char *label, int32_t *mv, uint8_t *percent) {
     if (adc_read_voltage(cfg, mv) == 0) {
         *percent = (*mv * 100) / cfg->vref_mv;
         if (*percent > 100) *percent = 100;
 
         atomic_set(target, *percent);
-
-        printk("[SENSORS THREAD] %s: %d%% (%d mV)\n", label, *percent, *mv);
+    } else {
+        printk("[ADC]: %s read error\n", label);
     }
 }
 
+/**
+ * @brief Read accelerometer data and update measurement structure.
+ *        Stored as scaled integers (value ×100).
+ */
 static void read_accelerometer(const struct i2c_dt_spec *dev, uint8_t range,
                                atomic_t *x_ms2, atomic_t *y_ms2, atomic_t *z_ms2) {
     int16_t x_raw, y_raw, z_raw;
@@ -69,94 +115,103 @@ static void read_accelerometer(const struct i2c_dt_spec *dev, uint8_t range,
         accel_convert_to_ms2(y_raw, range, &y_val);
         accel_convert_to_ms2(z_raw, range, &z_val);
 
-        printk("[ACCEL] X=%.3f m/s^2, Y=%.3f m/s^2, Z=%.3f m/s^2\n",
-               x_val, y_val, z_val);
-
-        atomic_set(x_ms2, *(atomic_t *)&x_val);
-        atomic_set(y_ms2, *(atomic_t *)&y_val);
-        atomic_set(z_ms2, *(atomic_t *)&z_val);
+        atomic_set(x_ms2, (int32_t)(x_val * 100));
+        atomic_set(y_ms2, (int32_t)(y_val * 100));
+        atomic_set(z_ms2, (int32_t)(z_val * 100));
     } else {
-        printk("[ACCEL] Error reading accelerometer\n");
+        printk("[ACCELEROMETER] - Error reading accelerometer\n");
     }
 }
 
 /**
- * @brief Sensors measurement thread function.
- *
- * Periodically checks the current operating mode. When the system is
- * in NORMAL mode, this thread measures sensor values, converts them
- * to percentages, and updates context variables atomically.
- *
- * @param arg1 Pointer to a @ref system_context structure.
- * @param arg2 Pointer to a @ref system_measurement structure.
- * @param arg3 Unused.
+ * @brief Read temperature and humidity sensor.
+ *        Stored as scaled integers (×100).
  */
+static void read_temperature_humidity(const struct i2c_dt_spec *dev,
+                                      atomic_t *temp, atomic_t *hum) {
+    float temperature, humidity;
+
+    if (temp_hum_read_temperature(dev, &temperature) == 0 &&
+        temp_hum_read_humidity(dev, &humidity) == 0) {
+
+        atomic_set(temp, (int32_t)(temperature * 100));
+        atomic_set(hum,  (int32_t)(humidity * 100));
+    } else {
+        printk("[TEMP/HUM SENSOR] - Read error\n");
+    }
+}
+
+/**
+ * @brief Read color sensor data and update measurement structure.
+ */
+static void read_color_sensor(const struct i2c_dt_spec *dev, struct system_measurement *measure) {
+    ColorSensorData color_data;
+
+    if (color_read_rgb(dev, &color_data) == 0) {
+        atomic_set(&measure->red,   (int32_t)color_data.red);
+        atomic_set(&measure->green, (int32_t)color_data.green);
+        atomic_set(&measure->blue,  (int32_t)color_data.blue);
+        atomic_set(&measure->clear, 0);
+    } else {
+        printk("[COLOR SENSOR] - Read error\n");
+    }
+}
+
+/* --------------------------------------------------------
+ * Thread main function
+ * --------------------------------------------------------*/
+
 static void sensors_thread_fn(void *arg1, void *arg2, void *arg3) {
     struct system_context *ctx = (struct system_context *)arg1;
     struct system_measurement *measure = (struct system_measurement *)arg2;
-    system_mode_t previous_mode = atomic_get(&ctx->mode);
-    system_mode_t actual_mode = previous_mode;
 
-    /* Shared working variables */
+    system_mode_t previous_mode = atomic_get(&ctx->mode);
+    system_mode_t current_mode  = previous_mode;
+
     int32_t mv = 0;
     uint8_t percent = 0;
 
-    if (actual_mode == NORMAL_MODE) {
-        k_timer_start(&sensors_timer, K_NO_WAIT, K_MSEC(SENSORS_MEASURE_INTERVAL_MS));
-    }
+    init_sensors_poll_events(ctx);
+    update_sensors_timer(current_mode);
 
     while (1) {
-        actual_mode = atomic_get(&ctx->mode);
+        current_mode = atomic_get(&ctx->mode);
 
-        if (actual_mode == NORMAL_MODE) {
-            if (previous_mode != NORMAL_MODE) {
-                k_timer_start(&sensors_timer, K_NO_WAIT, K_MSEC(SENSORS_MEASURE_INTERVAL_MS));
-            }
+        if (current_mode != previous_mode) {
+            update_sensors_timer(current_mode);
+            previous_mode = current_mode;
+        }
 
-            previous_mode = NORMAL_MODE;
+        switch (current_mode) {
+            case TEST_MODE:
+            case NORMAL_MODE:
+                read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv, &percent);
+                read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv, &percent);
+                read_accelerometer(ctx->accelerometer, ctx->accel_range,
+                                   &measure->accel_x_g, &measure->accel_y_g, &measure->accel_z_g);
+                read_temperature_humidity(ctx->temp_hum, &measure->temp, &measure->hum);
+                read_color_sensor(ctx->color, measure);
 
-            /* Read brightness and moisture */
-            mv = 0;
-            read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv, &percent);
+                k_sem_give(ctx->main_sensors_sem);
+                wait_for_sensors_event();
+                break;
 
-            mv = 0;
-            read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv, &percent);
-
-            /* Read accelerometer */
-            read_accelerometer(ctx->accelerometer, ctx->accel_range, &measure->accel_x_g, &measure->accel_y_g, &measure->accel_z_g);
-
-            /* Read Temperature and Humidity */
-
-            /* Read Color */
-
-            /* Wait for next measurement */
-            k_sem_take(&sensors_timer_sem, K_FOREVER);
-        } else {
-            if (previous_mode == NORMAL_MODE) {
+            default:
                 k_timer_stop(&sensors_timer);
-            }
-
-            previous_mode = actual_mode;
-            k_sem_take(ctx->sensors_sem, K_FOREVER);
+                k_sem_give(ctx->main_sensors_sem);
+                k_sem_take(ctx->sensors_sem, K_FOREVER);
+                break;
         }
     }
 }
 
 /**
  * @brief Starts the sensors measurement thread.
- *
- * This function initializes core components and starts the thread
- * which will run the sensor polling loop.
- *
- * @param ctx Pointer to a valid @ref system_context structure.
- * @param measure Pointer to a valid @ref system_measurement structure.
  */
 void start_sensors_thread(struct system_context *ctx, struct system_measurement *measure) {
-    /* Init timer and measurement semaphore */
     k_sem_init(&sensors_timer_sem, 0, 1);
     k_timer_init(&sensors_timer, sensors_timer_handler, NULL);
 
-    /* Start thread */
     k_thread_create(&sensors_thread_data,
                     sensors_stack,
                     K_THREAD_STACK_SIZEOF(sensors_stack),

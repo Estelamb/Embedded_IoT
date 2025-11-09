@@ -1,9 +1,9 @@
 /**
+ * to agps and cogpsrols an RGB LED accordingly. A user button toggles
  * @file main.c
  * @brief Main application for the interrupt-driven brightness control system.
  *
  * This application reads ambient light using a phototransistor connected
- * to an ADC and controls an RGB LED accordingly. A user button toggles
  * the operating mode (OFF, NORMAL, BLUE). Button presses are processed
  * via interrupts and deferred work. Press duration determines action.
  *
@@ -22,8 +22,7 @@
 #include "sensors_thread.h"
 #include "gps_thread.h"
 
-#define LONG_PRESS_MS 1000       /**< Long press duration threshold (in milliseconds). */
-#define INITIAL_MODE NORMAL_MODE /**< Initial operating mode at startup. */
+#define INITIAL_MODE TEST_MODE /**< Initial operating mode at startup. */
 #define ACCEL_RANGE ACCEL_2G    /**< Accelerometer full-scale range setting. */
 
 /* --- Peripheral configuration ------------------------------------------------ */
@@ -55,13 +54,32 @@ static struct adc_config sm = {
 };
 
 /**
- * @brief Accelerometer I2C device specification.
+ * @brief Accelerometer I2C configuration.
  */
 static struct i2c_dt_spec accel = {
     .bus = DEVICE_DT_GET(DT_NODELABEL(i2c2)),
     .addr = ACCEL_I2C_ADDR,
 };
 
+/**
+ * @brief Temperature and Humidity sensor I2C configuration.
+ */
+static struct i2c_dt_spec th = {
+    .bus = DEVICE_DT_GET(DT_NODELABEL(i2c2)),
+    .addr = TEMP_HUM_I2C_ADDR,
+};
+
+/**
+ * @brief Color sensor I2C configuration.
+ */
+static struct i2c_dt_spec color = {
+    .bus = DEVICE_DT_GET(DT_NODELABEL(i2c2)),
+    .addr = COLOR_I2C_ADDR,
+};
+
+/**
+ * @brief GPS UART configuration.
+ */
 static struct gps_config gps = {
     .dev = DEVICE_DT_GET(DT_NODELABEL(usart1)),
 };
@@ -69,11 +87,23 @@ static struct gps_config gps = {
 /**
  * @brief RGB LED bus configuration.
  */
-static struct bus_rgb_led rgb_led = {
+static struct bus_rgb_led rgb_leds = {
     .pins = {
         GPIO_DT_SPEC_GET(DT_ALIAS(red), gpios),
         GPIO_DT_SPEC_GET(DT_ALIAS(green), gpios),
         GPIO_DT_SPEC_GET(DT_ALIAS(blue), gpios)
+    },
+    .pin_count = BUS_SIZE,
+};
+
+/**
+ * @brief LED bus configuration.
+ */
+static struct bus_led leds = {
+    .pins = {
+        GPIO_DT_SPEC_GET(DT_ALIAS(led2), gpios),
+        GPIO_DT_SPEC_GET(DT_ALIAS(led1), gpios),
+        GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios)
     },
     .pin_count = BUS_SIZE,
 };
@@ -86,7 +116,8 @@ static struct user_button button = {
 };
 
 /* Semaphore to trigger and read measurements in NORMAL mode */
-static K_SEM_DEFINE(main_sem, 0, 1);
+static K_SEM_DEFINE(main_sensors_sem, 0, 1);
+static K_SEM_DEFINE(main_gps_sem, 0, 1);
 static K_SEM_DEFINE(sensors_sem, 0, 1);
 static K_SEM_DEFINE(gps_sem, 0, 1);
 
@@ -105,9 +136,14 @@ static struct system_context ctx = {
     .accelerometer = &accel,
     .accel_range = ACCEL_RANGE,
 
+    .temp_hum = &th,
+
+    .color = &color,
+
     .gps = &gps,
 
-    .main_sem = &main_sem,
+    .main_sensors_sem = &main_sensors_sem,
+    .main_gps_sem = &main_gps_sem,
     .sensors_sem = &sensors_sem,
     .gps_sem = &gps_sem,
 
@@ -130,6 +166,14 @@ static struct system_measurement measure = {
     .accel_y_g = ATOMIC_INIT(0),
     .accel_z_g = ATOMIC_INIT(0),
 
+    .temp = ATOMIC_INIT(0),
+    .hum = ATOMIC_INIT(0),
+
+    .red = ATOMIC_INIT(0),
+    .green = ATOMIC_INIT(0),
+    .blue = ATOMIC_INIT(0),
+    .clear = ATOMIC_INIT(0),
+
     .gps_lat = ATOMIC_INIT(0),
     .gps_lon = ATOMIC_INIT(0),
     .gps_alt = ATOMIC_INIT(0),
@@ -138,13 +182,8 @@ static struct system_measurement measure = {
 };
 
 
-/* --- Button timing & state -------------------------------------------------- */
-static struct k_timer press_timer;
+/* --- Button timing and state -------------------------------------------------- */
 static struct k_work button_work;
-
-static bool button_pressed = false;
-static bool long_press_fired = false;
-static bool ignore_release = false; 
 
 /**
  * @brief Deferred work handler for processing button events.
@@ -154,45 +193,28 @@ static bool ignore_release = false;
  */
 static void button_work_handler(struct k_work *work)
 {
-    if (long_press_fired) {
-        if (atomic_get(&ctx.mode) == NORMAL_MODE || atomic_get(&ctx.mode) == BLUE_MODE) {
-            atomic_set(&ctx.mode, OFF_MODE);
-            printk("System OFF\n");
-        } else {
-            atomic_set(&ctx.mode, NORMAL_MODE);
-            k_sem_give(ctx.sensors_sem);
-            k_sem_give(ctx.gps_sem);
-            printk("NORMAL MODE\n");
-        }
-    } else {
-        if (atomic_get(&ctx.mode) == NORMAL_MODE) {
-            atomic_set(&ctx.mode, BLUE_MODE);
-            printk("BLUE MODE\n");
-        } else if (atomic_get(&ctx.mode) == BLUE_MODE) {
-            atomic_set(&ctx.mode, NORMAL_MODE);
-            k_sem_give(ctx.sensors_sem);
-            k_sem_give(ctx.gps_sem);
-            printk("NORMAL MODE\n");
-        }
+    system_mode_t current_mode = atomic_get(&ctx.mode);
+    system_mode_t next_mode;
+
+    switch (current_mode) {
+        case TEST_MODE:
+            next_mode = NORMAL_MODE;
+            printk("Switching to NORMAL MODE\n");
+            break;
+        case NORMAL_MODE:
+            next_mode = ADVANCED_MODE;
+            printk("Switching to ADVANCED MODE\n");
+            break;
+        case ADVANCED_MODE:
+        default:
+            next_mode = TEST_MODE;
+            printk("Switching to TEST MODE\n");
+            break;
     }
 
-    /* Reset flags after handling */
-    long_press_fired = false;
-}
-
-/**
- * @brief Timer callback for detecting a long press.
- *
- * Invoked automatically after LONG_PRESS_MS milliseconds have passed
- * since the button was pressed.
- */
-static void button_timer_handler(struct k_timer *timer)
-{
-    if (button_pressed && !long_press_fired) {
-        long_press_fired = true;
-        ignore_release = true;     // Ignore release after a long press
-        k_work_submit(&button_work);
-    }
+    atomic_set(&ctx.mode, next_mode);
+    k_sem_give(ctx.sensors_sem);
+    k_sem_give(ctx.gps_sem);
 }
 
 /**
@@ -203,20 +225,9 @@ static void button_timer_handler(struct k_timer *timer)
  */
 static void button_isr(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    if (gpio_pin_get_dt(&button.spec)) {
-        button_pressed = true;
-        long_press_fired = false;
-        ignore_release = false;
-        k_timer_start(&press_timer, K_MSEC(LONG_PRESS_MS), K_NO_WAIT);
-    } else {
-        k_timer_stop(&press_timer);
-
-        if (button_pressed && !long_press_fired && !ignore_release) {
-            k_work_submit(&button_work);  // Short press
-        }
-
-        button_pressed = false;
-        ignore_release = false;   // Reset after release
+    /* Detect release (button unpressed) */
+    if (!gpio_pin_get_dt(&button.spec)) {
+        k_work_submit(&button_work);
     }
 }
 
@@ -235,48 +246,73 @@ static void button_isr(const struct device *dev, struct gpio_callback *cb, uint3
  */
 int main(void)
 {
-    printk("==== Brightness Control System ====\n");
+    printk("==== Plant Monitoring System ====\n");
     system_mode_t mode = INITIAL_MODE;
-    uint8_t brightness = 0; /* Percentaje between 0 and 100 (uint8_t 0-255)*/
-    uint8_t moisture = 0; /* Percentaje between 0 and 100 (uint8_t 0-255)*/
 
     /* Initialize peripherals */
-    if (rgb_led_init(&rgb_led) || rgb_led_off(&rgb_led)) return -1;
+    if (gps_init(&gps)) return -1;
     if (adc_init(&pt)) return -1;
     if (adc_init(&sm)) return -1;
     if (accel_init(&accel, ACCEL_RANGE)) return -1;
-    if (gps_init(&gps) != 0) return -1;
+    if (temp_hum_init(&th)) return -1;
+    if (color_init(&color)) return -1;
+    if (led_init(&leds) || led_off(&leds)) return -1;
+    if (rgb_led_init(&rgb_leds) || rgb_led_off(&rgb_leds)) return -1;
     if (button_init(&button)) return -1;
     if (button_set_callback(&button, button_isr)) return -1;
 
     /* Button handling */
-    k_timer_init(&press_timer, button_timer_handler, NULL);
     k_work_init(&button_work, button_work_handler);
 
     /* Start measurement threads */
     start_sensors_thread(&ctx, &measure);
     start_gps_thread(&ctx, &measure);
 
-    printk("System ON (NORMAL MODE)\n");
+    printk("System ON (%s)\n", mode);
 
     while (1) {
         mode = atomic_get(&ctx.mode);
-        brightness = atomic_get(&measure.brightness);
 
         switch (mode) {
-            case OFF_MODE:
-                rgb_led_off(&rgb_led);
-                break;
-            case BLUE_MODE:
-                rgb_blue(&rgb_led);
-                break;
+            case TEST_MODE:
             case NORMAL_MODE:
-                if (brightness < 33) rgb_red(&rgb_led);
-                else if (brightness < 66) rgb_yellow(&rgb_led);
-                else rgb_green(&rgb_led);
+                if (mode == TEST_MODE)
+                    blue(&leds);
+                else
+                    green(&leds);
+                
+                printk("\n");
+                printk("Brightness: %d%%, Moisture: %d%%\n",
+                       atomic_get(&measure.brightness), atomic_get(&measure.moisture));
+
+                printk("Accelerometer: X=%.2f m/s^2, Y=%.2f m/s^2, Z=%.2f m/s^2\n",
+                       atomic_get(&measure.accel_x_g) / 100.0f,
+                       atomic_get(&measure.accel_y_g) / 100.0f,
+                       atomic_get(&measure.accel_z_g) / 100.0f);
+
+                printk("Temp: %.2fC | Humidity: %.2f %%\n",
+                       atomic_get(&measure.temp) / 100.0f,
+                       atomic_get(&measure.hum) / 100.0f);
+
+                printk("Color Sensor: R=%d G=%d B=%d C=%d\n",
+                       atomic_get(&measure.red),
+                       atomic_get(&measure.green),
+                       atomic_get(&measure.blue),
+                       atomic_get(&measure.clear));
+
+                printk("GPS: Lat=%.6f Lon=%.6f Alt=%.1f m Sats=%d HDOP=%.1f\n",
+                       atomic_get(&measure.gps_lat) / 1e6f,
+                       atomic_get(&measure.gps_lon) / 1e6f,
+                       atomic_get(&measure.gps_alt) / 100.0f,
+                       atomic_get(&measure.gps_sats),
+                       atomic_get(&measure.gps_hdop) / 100.0f);
+                break;
+            case ADVANCED_MODE:
+                red(&leds);
                 break;
         }
 
-        k_sleep(K_MSEC(100));
+        k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+        k_sem_take(ctx.main_gps_sem, K_FOREVER);
     }
 }

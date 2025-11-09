@@ -14,9 +14,15 @@
 #include "sensors/adc/adc.h"
 #include "sensors/i2c/i2c.h"
 #include "sensors/i2c/accel.h"
+#include "sensors/i2c/temp_hum.h"
+#include "sensors/i2c/color.h"
 #include "sensors/gps/gps.h"
-#include "sensors/rgb_led/rgb_led.h"
+#include "sensors/led/rgb_led.h"
+#include "sensors/led/board_led.h"
 #include "sensors/user_button/user_button.h"
+
+#define TEST_MODE_CADENCE 2000 /**< Measurement interval in TEST mode (ms). */
+#define NORMAL_MODE_CADENCE 30000 /**< Measurement interval in NORMAL mode (ms). */
 
 /**
  * @brief System operating modes.
@@ -27,9 +33,9 @@
  * - BLUE_MODE: Special mode where the blue LED is shown continuously.
  */
 typedef enum {
-    OFF_MODE = 0,
+    TEST_MODE = 0,
     NORMAL_MODE,
-    BLUE_MODE
+    ADVANCED_MODE
 } system_mode_t;
 
 /**
@@ -43,9 +49,14 @@ struct system_context {
     struct i2c_dt_spec *accelerometer;  /**< Accelerometer I2C device specification */
     uint8_t accel_range;                /**< Full-scale range (FS_2G, FS_4G, FS_8G) */
 
+    struct i2c_dt_spec *temp_hum;       /**< Temperature and Humidity I2C device specification */
+
+    struct i2c_dt_spec *color;         /**< Color sensor I2C device specification */
+
     struct gps_config *gps;             /**< GPS configuration */
 
-    struct k_sem *main_sem;             /**< Semaphore for main thread */
+    struct k_sem *main_sensors_sem;     /**< Semaphore for main thread */
+    struct k_sem *main_gps_sem;         /**< Semaphore for main thread */
     struct k_sem *sensors_sem;          /**< Semaphore for sensors measurement */
     struct k_sem *gps_sem;              /**< Semaphore for GPS measurement */
     
@@ -63,6 +74,14 @@ struct system_measurement {
     atomic_t accel_x_g;                 /**< Latest X-axis acceleration in g (atomic float) */
     atomic_t accel_y_g;                 /**< Latest Y-axis acceleration in g (atomic float) */
     atomic_t accel_z_g;                 /**< Latest Z-axis acceleration in g (atomic float) */
+
+    atomic_t temp;                      /**< Latest temperature in °C (atomic float) */
+    atomic_t hum;                       /**< Latest relative humidity in %RH (atomic float) */
+
+    atomic_t red;                       /**< Latest red color value (atomic int) */
+    atomic_t green;                     /**< Latest green color value (atomic int) */
+    atomic_t blue;                      /**< Latest blue color value (atomic int) */
+    atomic_t clear;                     /**< Latest clear color value (atomic int) */
     
     atomic_t gps_lat;                   /**< Latest GPS latitude (atomic float) */
     atomic_t gps_lon;                   /**< Latest GPS longitude (atomic float) */

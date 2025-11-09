@@ -1,10 +1,6 @@
 /**
  * @file gps_thread.c
- * @brief Implementation of the gps measurement thread.
- *
- * The gps thread runs continuously, checking the current
- * operating mode stored in the shared context. When the mode is NORMAL,
- * it periodically reads GPS data.
+ * @brief Implementation of the GPS measurement thread (with scaled values).
  */
 
 #include "gps_thread.h"
@@ -13,101 +9,155 @@
 #include <zephyr/sys/printk.h>
 
 #define GPS_THREAD_STACK_SIZE 1024
-#define GPS_THREAD_PRIORITY 5
-#define GPS_MEASURE_INTERVAL_MS 2000 /**< Measurement interval in NORMAL mode. */
+#define GPS_THREAD_PRIORITY   5
 
-/** Stack allocation for the gps thread. */
 K_THREAD_STACK_DEFINE(gps_stack, GPS_THREAD_STACK_SIZE);
-
-/** Thread control block. */
 static struct k_thread gps_thread_data;
 
-/* Timer to trigger periodic gps measurements */
+/* Timer and semaphore for periodic GPS measurements */
 static struct k_timer gps_timer;
-
-/* Semaphore to wake up the thread when the timer expires */
 static struct k_sem gps_timer_sem;
 
+/* Poll events for timer and manual trigger */
+static struct k_poll_event gps_poll_events[2];
+
+/* --------------------------------------------------------
+ * Helper functions
+ * --------------------------------------------------------*/
+
 /**
- * @brief Timer handler: Gives the semaphore when the timer expires.
+ * @brief Timer handler: wakes up the thread when it expires.
  */
 static void gps_timer_handler(struct k_timer *timer_id) {
     k_sem_give(&gps_timer_sem);
 }
 
 /**
- * @brief GPS measurement thread function.
- *
- * Periodically checks the current operating mode. When the system is
- * in NORMAL mode, this thread measures sensor values, converts them
- * to percentages, and updates context variables atomically.
- *
- * @param arg1 Pointer to a @ref system_context structure.
- * @param arg2 Pointer to a @ref system_measurement structure.
- * @param arg3 Unused.
+ * @brief Initialize the poll events for the GPS thread.
  */
-static void gps_thread_fn(void *arg1, void *arg2, void *arg3) {
-    struct system_context *ctx = (struct system_context *)arg1;
-    struct system_measurement *measure = (struct system_measurement *)arg2;
-    system_mode_t previous_mode = atomic_get(&ctx->mode);
-    system_mode_t actual_mode = previous_mode;
+static void init_gps_poll_events(struct system_context *ctx) {
+    gps_poll_events[0].type  = K_POLL_TYPE_SEM_AVAILABLE;
+    gps_poll_events[0].mode  = K_POLL_MODE_NOTIFY_ONLY;
+    gps_poll_events[0].sem   = &gps_timer_sem;
+    gps_poll_events[0].state = K_POLL_STATE_NOT_READY;
 
-    gps_data_t data;
+    gps_poll_events[1].type  = K_POLL_TYPE_SEM_AVAILABLE;
+    gps_poll_events[1].mode  = K_POLL_MODE_NOTIFY_ONLY;
+    gps_poll_events[1].sem   = ctx->gps_sem;
+    gps_poll_events[1].state = K_POLL_STATE_NOT_READY;
+}
 
-    if (actual_mode == NORMAL_MODE) {
-        k_timer_start(&gps_timer, K_NO_WAIT, K_MSEC(GPS_MEASURE_INTERVAL_MS));
+/**
+ * @brief Waits for whichever occurs first: gps_timer_sem or ctx->gps_sem.
+ */
+static void wait_for_gps_event(void) {
+    k_poll(gps_poll_events, 2, K_FOREVER);
+
+    if (gps_poll_events[0].state == K_POLL_STATE_SEM_AVAILABLE) {
+        k_sem_take(&gps_timer_sem, K_NO_WAIT);
+    }
+    if (gps_poll_events[1].state == K_POLL_STATE_SEM_AVAILABLE) {
+        k_sem_take(gps_poll_events[1].sem, K_NO_WAIT);
     }
 
-    while (1) {
-        actual_mode = atomic_get(&ctx->mode);
+    gps_poll_events[0].state = K_POLL_STATE_NOT_READY;
+    gps_poll_events[1].state = K_POLL_STATE_NOT_READY;
+}
 
-        if (actual_mode == NORMAL_MODE) {
-            if (previous_mode != NORMAL_MODE) {
-                k_timer_start(&gps_timer, K_NO_WAIT, K_MSEC(GPS_MEASURE_INTERVAL_MS));
-            }
+/**
+ * @brief Configure GPS timer based on current mode.
+ */
+static void update_gps_timer(system_mode_t mode) {
+    k_timer_stop(&gps_timer);
 
-            previous_mode = NORMAL_MODE;
-
-            /* Read GPS */
-            if (gps_get_data(&data)) {
-                printk("GPS: %.6f° %.6f° Alt: %.1f m Sats: %d HDOP: %.1f\n",
-                       data.latitude, data.longitude, data.altitude,
-                       data.satellites, data.hdop);
-                atomic_set(measure->gps_lat, *(atomic_t *)&data.latitude);
-                atomic_set(measure->gps_lon, *(atomic_t *)&data.longitude);
-                atomic_set(measure->gps_alt, *(atomic_t *)&data.altitude);
-                atomic_set(measure->gps_sats, *(atomic_t *)&data.satellites);
-                atomic_set(measure->gps_hdop, *(atomic_t *)&data.hdop);
-            }
-
-            /* Wait for next measurement */
-            k_sem_take(&gps_timer_sem, K_FOREVER);
-        } else {
-            if (previous_mode == NORMAL_MODE) {
-                k_timer_stop(&gps_timer);
-            }
-
-            previous_mode = actual_mode;
-            k_sem_take(ctx->gps_sem, K_FOREVER);
-        }
+    switch (mode) {
+        case TEST_MODE:
+            k_timer_start(&gps_timer, K_NO_WAIT, K_MSEC(TEST_MODE_CADENCE));
+            break;
+        case NORMAL_MODE:
+            k_timer_start(&gps_timer, K_NO_WAIT, K_MSEC(NORMAL_MODE_CADENCE));
+            break;
+        default:
+            /* ADVANCED or other modes: timer stays stopped */
+            break;
     }
 }
 
 /**
- * @brief Starts the gps measurement thread.
- *
- * This function initializes core components and starts the thread
- * which will run the gps polling loop.
- *
- * @param ctx Pointer to a valid @ref system_context structure.
- * @param measure Pointer to a valid @ref system_measurement structure.
+ * @brief Reads GPS data and updates the measurement structure.
+ * @param data Pointer to a persistent gps_data_t buffer.
+ */
+static void read_gps_data(gps_data_t *data,
+                          struct system_measurement *measure,
+                          struct system_context *ctx) {
+
+    if (gps_wait_for_gga(data, K_MSEC(2000)) == 0) {
+        atomic_set(&measure->gps_lat,  (int32_t)(data->lat  * 1e6f));
+        atomic_set(&measure->gps_lon,  (int32_t)(data->lon  * 1e6f));
+        atomic_set(&measure->gps_alt,  (int32_t)(data->alt  * 100.0f));
+        atomic_set(&measure->gps_sats, (int32_t)data->sats);
+        atomic_set(&measure->gps_hdop, (int32_t)(data->hdop * 100.0f));
+    } else {
+        printk("[GPS] - Timeout or invalid data\n");
+    }
+}
+
+/* --------------------------------------------------------
+ * Thread main function
+ * --------------------------------------------------------*/
+
+/**
+ * @brief GPS measurement thread function.
+ */
+static void gps_thread_fn(void *arg1, void *arg2, void *arg3) {
+    struct system_context *ctx     = (struct system_context *)arg1;
+    struct system_measurement *measure = (struct system_measurement *)arg2;
+
+    system_mode_t previous_mode = atomic_get(&ctx->mode);
+    system_mode_t current_mode  = previous_mode;
+
+    gps_data_t gps_data = {0};
+
+    init_gps_poll_events(ctx);
+    update_gps_timer(current_mode);
+
+    while (1) {
+        current_mode = atomic_get(&ctx->mode);
+
+        /* Handle mode transitions */
+        if (current_mode != previous_mode) {
+            update_gps_timer(current_mode);
+            previous_mode = current_mode;
+        }
+
+        switch (current_mode) {
+            case TEST_MODE:
+            case NORMAL_MODE:
+                read_gps_data(&gps_data, measure, ctx);
+                k_sem_give(ctx->main_gps_sem);
+                wait_for_gps_event();
+                break;
+
+            default:  /* ADVANCED_MODE or others */
+                k_timer_stop(&gps_timer);
+                k_sem_give(ctx->main_gps_sem);
+                k_sem_take(ctx->gps_sem, K_FOREVER);
+                break;
+        }
+    }
+}
+
+/* --------------------------------------------------------
+ * Thread startup
+ * --------------------------------------------------------*/
+
+/**
+ * @brief Starts the GPS measurement thread.
  */
 void start_gps_thread(struct system_context *ctx, struct system_measurement *measure) {
-    /* Init timer and measurement semaphore */
     k_sem_init(&gps_timer_sem, 0, 1);
     k_timer_init(&gps_timer, gps_timer_handler, NULL);
 
-    /* Start thread */
     k_thread_create(&gps_thread_data,
                     gps_stack,
                     K_THREAD_STACK_SIZEOF(gps_stack),

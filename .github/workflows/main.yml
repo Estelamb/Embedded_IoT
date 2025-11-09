@@ -1,4 +1,4 @@
-name: CI - Cppcheck, Valgrind y Doxygen
+name: Cppcheck, Valgrind y Doxygen
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
 
       - name: Ejecutar cppcheck
         run: |
-          cppcheck --enable=all --inconclusive --std=c++17 -I brightness_control/include brightness_control/src
+          cppcheck --enable=all --inconclusive --std=c++17 -I plant_monitoring_system/include plant_monitoring_system/src
 
   build:
     runs-on: ubuntu-latest
@@ -33,7 +33,7 @@ jobs:
 
       - name: Compilar proyecto Zephyr nativo
         run: |
-          cd brightness_control
+          cd plant_monitoring_system
           west build -b native
           cd ..
 
@@ -49,7 +49,7 @@ jobs:
 
       - name: Ejecutar Valgrind
         run: |
-          cd brightness_control/build
+          cd plant_monitoring_system/build
           valgrind --leak-check=full ./zephyr/zephyr.elf || true
           cd ../..
 
@@ -63,18 +63,18 @@ jobs:
       - name: Instalar Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
-      - name: Generar documentación de brightness_control
+      - name: Generar documentación de plant_monitoring_system
         run: |
-          cd brightness_control
+          cd plant_monitoring_system
           doxygen Doxyfile
 
       - name: Verificar si se generaron archivos HTML
         run: |
-          ls -la ./brightness_control/docs/
-          ls -la ./brightness_control/docs/html
+          ls -la ./plant_monitoring_system/docs/
+          ls -la ./plant_monitoring_system/docs/html
 
       - name: Deploy a GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./brightness_control/docs/html
+          publish_dir: ./plant_monitoring_system/docs/html

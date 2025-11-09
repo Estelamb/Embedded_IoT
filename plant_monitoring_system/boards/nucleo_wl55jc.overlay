@@ -22,6 +22,9 @@
         red = &rgb_red;
         green = &rgb_green;
         blue = &rgb_blue;
+        led0 = &blue_led_1; 	// This is LED1 as labeled STM32WL55JC board's 
+		led1 = &green_led_2; 	// This is LED2 as labeled STM32WL55JC board's 
+		led2 = &red_led_3; 	    // This is LED3 as labeled STM32WL55JC board's 
     };
 
 

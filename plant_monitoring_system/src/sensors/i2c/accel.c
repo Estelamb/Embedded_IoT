@@ -65,7 +65,6 @@ int accel_read_xyz(const struct i2c_dt_spec *dev, int16_t *x, int16_t *y, int16_
     *y = (int16_t)(((int16_t)((buf[2] << 8) | buf[3])) >> 2);
     *z = (int16_t)(((int16_t)((buf[4] << 8) | buf[5])) >> 2);
 
-    printk("Read ACCEL XYZ raw: X=%d, Y=%d, Z=%d\n", *x, *y, *z);
     return 0;
 }
 
