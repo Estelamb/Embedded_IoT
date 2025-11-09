@@ -1,4 +1,4 @@
-name: Doxygen Documentation
+name: CI - Cppcheck, Valgrind y Doxygen
 
 on:
   push:
@@ -6,28 +6,75 @@ on:
   workflow_dispatch:
 
 jobs:
+  cppcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Instalar cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+
+      - name: Ejecutar cppcheck
+        run: |
+          cppcheck --enable=all --inconclusive --std=c++17 -I brightness_control/include brightness_control/src
+
   build:
     runs-on: ubuntu-latest
-
+    needs: cppcheck
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Instalar Doxygen
-      run: sudo apt-get update && sudo apt-get install -y doxygen
+      - name: Instalar dependencias Zephyr
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build python3-pip
 
-    - name: Generar documentación de brightness_control
-      run: |
-        cd brightness_control
-        doxygen Doxyfile
+      - name: Compilar proyecto Zephyr nativo
+        run: |
+          cd brightness_control
+          west build -b native
+          cd ..
 
-    - name: Verificar si se generaron archivos HTML
-      run: |
-        ls -la ./brightness_control/docs/
-        ls -la ./brightness_control/docs/html
+  valgrind:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy a GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./brightness_control/docs/html
+      - name: Instalar valgrind
+        run: sudo apt-get update && sudo apt-get install -y valgrind
+
+      - name: Ejecutar Valgrind
+        run: |
+          cd brightness_control/build
+          valgrind --leak-check=full ./zephyr/zephyr.elf || true
+          cd ../..
+
+  doxygen:
+    runs-on: ubuntu-latest
+    needs: [cppcheck, build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Instalar Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen
+
+      - name: Generar documentación de brightness_control
+        run: |
+          cd brightness_control
+          doxygen Doxyfile
+
+      - name: Verificar si se generaron archivos HTML
+        run: |
+          ls -la ./brightness_control/docs/
+          ls -la ./brightness_control/docs/html
+
+      - name: Deploy a GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./brightness_control/docs/html

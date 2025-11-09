@@ -20,10 +20,11 @@
 
 #include "main.h"
 #include "sensors_thread.h"
+#include "gps_thread.h"
 
 #define LONG_PRESS_MS 1000       /**< Long press duration threshold (in milliseconds). */
 #define INITIAL_MODE NORMAL_MODE /**< Initial operating mode at startup. */
-#define ACCEL_RANGE ACCEL_FS_2G  /**< Accelerometer measurement range. */
+#define ACCEL_RANGE ACCEL_2G    /**< Accelerometer full-scale range setting. */
 
 /* --- Peripheral configuration ------------------------------------------------ */
 
@@ -56,9 +57,13 @@ static struct adc_config sm = {
 /**
  * @brief Accelerometer I2C device specification.
  */
-static const struct i2c_dt_spec accel = {
-    .bus = DEVICE_DT_GET(DT_NODELABEL(i2c1)),
+static struct i2c_dt_spec accel = {
+    .bus = DEVICE_DT_GET(DT_NODELABEL(i2c2)),
     .addr = ACCEL_I2C_ADDR,
+};
+
+static struct gps_config gps = {
+    .dev = DEVICE_DT_GET(DT_NODELABEL(usart1)),
 };
 
 /**
@@ -80,8 +85,10 @@ static struct user_button button = {
     .spec = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios),
 };
 
-/* Semaphore to trigger brightness measurement in NORMAL mode */
+/* Semaphore to trigger and read measurements in NORMAL mode */
+static K_SEM_DEFINE(main_sem, 0, 1);
 static K_SEM_DEFINE(sensors_sem, 0, 1);
+static K_SEM_DEFINE(gps_sem, 0, 1);
 
 /**
  * @brief Shared context with the brightness thread.
@@ -92,19 +99,42 @@ static K_SEM_DEFINE(sensors_sem, 0, 1);
  */
 static struct system_context ctx = {
     .phototransistor = &pt,
-    .brightness = ATOMIC_INIT(0),
 
     .soil_moisture = &sm,
-    .moisture = ATOMIC_INIT(0),
 
     .accelerometer = &accel,
     .accel_range = ACCEL_RANGE,
+
+    .gps = &gps,
+
+    .main_sem = &main_sem,
+    .sensors_sem = &sensors_sem,
+    .gps_sem = &gps_sem,
+
+    .mode = ATOMIC_INIT(INITIAL_MODE),
+};
+
+/**
+ * @brief Shared measurements with the brightness thread.
+ *
+ * The @ref system_measurement structure holds references to the peripheral configuration.
+ * Both the main thread and the brightness thread use this structure to
+ * coordinate mode and brightness updates.
+ */
+static struct system_measurement measure = {
+    .brightness = ATOMIC_INIT(0),
+
+    .moisture = ATOMIC_INIT(0),
+
     .accel_x_g = ATOMIC_INIT(0),
     .accel_y_g = ATOMIC_INIT(0),
     .accel_z_g = ATOMIC_INIT(0),
 
-    .sensors_sem = &sensors_sem,
-    .mode = ATOMIC_INIT(INITIAL_MODE),
+    .gps_lat = ATOMIC_INIT(0),
+    .gps_lon = ATOMIC_INIT(0),
+    .gps_alt = ATOMIC_INIT(0),
+    .gps_sats = ATOMIC_INIT(0),
+    .gps_hdop = ATOMIC_INIT(0),
 };
 
 
@@ -131,6 +161,7 @@ static void button_work_handler(struct k_work *work)
         } else {
             atomic_set(&ctx.mode, NORMAL_MODE);
             k_sem_give(ctx.sensors_sem);
+            k_sem_give(ctx.gps_sem);
             printk("NORMAL MODE\n");
         }
     } else {
@@ -140,6 +171,7 @@ static void button_work_handler(struct k_work *work)
         } else if (atomic_get(&ctx.mode) == BLUE_MODE) {
             atomic_set(&ctx.mode, NORMAL_MODE);
             k_sem_give(ctx.sensors_sem);
+            k_sem_give(ctx.gps_sem);
             printk("NORMAL MODE\n");
         }
     }
@@ -212,7 +244,8 @@ int main(void)
     if (rgb_led_init(&rgb_led) || rgb_led_off(&rgb_led)) return -1;
     if (adc_init(&pt)) return -1;
     if (adc_init(&sm)) return -1;
-    if (accel_init(&accel)) return -1;
+    if (accel_init(&accel, ACCEL_RANGE)) return -1;
+    if (gps_init(&gps) != 0) return -1;
     if (button_init(&button)) return -1;
     if (button_set_callback(&button, button_isr)) return -1;
 
@@ -220,14 +253,15 @@ int main(void)
     k_timer_init(&press_timer, button_timer_handler, NULL);
     k_work_init(&button_work, button_work_handler);
 
-    /* Start sensors measurement thread */
-    start_sensors_thread(&ctx);
+    /* Start measurement threads */
+    start_sensors_thread(&ctx, &measure);
+    start_gps_thread(&ctx, &measure);
 
     printk("System ON (NORMAL MODE)\n");
 
     while (1) {
         mode = atomic_get(&ctx.mode);
-        brightness = atomic_get(&ctx.brightness);
+        brightness = atomic_get(&measure.brightness);
 
         switch (mode) {
             case OFF_MODE:

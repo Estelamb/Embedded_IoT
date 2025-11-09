@@ -22,7 +22,8 @@
  * system mode is NORMAL.
  *
  * @param ctx Pointer to a valid @ref system_context structure.
+ * @param measure Pointer to a valid @ref system_measurement structure.
  */
-void start_sensors_thread(struct system_context *ctx);
+void start_sensors_thread(struct system_context *ctx, struct system_measurement *measure);
 
 #endif /* SENSORS_THREAD_H */
