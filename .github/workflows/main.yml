@@ -1,4 +1,4 @@
-name: Cppcheck, Valgrind y Doxygen
+name: Cppcheck, Valgrind and Doxygen
 
 on:
   push:
@@ -12,10 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Instalar cppcheck
+      - name: Install cppcheck
         run: sudo apt-get update && sudo apt-get install -y cppcheck
 
-      - name: Ejecutar cppcheck
+      - name: Run cppcheck
         run: |
           cppcheck --enable=all --inconclusive --std=c++17 -I plant_monitoring_system/include plant_monitoring_system/src
 
@@ -26,12 +26,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Instalar dependencias Zephyr
+      - name: Install Zephyr dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential cmake ninja-build python3-pip
 
-      - name: Compilar proyecto Zephyr nativo
+      - name: Build Zephyr project (native)
         run: |
           cd plant_monitoring_system
           west build -b native
@@ -44,10 +44,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Instalar valgrind
+      - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
 
-      - name: Ejecutar Valgrind
+      - name: Run Valgrind
         run: |
           cd plant_monitoring_system/build
           valgrind --leak-check=full ./zephyr/zephyr.elf || true
@@ -55,25 +55,24 @@ jobs:
 
   doxygen:
     runs-on: ubuntu-latest
-    needs: [cppcheck, build]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Instalar Doxygen
+      - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
-      - name: Generar documentación de plant_monitoring_system
+      - name: Generate documentation for plant_monitoring_system
         run: |
           cd plant_monitoring_system
           doxygen Doxyfile
 
-      - name: Verificar si se generaron archivos HTML
+      - name: Verify HTML documentation output
         run: |
           ls -la ./plant_monitoring_system/docs/
           ls -la ./plant_monitoring_system/docs/html
 
-      - name: Deploy a GitHub Pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
