@@ -133,10 +133,10 @@ $(document).ready(function(){initNavTree('sensors__thread_8c.html',''); initResi
 <p>Implementation of the sensors measurement thread.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="sensors__thread_8h_source.html">sensors_thread.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="adc_8h_source.html">adc.h</a>&quot;</code><br />
-<code>#include &quot;accel.h&quot;</code><br />
-<code>#include &quot;temp_hum.h&quot;</code><br />
-<code>#include &quot;<a class="el" href="color_8h_source.html">color.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="adc_8h_source.html">sensors/adc/adc.h</a>&quot;</code><br />
+<code>#include &quot;sensors/i2c/accel.h&quot;</code><br />
+<code>#include &quot;sensors/i2c/temp_hum.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="color_8h_source.html">sensors/i2c/color.h</a>&quot;</code><br />
 <code>#include &lt;zephyr/kernel.h&gt;</code><br />
 <code>#include &lt;zephyr/sys/printk.h&gt;</code><br />
 </div><table class="memberdecls">
