@@ -60,7 +60,7 @@ jobs:
           cd app
           export ZEPHYR_TOOLCHAIN_VARIANT=host
           cp confs/prj_nucleo_wl55jc.conf prj.conf || echo "Using default config"
-          west build -b native_sim .
+          west build -b nucleo_wl55jc .
 
   valgrind:
     runs-on: ubuntu-latest
