@@ -58,7 +58,8 @@ jobs:
           cp -r ../plant_monitoring_system/* app/
 
           cd app
-          west build -b native_posix .
+          west build -b native_sim .
+
 
 
   valgrind:
