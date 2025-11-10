@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install cppcheck
         run: sudo apt-get update && sudo apt-get install -y cppcheck
@@ -20,95 +20,70 @@ jobs:
           if [ -d "plant_monitoring_system" ]; then
             cd plant_monitoring_system
           fi
-          echo "Running cppcheck in $(pwd)"
           cppcheck --enable=all --inconclusive --std=c++17 -I include src
+
+---
 
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Install build essentials and Linux headers
+      - name: Setup Zephyr environment
+        uses: zephyrproject-rtos/action-zephyr-setup@v1
+        with:
+          sdk-version: 0.17.4
+          app-path: plant_monitoring_system
+          toolchains: arm-zephyr-eabi
+
+      - name: Build application (nucleo_wl55jc)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libc6-dev linux-libc-dev gcc-multilib g++-multilib
+          cp plant_monitoring_system/confs/prj_nucleo_wl55jc.conf plant_monitoring_system/prj.conf || true
+          west build -b nucleo_wl55jc plant_monitoring_system
 
-      - name: Install Zephyr dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            git cmake ninja-build gperf ccache dfu-util device-tree-compiler wget \
-            python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file make gcc g++ \
-            gcc-arm-none-eabi
-      
-      - name: Install Zephyr SDK
-        run: |
-          wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.16.3/zephyr-sdk-0.16.3-linux-x86_64-setup.run
-          chmod +x zephyr-sdk-0.16.3-linux-x86_64-setup.run
-          sudo ./zephyr-sdk-0.16.3-linux-x86_64-setup.run -- -d /opt/zephyr-sdk
+      - name: Upload Zephyr ELF artifact for Valgrind
+        uses: actions/upload-artifact@v4
+        with:
+          name: zephyr-elf-artifact
+          path: build/zephyr/zephyr.elf
+          retention-days: 1
 
-
-      - name: Install west (Zephyr tool)
-        run: |
-          pip3 install --upgrade pip
-          pip3 install west
-
-      - name: Setup Zephyr workspace
-        run: |
-          mkdir zephyrproject
-          cd zephyrproject
-          west init -m https://github.com/zephyrproject-rtos/zephyr.git
-          west update
-          west zephyr-export
-          pip3 install -r zephyr/scripts/requirements.txt
-
-          # Copy application
-          mkdir app
-          cp -r ../plant_monitoring_system/* app/
-          cd app
-
-          # Copy config if exists
-          cp confs/prj_nucleo_wl55jc.conf prj.conf || echo "Using default config"
-
-          # Build application
-          west build -b nucleo_wl55jc .
+---
 
   valgrind:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
 
+      - name: Download Zephyr ELF artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: zephyr-elf-artifact
+          path: valgrind_test/
+
       - name: Run Valgrind
         run: |
-          cd plant_monitoring_system/build
-          valgrind --leak-check=full ./zephyr/zephyr.elf || true
-          cd ../..
+          valgrind --leak-check=full valgrind_test/zephyr.elf || true 
+
+---
 
   doxygen:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
-      - name: Generate documentation for plant_monitoring_system
+      - name: Generate documentation
         run: |
           cd plant_monitoring_system
           doxygen Doxyfile
-
-      - name: Verify HTML documentation output
-        run: |
-          ls -la ./plant_monitoring_system/docs/
-          ls -la ./plant_monitoring_system/docs/html
-
+          
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
