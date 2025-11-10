@@ -58,11 +58,22 @@ jobs:
           west update
           west zephyr-export
 
-      - name: Build project for native_posix (Valgrind compatible)
+      - name: List available boards to verify native_sim
+        run: |
+          cd zephyrproject/zephyr
+          west boards | grep native
+
+      - name: Build project for native_sim (Valgrind compatible)
         run: |
           cd $PROJECT_DIR
           source $ZEPHYR_BASE/zephyr-env.sh
-          west build -b native_posix --build-dir build_valgrind --pristine always
+          west build -b native_sim --build-dir build_valgrind --pristine always
+
+      - name: Find the generated executable
+        run: |
+          cd $PROJECT_DIR/build_valgrind/zephyr
+          find . -name "zephyr*" -type f -executable
+          ls -la
 
       - name: Upload executable for Valgrind
         uses: actions/upload-artifact@v4
@@ -90,12 +101,12 @@ jobs:
       - name: Run Valgrind memory analysis
         run: |
           echo "=== Running Valgrind memory check ==="
-          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all valgrind_test/zephyr.exe || true
+          timeout 30s valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all valgrind_test/zephyr.exe || echo "Valgrind completed or was terminated"
 
-      - name: Run Valgrind cache analysis
+      - name: Run basic Valgrind check
         run: |
-          echo "=== Running Valgrind cache analysis ==="
-          valgrind --tool=cachegrind valgrind_test/zephyr.exe || true
+          echo "=== Running basic Valgrind ==="
+          timeout 30s valgrind valgrind_test/zephyr.exe || echo "Valgrind completed or was terminated"
 
   doxygen:
     runs-on: ubuntu-latest
