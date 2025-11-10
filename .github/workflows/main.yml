@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: cppcheck
     steps:
-      - name: Checkout code
+      - name: Checkout your project
         uses: actions/checkout@v2
 
       - name: Install Zephyr dependencies
@@ -43,19 +43,26 @@ jobs:
           pip3 install --upgrade pip
           pip3 install west
 
-      - name: Initialize Zephyr workspace
+      - name: Setup Zephyr workspace
         run: |
-          # If your project already includes the Zephyr manifest (west.yml)
-          west init -l plant_monitoring_system || true
+          # Create a Zephyr workspace and fetch Zephyr source code
+          mkdir zephyrproject
+          cd zephyrproject
+          west init
           west update
           west zephyr-export
           pip3 install -r zephyr/scripts/requirements.txt
 
-      - name: Build Zephyr project (native)
-        run: |
-          cd plant_monitoring_system
-          west build -b native_posix
-          cd ..
+          # Bring your app into the workspace
+          mkdir app
+          cp -r ../plant_monitoring_system/* app/
+
+          # Verify structure
+          ls -R app
+
+          # Build your project (adjust board if needed)
+          cd app
+          west build -b native_posix .
 
   valgrind:
     runs-on: ubuntu-latest
