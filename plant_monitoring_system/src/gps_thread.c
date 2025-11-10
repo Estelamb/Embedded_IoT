@@ -4,7 +4,7 @@
  */
 
 #include "gps_thread.h"
-#include "gps.h"
+#include "sensors/gps/gps.h"
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 

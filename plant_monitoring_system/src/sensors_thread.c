@@ -4,10 +4,10 @@
  */
 
 #include "sensors_thread.h"
-#include "adc.h"
-#include "accel.h"
-#include "temp_hum.h"
-#include "color.h"
+#include "sensors/adc/adc.h"
+#include "sensors/i2c/accel.h"
+#include "sensors/i2c/temp_hum.h"
+#include "sensors/i2c/color.h"
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
