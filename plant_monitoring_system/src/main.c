@@ -25,6 +25,40 @@
 #define INITIAL_MODE TEST_MODE /**< Initial operating mode at startup. */
 #define ACCEL_RANGE ACCEL_2G    /**< Accelerometer full-scale range setting. */
 
+/* --- Limits (raw units matching your atomic storage) ----------------------- */
+
+#define TEMP_MIN   (-10)   /**< Min temp. -10.0 C */
+#define TEMP_MAX   (50)    /**< Max temp.  50.0 C */
+
+#define HUM_MIN    (25)    /**< Min humidity 25.0 % */
+#define HUM_MAX    (75)    /**< Max humidity 75.0 % */
+
+#define LIGHT_MIN  (0)     /**< Min brightness 0.0 %  */
+#define LIGHT_MAX  (100)   /**< Max brightness 100.0 % */
+
+#define MOISTURE_MIN   (0)    /**< Min moisture 0.0 % */
+#define MOISTURE_MAX   (100)  /**< Max moisture 100.0 % */
+
+#define COLOR_CLEAR_MIN   (1)    /**< Min color clear channel raw value (dark threshold) */
+#define COLOR_CLEAR_MAX   (5000)  /**< Max color clear channel raw value (saturation threshold) */
+#define RED_MIN     (0)    /**< Min red channel raw value */
+#define RED_MAX     (5000)  /**< Max red channel raw value */
+#define GREEN_MIN   (0)    /**< Min green channel raw value */
+#define GREEN_MAX   (5000)  /**< Max green channel raw value */
+#define BLUE_MIN    (0)    /**< Min blue channel raw value */
+#define BLUE_MAX    (5000)  /**< Max blue channel raw value */
+
+#define ACCEL_MIN  (-2)    /**< Min accel. -2.00 g */
+#define ACCEL_MAX  (2)     /**< Max accel.  2.00 g */
+
+/* Flags for out-of-range conditions */
+#define FLAG_TEMP     (1U << 0)
+#define FLAG_HUM      (1U << 1)
+#define FLAG_LIGHT    (1U << 2)
+#define FLAG_MOISTURE (1U << 3)
+#define FLAG_COLOR    (1U << 4)
+#define FLAG_ACCEL    (1U << 5)
+
 /* --- Peripheral configuration ------------------------------------------------ */
 
 /**
@@ -231,6 +265,65 @@ static void button_isr(const struct device *dev, struct gpio_callback *cb, uint3
     }
 }
 
+/** Timer for RGB NORMAL MODE */
+static struct k_timer rgb_timer;
+static atomic_t rgb_flags = ATOMIC_INIT(0);
+
+/**
+ * @brief Callback timer RGB every 0.5s.
+ */
+static void rgb_timer_handler(struct k_timer *timer)
+{
+    static uint8_t color_index = 0;
+    system_mode_t mode = atomic_get(&ctx.mode);
+    uint32_t flags = atomic_get(&rgb_flags);
+
+    if (mode != NORMAL_MODE) {
+        rgb_led_off(&rgb_leds);
+        color_index = 0;
+        return;
+    }
+
+    if (flags == 0) {
+        rgb_led_off(&rgb_leds);
+        color_index = 0;
+        return;
+    }
+
+    /* Construimos una lista de colores activos según flags */
+    uint8_t colors[8];
+    uint8_t count = 0;
+
+    if (flags & FLAG_TEMP)      colors[count++] = 0; // rojo
+    if (flags & FLAG_HUM)       colors[count++] = 1; // azul
+    if (flags & FLAG_LIGHT)     colors[count++] = 2; // verde
+    if (flags & FLAG_MOISTURE)  colors[count++] = 3; // cian
+    if (flags & FLAG_COLOR)     colors[count++] = 4; // blanco
+    if (flags & FLAG_ACCEL)     colors[count++] = 5; // amarillo
+
+    if (count == 0) {
+        rgb_led_off(&rgb_leds);
+        color_index = 0;
+        return;
+    }
+
+    /* Selecciona el color actual */
+    uint8_t color = colors[color_index % count];
+    color_index++;
+
+    rgb_led_off(&rgb_leds); // limpiar estado previo
+
+    switch (color) {
+        case 0: rgb_red(&rgb_leds); break;
+        case 1: rgb_blue(&rgb_leds); break;
+        case 2: rgb_green(&rgb_leds); break;
+        case 3: rgb_cyan(&rgb_leds); break;
+        case 4: rgb_white(&rgb_leds); break;
+        case 5: rgb_yellow(&rgb_leds); break;
+        default: rgb_led_off(&rgb_leds); break;
+    }
+}
+
 
 /* --- Main Application -------------------------------------------------------- */
 
@@ -251,6 +344,7 @@ int main(void)
     float light, moisture, lat, lon, alt, x_axis, y_axis, z_axis, hum, temp = 0;
     int sats, time_int, hh, mm, ss, c, r, b, g = 0;
     char dom_color[6], ns, ew;
+    uint32_t flags = 0;
 
     /* Initialize peripherals */
     if (gps_init(&gps)) return -1;
@@ -263,6 +357,10 @@ int main(void)
     if (rgb_led_init(&rgb_leds) || rgb_led_off(&rgb_leds)) return -1;
     if (button_init(&button)) return -1;
     if (button_set_callback(&button, button_isr)) return -1;
+
+    /* Inicializar timer RGB */
+    k_timer_init(&rgb_timer, rgb_timer_handler, NULL);
+    k_timer_start(&rgb_timer, K_MSEC(500), K_MSEC(500)); // Callback cada 0.5s
 
     /* Button handling */
     k_work_init(&button_work, button_work_handler);
@@ -320,6 +418,8 @@ int main(void)
                 hum = atomic_get(&measure.hum) / 100.0f;
 
                 if (mode == TEST_MODE) {
+                    blue(&leds);
+
                     if (r > g && r > b) {
                         rgb_red(&rgb_leds);
                         strcpy(dom_color, "RED");
@@ -333,6 +433,105 @@ int main(void)
 
                 } else {
                     green(&leds);
+
+                    flags = 0;
+
+                    /* Temperature */
+                    if (temp < TEMP_MIN) {
+                        temp = TEMP_MIN;
+                        flags |= FLAG_TEMP;                    
+                    } else if (temp > TEMP_MAX) {
+                        temp = TEMP_MAX;
+                        flags |= FLAG_TEMP;
+                    }
+                
+                    /* Humidity */
+                    if (hum < HUM_MIN) {
+                        hum = HUM_MIN;
+                        flags |= FLAG_HUM;
+                    } else if (hum > HUM_MAX) {
+                        hum = HUM_MAX;
+                        flags |= FLAG_HUM;
+                    }
+                
+                    /* Ambient light (0..100) */
+                    if (light < LIGHT_MIN) {
+                        light = LIGHT_MIN;
+                        flags |= FLAG_LIGHT;
+                    } else if (light > LIGHT_MAX) {
+                        light = LIGHT_MAX;
+                        flags |= FLAG_LIGHT;
+                    }
+                
+                    /* Soil moisture (0..100) */
+                    if (moisture < MOISTURE_MIN) {
+                        moisture = MOISTURE_MIN;
+                        flags |= FLAG_MOISTURE;
+                    } else if (moisture > MOISTURE_MAX) {
+                        moisture = MOISTURE_MAX;
+                        flags |= FLAG_MOISTURE;
+                    }
+                
+                    /* Color sensor (clear channel out of expected range) */
+                    if (c < COLOR_CLEAR_MIN) {
+                        c = COLOR_CLEAR_MIN;
+                        flags |= FLAG_COLOR;
+                    } else if (c > COLOR_CLEAR_MAX) {
+                        c = COLOR_CLEAR_MAX;
+                        flags |= FLAG_COLOR;
+                    }
+
+                    /* Color sensor (R, G, B channels out of expected range) */
+                    if (r < RED_MIN) {
+                        r = RED_MIN;
+                        flags |= FLAG_COLOR;
+                    } else if (r > RED_MAX) {
+                        r = RED_MAX;
+                        flags |= FLAG_COLOR;
+                    }
+
+                    if (g < GREEN_MIN) {
+                        g = GREEN_MIN;
+                        flags |= FLAG_COLOR;
+                    } else if (g > GREEN_MAX) {
+                        g = GREEN_MAX;
+                        flags |= FLAG_COLOR;
+                    }
+
+                    if (b < BLUE_MIN) {
+                        b = BLUE_MIN;
+                        flags |= FLAG_COLOR;
+                    } else if (b > BLUE_MAX) {
+                        b = BLUE_MAX;
+                        flags |= FLAG_COLOR;
+                    }
+                
+                    /* Acceleration: check magnitude on any axis */
+                    if (x_axis < (ACCEL_MIN*9.8f)) {
+                        x_axis = (ACCEL_MIN*9.8f);
+                        flags |= FLAG_ACCEL;
+                    } else if (x_axis > (ACCEL_MAX*9.8f)) {
+                        x_axis = (ACCEL_MAX*9.8f);
+                        flags |= FLAG_ACCEL;
+                    }
+
+                    if (y_axis < (ACCEL_MIN*9.8f)) {
+                        y_axis = (ACCEL_MIN*9.8f);
+                        flags |= FLAG_ACCEL;
+                    } else if (y_axis > (ACCEL_MAX*9.8f)) {
+                        y_axis = (ACCEL_MAX*9.8f);
+                        flags |= FLAG_ACCEL;
+                    }
+
+                    if (z_axis < (ACCEL_MIN*9.8f)) {
+                        z_axis = (ACCEL_MIN*9.8f);
+                        flags |= FLAG_ACCEL;
+                    } else if (z_axis > (ACCEL_MAX*9.8f)) {
+                        z_axis = (ACCEL_MAX*9.8f);
+                        flags |= FLAG_ACCEL;
+                    }
+
+                    atomic_set(&rgb_flags, flags);
                 }
                 
                 printk("SOIL MOISTURE: %.1f%%\n", moisture);
