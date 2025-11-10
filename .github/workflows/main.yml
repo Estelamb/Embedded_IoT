@@ -17,8 +17,13 @@ jobs:
 
       - name: Run cppcheck
         run: |
-          cppcheck --enable=all --inconclusive --std=c++17 -I plant_monitoring_system/include plant_monitoring_system/src
+          # Adjust this path if necessary
+          if [ -d "plant_monitoring_system" ]; then
+            cd plant_monitoring_system
+          fi
 
+          echo "Running cppcheck in $(pwd)"
+          cppcheck --enable=all --inconclusive --std=c++17 -I include src
   build:
     runs-on: ubuntu-latest
     needs: cppcheck
