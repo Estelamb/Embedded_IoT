@@ -45,22 +45,23 @@ jobs:
 
       - name: Setup Zephyr workspace
         run: |
-          # Create a Zephyr workspace and fetch Zephyr source code
+          # Create Zephyr workspace
           mkdir zephyrproject
           cd zephyrproject
-          west init
+
+          # Initialize and fetch Zephyr
+          west init https://github.com/zephyrproject-rtos/zephyr.git
           west update
           west zephyr-export
+
+          # Install Python dependencies for Zephyr
           pip3 install -r zephyr/scripts/requirements.txt
 
           # Bring your app into the workspace
           mkdir app
           cp -r ../plant_monitoring_system/* app/
 
-          # Verify structure
-          ls -R app
-
-          # Build your project (adjust board if needed)
+          # Build your application for native_posix
           cd app
           west build -b native_posix .
 
