@@ -24,7 +24,7 @@ jobs:
 
           echo "Running cppcheck in $(pwd)"
           cppcheck --enable=all --inconclusive --std=c++17 -I include src
-  build:
+    build:
     runs-on: ubuntu-latest
     needs: cppcheck
     steps:
@@ -45,25 +45,21 @@ jobs:
 
       - name: Setup Zephyr workspace
         run: |
-          # Create Zephyr workspace
           mkdir zephyrproject
           cd zephyrproject
 
-          # Initialize and fetch Zephyr
-          west init https://github.com/zephyrproject-rtos/zephyr.git
+          west init -m https://github.com/zephyrproject-rtos/zephyr.git
           west update
           west zephyr-export
 
-          # Install Python dependencies for Zephyr
           pip3 install -r zephyr/scripts/requirements.txt
 
-          # Bring your app into the workspace
           mkdir app
           cp -r ../plant_monitoring_system/* app/
 
-          # Build your application for native_posix
           cd app
           west build -b native_posix .
+
 
   valgrind:
     runs-on: ubuntu-latest
