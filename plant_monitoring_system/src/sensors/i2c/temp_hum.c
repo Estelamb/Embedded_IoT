@@ -61,7 +61,7 @@ int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
     if (rh < 0.0f) rh = 0.0f;
     if (rh > 100.0f) rh = 100.0f;
 
-    *humidity = rh;
+    *humidity = 100 - rh;
     return 0;
 }
 

@@ -1,55 +1,59 @@
 /**
  * to agps and cogpsrols an RGB LED accordingly. A user button toggles
  * @file main.c
- * @brief Main application for the interrupt-driven brightness control system.
+ * @brief Plant Monitoring System main module
  *
- * This application reads ambient light using a phototransistor connected
- * the operating mode (OFF, NORMAL, BLUE). Button presses are processed
- * via interrupts and deferred work. Press duration determines action.
+ * Monitors plant conditions (light, soil moisture, temperature/humidity,
+ * accelerometer, color sensor) and GPS location. Provides RGB LED visual
+ * feedback and button-controlled operating modes.
  *
- * A brightness thread autonomously performs periodic brightness
- * measurements in NORMAL mode.
+ * Operating modes:
+ * - TEST_MODE: RGB indicates dominant color.
+ * - NORMAL_MODE: Periodic measurements, RGB alerts for out-of-range sensors.
+ * - ADVANCED_MODE: Minimal feedback, system ON.
  *
  * Button behavior:
- * - Short press (< 1 s): Toggles between NORMAL and BLUE modes.
- * - Long press (≥ 1 s): Turns the system ON or OFF immediately.
+ * - Toogles between TEST, NORMAL, and ADVANCED modes on each press.
  */
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
+#include <math.h>
 
 #include "main.h"
 #include "sensors_thread.h"
 #include "gps_thread.h"
 
+/* --- Configuration -------------------------------------------------------- */
 #define INITIAL_MODE TEST_MODE /**< Initial operating mode at startup. */
 #define ACCEL_RANGE ACCEL_2G    /**< Accelerometer full-scale range setting. */
+#define RGB_TIMER_PERIOD_MS 500  /**< RGB LED timer period in milliseconds. */
 
-/* --- Limits (raw units matching your atomic storage) ----------------------- */
+/* Measurement Limits */
 
-#define TEMP_MIN   (-10)   /**< Min temp. -10.0 C */
-#define TEMP_MAX   (50)    /**< Max temp.  50.0 C */
+#define TEMP_MIN   -10   /**< Min temp. -10.0 C */
+#define TEMP_MAX   50    /**< Max temp.  50.0 C */
 
-#define HUM_MIN    (25)    /**< Min humidity 25.0 % */
-#define HUM_MAX    (75)    /**< Max humidity 75.0 % */
+#define HUM_MIN    25    /**< Min humidity 25.0 % */
+#define HUM_MAX    75    /**< Max humidity 75.0 % */
 
-#define LIGHT_MIN  (0)     /**< Min brightness 0.0 %  */
-#define LIGHT_MAX  (100)   /**< Max brightness 100.0 % */
+#define LIGHT_MIN  0     /**< Min brightness 0.0 %  */
+#define LIGHT_MAX  100   /**< Max brightness 100.0 % */
 
-#define MOISTURE_MIN   (0)    /**< Min moisture 0.0 % */
-#define MOISTURE_MAX   (100)  /**< Max moisture 100.0 % */
+#define MOISTURE_MIN   0    /**< Min moisture 0.0 % */
+#define MOISTURE_MAX   100  /**< Max moisture 100.0 % */
 
-#define COLOR_CLEAR_MIN   (1)    /**< Min color clear channel raw value (dark threshold) */
-#define COLOR_CLEAR_MAX   (5000)  /**< Max color clear channel raw value (saturation threshold) */
-#define RED_MIN     (0)    /**< Min red channel raw value */
-#define RED_MAX     (5000)  /**< Max red channel raw value */
-#define GREEN_MIN   (0)    /**< Min green channel raw value */
-#define GREEN_MAX   (5000)  /**< Max green channel raw value */
-#define BLUE_MIN    (0)    /**< Min blue channel raw value */
-#define BLUE_MAX    (5000)  /**< Max blue channel raw value */
+#define COLOR_CLEAR_MIN   1    /**< Min color clear channel raw value (dark threshold) */
+#define COLOR_CLEAR_MAX   5000  /**< Max color clear channel raw value (saturation threshold) */
+#define RED_MIN     0    /**< Min red channel raw value */
+#define RED_MAX     5000  /**< Max red channel raw value */
+#define GREEN_MIN   0    /**< Min green channel raw value */
+#define GREEN_MAX   5000  /**< Max green channel raw value */
+#define BLUE_MIN    0    /**< Min blue channel raw value */
+#define BLUE_MAX    5000  /**< Max blue channel raw value */
 
-#define ACCEL_MIN  (-2)    /**< Min accel. -2.00 g */
-#define ACCEL_MAX  (2)     /**< Max accel.  2.00 g */
+#define ACCEL_MIN  -2    /**< Min accel. -2.00 g */
+#define ACCEL_MAX  2     /**< Max accel.  2.00 g */
 
 /* Flags for out-of-range conditions */
 #define FLAG_TEMP     (1U << 0)
@@ -149,18 +153,18 @@ static struct user_button button = {
     .spec = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios),
 };
 
-/* Semaphore to trigger and read measurements in NORMAL mode */
+/* --- Semaphores ----------------------------------------------------------- */
 static K_SEM_DEFINE(main_sensors_sem, 0, 1);
 static K_SEM_DEFINE(main_gps_sem, 0, 1);
 static K_SEM_DEFINE(sensors_sem, 0, 1);
 static K_SEM_DEFINE(gps_sem, 0, 1);
 
 /**
- * @brief Shared context with the brightness thread.
+ * @brief Shared system context.
  *
  * The @ref system_context structure holds references to the peripheral configuration.
- * Both the main thread and the brightness thread use this structure to
- * coordinate mode and brightness updates.
+ * Both the main, the sensors and gps threads use this structure to
+ * coordinate peripheral configurations and mode updates.
  */
 static struct system_context ctx = {
     .phototransistor = &pt,
@@ -185,11 +189,11 @@ static struct system_context ctx = {
 };
 
 /**
- * @brief Shared measurements with the brightness thread.
+ * @brief Shared measurements.
  *
- * The @ref system_measurement structure holds references to the peripheral configuration.
- * Both the main thread and the brightness thread use this structure to
- * coordinate mode and brightness updates.
+ * The @ref system_measurement structure holds references to the measurements.
+ * Both the main, the sensors and gps threads use this structure to
+ * coordinate measurements updates.
  */
 static struct system_measurement measure = {
     .brightness = ATOMIC_INIT(0),
@@ -215,15 +219,74 @@ static struct system_measurement measure = {
     .gps_time = ATOMIC_INIT(0),
 };
 
+/**
+ * @brief Main measurements.
+ *
+ * The @ref main_measurement structure holds references to the main measurements.
+ */
+struct main_measurement {
+    system_mode_t mode;
+    float light;
+    float moisture;
+    float lat;
+    float lon;
+    float alt;
+    float x_axis;
+    float y_axis;
+    float z_axis;
+    float hum;
+    float temp;
+    int sats;
+    int time_int;
+    int hh, mm, ss;
+    float c, r, g, b;
+    char ns;
+    char ew;
+    char dom_color[6];
+    atomic_t rgb_flags;
+};
+
+/**
+ * @brief Main data measurements Initialization.
+ *
+ * The @ref main_data structure holds references to the main measurements.
+ */
+static struct main_measurement main_data = {
+    .mode = INITIAL_MODE,
+    .light = 0.0f,
+    .moisture = 0.0f,
+    .lat = 0.0f,
+    .lon = 0.0f,
+    .alt = 0.0f,
+    .x_axis = 0.0f,
+    .y_axis = 0.0f,
+    .z_axis = 0.0f,
+    .hum = 0.0f,
+    .temp = 0.0f,
+    .sats = 0,
+    .time_int = 0,
+    .hh = 0,
+    .mm = 0,
+    .ss = 0,
+    .c = 0,
+    .r = 0,
+    .b = 0,
+    .g = 0,
+    .ns = '\0',
+    .ew = '\0',
+    .dom_color = {0, 0, 0, 0, 0, 0},
+    .rgb_flags = ATOMIC_INIT(0),
+};
 
 /* --- Button timing and state -------------------------------------------------- */
 static struct k_work button_work;
 
 /**
- * @brief Deferred work handler for processing button events.
+ * @brief Work handler for processing button events.
+ * 
+ * Detects the current mode and switches to the next one in sequence.
  *
- * Determines if the event to process is a short or long press
- * based on the state of long_press_fired flag.
+ * @param work Pointer to work struct
  */
 static void button_work_handler(struct k_work *work)
 {
@@ -249,6 +312,8 @@ static void button_work_handler(struct k_work *work)
     atomic_set(&ctx.mode, next_mode);
     k_sem_give(ctx.sensors_sem);
     k_sem_give(ctx.gps_sem);
+    k_sem_give(ctx.main_sensors_sem);
+    k_sem_give(ctx.main_gps_sem);
 }
 
 /**
@@ -265,41 +330,26 @@ static void button_isr(const struct device *dev, struct gpio_callback *cb, uint3
     }
 }
 
-/** Timer for RGB NORMAL MODE */
+/* --- RGB LED Timer -------------------------------------------------------- */
 static struct k_timer rgb_timer;
-static atomic_t rgb_flags = ATOMIC_INIT(0);
+static bool rgb_timer_running = false;
 
 /**
- * @brief Callback timer RGB every 0.5s.
+ * @brief RGB LED periodic handler for NORMAL_MODE
  */
 static void rgb_timer_handler(struct k_timer *timer)
 {
     static uint8_t color_index = 0;
-    system_mode_t mode = atomic_get(&ctx.mode);
-    uint32_t flags = atomic_get(&rgb_flags);
+    uint32_t flags = atomic_get(&main_data.rgb_flags);
 
-    if (mode != NORMAL_MODE) {
-        rgb_led_off(&rgb_leds);
-        color_index = 0;
-        return;
-    }
+    uint8_t colors[8], count = 0;
 
-    if (flags == 0) {
-        rgb_led_off(&rgb_leds);
-        color_index = 0;
-        return;
-    }
-
-    /* Construimos una lista de colores activos según flags */
-    uint8_t colors[8];
-    uint8_t count = 0;
-
-    if (flags & FLAG_TEMP)      colors[count++] = 0; // rojo
-    if (flags & FLAG_HUM)       colors[count++] = 1; // azul
-    if (flags & FLAG_LIGHT)     colors[count++] = 2; // verde
-    if (flags & FLAG_MOISTURE)  colors[count++] = 3; // cian
-    if (flags & FLAG_COLOR)     colors[count++] = 4; // blanco
-    if (flags & FLAG_ACCEL)     colors[count++] = 5; // amarillo
+    if (flags & FLAG_TEMP)      colors[count++] = 0; // RED
+    if (flags & FLAG_HUM)       colors[count++] = 1; // BLUE
+    if (flags & FLAG_LIGHT)     colors[count++] = 2; // GREEN
+    if (flags & FLAG_MOISTURE)  colors[count++] = 3; // CYAN
+    if (flags & FLAG_COLOR)     colors[count++] = 4; // WHITE
+    if (flags & FLAG_ACCEL)     colors[count++] = 5; // YELLOW
 
     if (count == 0) {
         rgb_led_off(&rgb_leds);
@@ -307,11 +357,8 @@ static void rgb_timer_handler(struct k_timer *timer)
         return;
     }
 
-    /* Selecciona el color actual */
     uint8_t color = colors[color_index % count];
     color_index++;
-
-    rgb_led_off(&rgb_leds); // limpiar estado previo
 
     switch (color) {
         case 0: rgb_red(&rgb_leds); break;
@@ -322,6 +369,97 @@ static void rgb_timer_handler(struct k_timer *timer)
         case 5: rgb_yellow(&rgb_leds); break;
         default: rgb_led_off(&rgb_leds); break;
     }
+}
+
+/* --- Helper Functions ----------------------------------------------------- */
+/**
+ * @brief Checks if a value is within min/max limits.
+ *
+ * If the value is below min, sets it to min.
+ * If the value is above max, sets it to max.
+ * If the value was out-of-range, activates the corresponding flag.
+ *
+ * @param val Pointer to the value to check
+ * @param min Minimum allowed value
+ * @param max Maximum allowed value
+ * @param flags Pointer to flags variable
+ * @param flag_bit Bit to set if value is out-of-range
+ */
+static void check_min_max(float *val, float min, float max, uint32_t *flags, uint32_t flag_bit)
+{
+    if (*val < min) {
+        *val = min;
+        *flags |= flag_bit;
+    } else if (*val > max) {
+        *val = max;
+        *flags |= flag_bit;
+    }
+}
+
+/**
+ * @brief Retrieves the latest measurements from atomic variables.
+ */
+static void get_measurements()
+{
+    main_data.moisture = atomic_get(&measure.moisture) / 10.0f;
+
+    main_data.light = atomic_get(&measure.brightness) / 10.0f;
+
+    main_data.lat  = atomic_get(&measure.gps_lat) / 1e6f;
+    main_data.lon  = atomic_get(&measure.gps_lon) / 1e6f;
+    main_data.alt  = atomic_get(&measure.gps_alt) / 100.0f;
+    main_data.sats   = atomic_get(&measure.gps_sats);
+    main_data.time_int = atomic_get(&measure.gps_time);
+
+    main_data.ns = (main_data.lat >= 0) ? 'N' : 'S';
+    main_data.ew = (main_data.lon >= 0) ? 'E' : 'W';
+
+    main_data.lat = fabsf(main_data.lat);
+    main_data.lon = fabsf(main_data.lon);
+
+    if (main_data.time_int >= 0) {
+        main_data.hh = main_data.time_int / 10000;
+        main_data.mm = (main_data.time_int / 100) % 100;
+        main_data.ss = main_data.time_int % 100;
+    } else {
+        printk("GPS time: --:--:--\n");
+    }
+
+    main_data.r = atomic_get(&measure.red);
+    main_data.g = atomic_get(&measure.green);
+    main_data.b = atomic_get(&measure.blue);
+    main_data.c = atomic_get(&measure.clear);
+
+    main_data.x_axis = atomic_get(&measure.accel_x_g) / 100.0f;
+    main_data.y_axis = atomic_get(&measure.accel_y_g) / 100.0f;
+    main_data.z_axis = atomic_get(&measure.accel_z_g) / 100.0f;
+
+    main_data.temp = atomic_get(&measure.temp) / 100.0f;
+    main_data.hum = atomic_get(&measure.hum) / 100.0f;
+}
+
+/**
+ * @brief Displays the latest measurements via printk.
+ */
+static void display_measurements()
+{
+    printk("SOIL MOISTURE: %.1f%%\n", (double)main_data.moisture);
+
+    printk("LIGHT: %.1f%%\n", (double)main_data.light);
+
+    printk("GPS: #Sats: %d Lat(UTC): %.6f %c Long(UTC): %.6f %c Altitude: %.0f m GPS time: %02d:%02d:%02d\n",
+            main_data.sats, (double)main_data.lat, main_data.ns, (double)main_data.lon, 
+            main_data.ew, (double)main_data.alt, main_data.hh, main_data.mm, main_data.ss);
+
+                
+    printk("COLOR SENSOR: Clear: %.0f Red: %.0f Green: %.0f Blue: %.0f Dominant color: %s \n",
+            (double)main_data.c, (double)main_data.r, (double)main_data.g, (double)main_data.b, main_data.dom_color);
+                
+    printk("ACCELEROMETER: X_axis: %.2f m/s2, Y_axis: %.2f m/s2, Z_axis: %.2f m/s2 \n",
+            (double)main_data.x_axis, (double)main_data.y_axis, (double)main_data.z_axis);
+                
+    printk("TEMP/HUM: Temperature: %.1f C, Relative Humidity: %.1f%%\n\n",
+            (double)main_data.temp, (double)main_data.hum);
 }
 
 
@@ -340,10 +478,6 @@ static void rgb_timer_handler(struct k_timer *timer)
 int main(void)
 {
     printk("==== Plant Monitoring System ====\n");
-    system_mode_t mode = INITIAL_MODE;
-    float light, moisture, lat, lon, alt, x_axis, y_axis, z_axis, hum, temp = 0;
-    int sats, time_int, hh, mm, ss, c, r, b, g = 0;
-    char dom_color[6], ns, ew;
     uint32_t flags = 0;
 
     /* Initialize peripherals */
@@ -358,9 +492,8 @@ int main(void)
     if (button_init(&button)) return -1;
     if (button_set_callback(&button, button_isr)) return -1;
 
-    /* Inicializar timer RGB */
+    /* Initialize timer RGB */
     k_timer_init(&rgb_timer, rgb_timer_handler, NULL);
-    k_timer_start(&rgb_timer, K_MSEC(500), K_MSEC(500)); // Callback cada 0.5s
 
     /* Button handling */
     k_work_init(&button_work, button_work_handler);
@@ -369,195 +502,87 @@ int main(void)
     start_sensors_thread(&ctx, &measure);
     start_gps_thread(&ctx, &measure);
 
-    printk("System ON (TEST MODE)\n");
+    blue(&leds);
+    printk("System ON (TEST MODE)\n\n");
 
     while (1) {
-        mode = atomic_get(&ctx.mode);
+        main_data.mode = atomic_get(&ctx.mode);
 
-        if (mode != ADVANCED_MODE) {
+        if (main_data.mode != ADVANCED_MODE) {
             k_sem_take(ctx.main_sensors_sem, K_FOREVER);
             k_sem_take(ctx.main_gps_sem, K_FOREVER);
         }
 
-        switch (mode) {
+        switch (main_data.mode) {
             case TEST_MODE:
+                blue(&leds);
+
+                if (rgb_timer_running) {
+                    rgb_timer_running = false;
+                    k_timer_stop(&rgb_timer);
+                    rgb_led_off(&rgb_leds);
+                }
+
+                get_measurements();
+
+                if (main_data.r > main_data.g && main_data.r > main_data.b) {
+                    rgb_red(&rgb_leds);
+                    strcpy(main_data.dom_color, "RED");
+                } else if (main_data.g > main_data.r && main_data.g > main_data.b) {
+                    rgb_green(&rgb_leds);
+                    strcpy(main_data.dom_color, "GREEN");
+                } else {
+                    rgb_blue(&rgb_leds);
+                    strcpy(main_data.dom_color, "BLUE");
+                }
+
+                display_measurements();
+
+                break;
+
             case NORMAL_MODE:
-                moisture = atomic_get(&measure.moisture) / 10.0f;
+                green(&leds);
+                flags = 0;
 
-                light = atomic_get(&measure.brightness) / 10.0f;
-
-                lat  = atomic_get(&measure.gps_lat) / 1e6f;
-                lon  = atomic_get(&measure.gps_lon) / 1e6f;
-                alt  = atomic_get(&measure.gps_alt) / 100.0f;
-                sats   = atomic_get(&measure.gps_sats);
-                time_int = atomic_get(&measure.gps_time);
-
-                ns = (lat >= 0) ? 'N' : 'S';
-                ew = (lon >= 0) ? 'E' : 'W';
-
-                lat = fabsf(lat);
-                lon = fabsf(lon);
-
-                if (time_int >= 0) {
-                    hh = time_int / 10000;
-                    mm = (time_int / 100) % 100;
-                    ss = time_int % 100;
-                } else {
-                    printk("GPS time: --:--:--\n");
+                if (!rgb_timer_running) {
+                    rgb_timer_running = true;
+                    k_timer_start(&rgb_timer, K_MSEC(RGB_TIMER_PERIOD_MS), K_MSEC(RGB_TIMER_PERIOD_MS));
                 }
-                r = atomic_get(&measure.red);
-                g = atomic_get(&measure.green);
-                b = atomic_get(&measure.blue);
-                c = atomic_get(&measure.clear);
 
-                x_axis = atomic_get(&measure.accel_x_g) / 100.0f;
-                y_axis = atomic_get(&measure.accel_y_g) / 100.0f;
-                z_axis = atomic_get(&measure.accel_z_g) / 100.0f;
+                get_measurements();
 
-                temp = atomic_get(&measure.temp) / 100.0f;
-                hum = atomic_get(&measure.hum) / 100.0f;
+                /* Check all measurements with min/max */
+                check_min_max(&main_data.temp, TEMP_MIN, TEMP_MAX, &flags, FLAG_TEMP);
+                check_min_max(&main_data.hum, HUM_MIN, HUM_MAX, &flags, FLAG_HUM);
+                check_min_max(&main_data.light, LIGHT_MIN, LIGHT_MAX, &flags, FLAG_LIGHT);
+                check_min_max(&main_data.moisture, MOISTURE_MIN, MOISTURE_MAX, &flags, FLAG_MOISTURE);
 
-                if (mode == TEST_MODE) {
-                    blue(&leds);
+                check_min_max(&main_data.c, COLOR_CLEAR_MIN, COLOR_CLEAR_MAX, &flags, FLAG_COLOR);
+                check_min_max(&main_data.r, RED_MIN, RED_MAX, &flags, FLAG_COLOR);
+                check_min_max(&main_data.g, GREEN_MIN, GREEN_MAX, &flags, FLAG_COLOR);
+                check_min_max(&main_data.b, BLUE_MIN, BLUE_MAX, &flags, FLAG_COLOR);
 
-                    if (r > g && r > b) {
-                        rgb_red(&rgb_leds);
-                        strcpy(dom_color, "RED");
-                    } else if (g > r && g > b) {
-                        rgb_green(&rgb_leds);
-                        strcpy(dom_color, "GREEN");
-                    } else {
-                        rgb_blue(&rgb_leds);
-                        strcpy(dom_color, "BLUE");
-                    }
+                check_min_max(&main_data.x_axis, ACCEL_MIN*9.8f, ACCEL_MAX*9.8f, &flags, FLAG_ACCEL);
+                check_min_max(&main_data.y_axis, ACCEL_MIN*9.8f, ACCEL_MAX*9.8f, &flags, FLAG_ACCEL);
+                check_min_max(&main_data.z_axis, ACCEL_MIN*9.8f, ACCEL_MAX*9.8f, &flags, FLAG_ACCEL);
 
-                } else {
-                    green(&leds);
-
-                    flags = 0;
-
-                    /* Temperature */
-                    if (temp < TEMP_MIN) {
-                        temp = TEMP_MIN;
-                        flags |= FLAG_TEMP;                    
-                    } else if (temp > TEMP_MAX) {
-                        temp = TEMP_MAX;
-                        flags |= FLAG_TEMP;
-                    }
+                atomic_set(&main_data.rgb_flags, flags);
                 
-                    /* Humidity */
-                    if (hum < HUM_MIN) {
-                        hum = HUM_MIN;
-                        flags |= FLAG_HUM;
-                    } else if (hum > HUM_MAX) {
-                        hum = HUM_MAX;
-                        flags |= FLAG_HUM;
-                    }
-                
-                    /* Ambient light (0..100) */
-                    if (light < LIGHT_MIN) {
-                        light = LIGHT_MIN;
-                        flags |= FLAG_LIGHT;
-                    } else if (light > LIGHT_MAX) {
-                        light = LIGHT_MAX;
-                        flags |= FLAG_LIGHT;
-                    }
-                
-                    /* Soil moisture (0..100) */
-                    if (moisture < MOISTURE_MIN) {
-                        moisture = MOISTURE_MIN;
-                        flags |= FLAG_MOISTURE;
-                    } else if (moisture > MOISTURE_MAX) {
-                        moisture = MOISTURE_MAX;
-                        flags |= FLAG_MOISTURE;
-                    }
-                
-                    /* Color sensor (clear channel out of expected range) */
-                    if (c < COLOR_CLEAR_MIN) {
-                        c = COLOR_CLEAR_MIN;
-                        flags |= FLAG_COLOR;
-                    } else if (c > COLOR_CLEAR_MAX) {
-                        c = COLOR_CLEAR_MAX;
-                        flags |= FLAG_COLOR;
-                    }
-
-                    /* Color sensor (R, G, B channels out of expected range) */
-                    if (r < RED_MIN) {
-                        r = RED_MIN;
-                        flags |= FLAG_COLOR;
-                    } else if (r > RED_MAX) {
-                        r = RED_MAX;
-                        flags |= FLAG_COLOR;
-                    }
-
-                    if (g < GREEN_MIN) {
-                        g = GREEN_MIN;
-                        flags |= FLAG_COLOR;
-                    } else if (g > GREEN_MAX) {
-                        g = GREEN_MAX;
-                        flags |= FLAG_COLOR;
-                    }
-
-                    if (b < BLUE_MIN) {
-                        b = BLUE_MIN;
-                        flags |= FLAG_COLOR;
-                    } else if (b > BLUE_MAX) {
-                        b = BLUE_MAX;
-                        flags |= FLAG_COLOR;
-                    }
-                
-                    /* Acceleration: check magnitude on any axis */
-                    if (x_axis < (ACCEL_MIN*9.8f)) {
-                        x_axis = (ACCEL_MIN*9.8f);
-                        flags |= FLAG_ACCEL;
-                    } else if (x_axis > (ACCEL_MAX*9.8f)) {
-                        x_axis = (ACCEL_MAX*9.8f);
-                        flags |= FLAG_ACCEL;
-                    }
-
-                    if (y_axis < (ACCEL_MIN*9.8f)) {
-                        y_axis = (ACCEL_MIN*9.8f);
-                        flags |= FLAG_ACCEL;
-                    } else if (y_axis > (ACCEL_MAX*9.8f)) {
-                        y_axis = (ACCEL_MAX*9.8f);
-                        flags |= FLAG_ACCEL;
-                    }
-
-                    if (z_axis < (ACCEL_MIN*9.8f)) {
-                        z_axis = (ACCEL_MIN*9.8f);
-                        flags |= FLAG_ACCEL;
-                    } else if (z_axis > (ACCEL_MAX*9.8f)) {
-                        z_axis = (ACCEL_MAX*9.8f);
-                        flags |= FLAG_ACCEL;
-                    }
-
-                    atomic_set(&rgb_flags, flags);
-                }
-                
-                printk("SOIL MOISTURE: %.1f%%\n", moisture);
-
-                printk("LIGHT: %.1f%%\n", light);
-
-                printk("GPS: #Sats: %d Lat(UTC): %.6f %c Long(UTC): %.6f %c Altitude: %.0f m GPS time: %02d:%02d:%02d\n",
-                        sats, lat, ns, lon, ew, alt,  hh, mm, ss);
-                
-                printk("COLOR SENSOR: Clear: %d Red: %d Green: %d Blue: %d Dominant color: %s \n",
-                        c, r, g, b, dom_color);
-                
-                printk("ACCELEROMETER: X_axis: %.2f m/s2, Y_axis: %.2f m/s2, Z_axis: %.2f m/s2 \n",
-                        x_axis, y_axis, z_axis);
-                
-                printk("TEMP/HUM: Temperature: %.1f C, Relative Humidity: %.1f%%\n\n",
-                        temp, hum);
+                display_measurements();
                 
                 break;
 
             case ADVANCED_MODE:
                 red(&leds);
+
+                if (rgb_timer_running) {
+                    rgb_timer_running = false;
+                    k_timer_stop(&rgb_timer);
+                    rgb_led_off(&rgb_leds);
+                }
+
+                k_sleep(K_MSEC(1000));
                 break;
         }
-
-        k_sem_take(ctx.main_sensors_sem, K_FOREVER);
-        k_sem_take(ctx.main_gps_sem, K_FOREVER);
     }
 }
