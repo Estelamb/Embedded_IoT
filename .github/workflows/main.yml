@@ -30,6 +30,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install build essentials and Linux headers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libc6-dev linux-libc-dev
+
       - name: Install Zephyr dependencies
         run: |
           sudo apt-get update
