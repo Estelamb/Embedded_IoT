@@ -5,6 +5,10 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  ZEPHYR_BASE: ${{ github.workspace }}/zephyrproject/zephyr
+  PROJECT_DIR: plant_monitoring_system
+
 jobs:
   cppcheck:
     runs-on: ubuntu-latest
@@ -28,30 +32,45 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Zephyr environment
-        uses: zephyrproject-rtos/action-zephyr-setup@v1
-        with:
-          manifest-url: https://github.com/zephyrproject-rtos/zephyr
-          manifest-branch: main
-          sdk-version: 0.17.4
-          toolchains: arm-zephyr-eabi
-
-      - name: Build application (nucleo_wl55jc)
+      - name: Install system dependencies
         run: |
-          APP_DIR="plant_monitoring_system"
-          
-          # Copy configuration file
-          cp $APP_DIR/confs/prj_nucleo_wl55jc.conf $APP_DIR/prj.conf || true
-          
-          # Build the application
-          west build -b nucleo_wl55jc $APP_DIR
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-dev \
+            python3-pip \
+            python3-venv \
+            cmake \
+            ninja-build \
+            gcc \
+            g++ \
+            valgrind
 
-      - name: Upload Zephyr ELF artifact for Valgrind
+      - name: Set up Python environment
+        run: |
+          python3 -m venv venv
+          source venv/bin/activate
+          pip3 install wheel
+
+      - name: Set up Zephyr environment
+        run: |
+          west init zephyrproject
+          cd zephyrproject
+          west update
+          west zephyr-export
+          pip3 install -r zephyr/scripts/requirements.txt
+
+      - name: Build project for native_posix (Valgrind compatible)
+        run: |
+          cd $PROJECT_DIR
+          source $ZEPHYR_BASE/zephyr-env.sh
+          west build -b native_posix --build-dir build_valgrind --pristine always
+
+      - name: Upload executable for Valgrind
         uses: actions/upload-artifact@v4
         with:
-          name: zephyr-elf-artifact
-          path: build/zephyr/zephyr.elf
-          retention-days: 1
+          name: zephyr-native-executable
+          path: ${{ env.PROJECT_DIR }}/build_valgrind/zephyr/zephyr.exe
+          retention-days: 7
 
   valgrind:
     runs-on: ubuntu-latest
@@ -60,21 +79,28 @@ jobs:
       - name: Install Valgrind
         run: sudo apt-get update && sudo apt-get install -y valgrind
 
-      - name: Download Zephyr ELF artifact
+      - name: Download native executable artifact
         uses: actions/download-artifact@v4
         with:
-          name: zephyr-elf-artifact
+          name: zephyr-native-executable
           path: valgrind_test/
 
-      - name: Run Valgrind
+      - name: Make executable
+        run: chmod +x valgrind_test/zephyr.exe
+
+      - name: Run Valgrind memory analysis
         run: |
-          valgrind --leak-check=full valgrind_test/zephyr.elf || true 
+          valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all valgrind_test/zephyr.exe
+
+      - name: Run Valgrind cache analysis
+        run: |
+          valgrind --tool=cachegrind valgrind_test/zephyr.exe
 
   doxygen:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
@@ -83,6 +109,11 @@ jobs:
         run: |
           cd plant_monitoring_system
           doxygen Doxyfile
+
+      - name: Create docs directory if it doesn't exist
+        run: |
+          cd plant_monitoring_system
+          mkdir -p docs/html
 
       - name: Verify HTML documentation output
         run: |
