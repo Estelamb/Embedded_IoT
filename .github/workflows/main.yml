@@ -22,8 +22,6 @@ jobs:
           fi
           cppcheck --enable=all --inconclusive --std=c++17 -I include src
 
----
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -49,8 +47,6 @@ jobs:
           path: build/zephyr/zephyr.elf
           retention-days: 1
 
----
-
   valgrind:
     runs-on: ubuntu-latest
     needs: build
@@ -68,22 +64,25 @@ jobs:
         run: |
           valgrind --leak-check=full valgrind_test/zephyr.elf || true 
 
----
-
   doxygen:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
 
-      - name: Generate documentation
+      - name: Generate documentation for plant_monitoring_system
         run: |
           cd plant_monitoring_system
           doxygen Doxyfile
-          
+
+      - name: Verify HTML documentation output
+        run: |
+          ls -la ./plant_monitoring_system/docs/
+          ls -la ./plant_monitoring_system/docs/html
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
