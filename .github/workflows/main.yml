@@ -28,23 +28,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # --- CHANGE HERE ---
       - name: Setup Zephyr environment
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
+          manifest-url: https://github.com/zephyrproject-rtos/zephyr
+          manifest-branch: main
           sdk-version: 0.17.4
-          # REMOVED: app-path: plant_monitoring_system 
           toolchains: arm-zephyr-eabi
-      # --- END CHANGE ---
 
       - name: Build application (nucleo_wl55jc)
         run: |
-          # The application directory is relative to the root now
           APP_DIR="plant_monitoring_system"
           
+          # Copy configuration file
           cp $APP_DIR/confs/prj_nucleo_wl55jc.conf $APP_DIR/prj.conf || true
           
-          # The build command is run from the root of the workspace
+          # Build the application
           west build -b nucleo_wl55jc $APP_DIR
 
       - name: Upload Zephyr ELF artifact for Valgrind
@@ -53,7 +52,7 @@ jobs:
           name: zephyr-elf-artifact
           path: build/zephyr/zephyr.elf
           retention-days: 1
-          
+
   valgrind:
     runs-on: ubuntu-latest
     needs: build
