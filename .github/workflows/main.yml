@@ -57,7 +57,9 @@ jobs:
           cp -r ../plant_monitoring_system/* app/
 
           cd app
-          # For native simulation, copy minimal prj.conf
+          # Use host toolchain for native simulation
+          export ZEPHYR_TOOLCHAIN_VARIANT=host
+          # Copy prj.conf if exists
           cp confs/prj_nucleo_wl55jc.conf prj.conf || echo "Using default config"
           west build -b native_sim .
 
