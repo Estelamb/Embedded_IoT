@@ -34,12 +34,27 @@ jobs:
       - name: Install Zephyr dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build python3-pip
+          sudo apt-get install -y --no-install-recommends \
+            git cmake ninja-build gperf ccache dfu-util device-tree-compiler wget \
+            python3-dev python3-pip python3-setuptools python3-tk python3-wheel xz-utils file make gcc g++
+
+      - name: Install west (Zephyr tool)
+        run: |
+          pip3 install --upgrade pip
+          pip3 install west
+
+      - name: Initialize Zephyr workspace
+        run: |
+          # If your project already includes the Zephyr manifest (west.yml)
+          west init -l plant_monitoring_system || true
+          west update
+          west zephyr-export
+          pip3 install -r zephyr/scripts/requirements.txt
 
       - name: Build Zephyr project (native)
         run: |
           cd plant_monitoring_system
-          west build -b native
+          west build -b native_posix
           cd ..
 
   valgrind:
