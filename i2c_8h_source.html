@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: src/brightness_thread.h Source File</title>
+<title>Plant Monitoring System: src/sensors/i2c/i2c.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -102,7 +102,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('brightness__thread_8h_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('i2c_8h_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -128,27 +128,29 @@ $(document).ready(function(){initNavTree('brightness__thread_8h_source.html','')
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">brightness_thread.h</div></div>
+  <div class="headertitle"><div class="title">i2c.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="brightness__thread_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#ifndef BRIGHTNESS_THREAD_H</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define BRIGHTNESS_THREAD_H</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="main_8h.html">main.h</a>&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keywordtype">void</span> <a class="code hl_function" href="brightness__thread_8h.html#ab2b89a29a90fbc8dadd3564119a33679">start_brightness_thread</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structsystem__context.html">system_context</a> *ctx);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif </span><span class="comment">/* BRIGHTNESS_THREAD_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="abrightness__thread_8h_html_ab2b89a29a90fbc8dadd3564119a33679"><div class="ttname"><a href="brightness__thread_8h.html#ab2b89a29a90fbc8dadd3564119a33679">start_brightness_thread</a></div><div class="ttdeci">void start_brightness_thread(struct system_context *ctx)</div><div class="ttdoc">Initializes and starts the brightness measurement thread.</div><div class="ttdef"><b>Definition</b> brightness_thread.c:99</div></div>
-<div class="ttc" id="amain_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Shared definitions for the brightness control system.</div></div>
-<div class="ttc" id="astructsystem__context_html"><div class="ttname"><a href="structsystem__context.html">system_context</a></div><div class="ttdoc">Shared system context between main and brightness thread.</div><div class="ttdef"><b>Definition</b> main.h:33</div></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef I2C_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define I2C_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;zephyr/drivers/i2c.h&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keywordtype">int</span> i2c_read_regs(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, uint8_t reg, uint8_t *buf, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keywordtype">int</span> i2c_write_reg(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, uint8_t reg, uint8_t val);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordtype">int</span> i2c_dev_ready(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#endif </span><span class="comment">// I2C_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="brightness__thread_8h.html">brightness_thread.h</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7349e89ef19c117195f8e371603e1b1f.html">sensors</a></li><li class="navelem"><a class="el" href="dir_1b2b3025760fa230ec416a443f96fa32.html">i2c</a></li><li class="navelem"><b>i2c.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

@@ -1,5 +1,14 @@
 var searchData=
 [
-  ['operation_0',['System Operation',['../index.html#autotoc_md13',1,'']]],
-  ['overview_1',['Overview',['../index.html#autotoc_md3',1,'']]]
+  ['sensors_5fsem_0',['sensors_sem',['../structsystem__context.html#adf5259a7bfe53f32f215f67b5236ad51',1,'system_context']]],
+  ['sensors_5fthread_2ec_1',['sensors_thread.c',['../sensors__thread_8c.html',1,'']]],
+  ['sensors_5fthread_2eh_2',['sensors_thread.h',['../sensors__thread_8h.html',1,'']]],
+  ['soil_5fmoisture_3',['soil_moisture',['../structsystem__context.html#a2b5436d5ba8c925d1db826fb5a05d162',1,'system_context']]],
+  ['spec_4',['spec',['../structuser__button.html#aa0f3ab66c6e9ff937542d8f9fa057dd3',1,'user_button']]],
+  ['start_5fgps_5fthread_5',['start_gps_thread',['../gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da',1,'start_gps_thread(struct system_context *ctx, struct system_measurement *measure):&#160;gps_thread.c'],['../gps__thread_8h.html#ac636fc80c6c873e0e0071029e9c922da',1,'start_gps_thread(struct system_context *ctx, struct system_measurement *measure):&#160;gps_thread.c']]],
+  ['start_5fsensors_5fthread_6',['start_sensors_thread',['../sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea',1,'start_sensors_thread(struct system_context *ctx, struct system_measurement *measure):&#160;sensors_thread.c'],['../sensors__thread_8h.html#a49e974fd7ad7abcc0c28fdaaaba893ea',1,'start_sensors_thread(struct system_context *ctx, struct system_measurement *measure):&#160;sensors_thread.c']]],
+  ['system_7',['Plant Monitoring System',['../index.html',1,'']]],
+  ['system_5fcontext_8',['system_context',['../structsystem__context.html',1,'']]],
+  ['system_5fmeasurement_9',['system_measurement',['../structsystem__measurement.html',1,'']]],
+  ['system_5fmode_5ft_10',['system_mode_t',['../main_8h.html#a6e4cea4b6246f491c526211f5405627d',1,'main.h']]]
 ];

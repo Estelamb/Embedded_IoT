@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['vref_5fmv_0',['vref_mv',['../structadc__config.html#ac43e766b635d2bf53b0ea2ca585da9d3',1,'adc_config']]]
+  ['sensors_5fsem_0',['sensors_sem',['../structsystem__context.html#adf5259a7bfe53f32f215f67b5236ad51',1,'system_context']]],
+  ['soil_5fmoisture_1',['soil_moisture',['../structsystem__context.html#a2b5436d5ba8c925d1db826fb5a05d162',1,'system_context']]],
+  ['spec_2',['spec',['../structuser__button.html#aa0f3ab66c6e9ff937542d8f9fa057dd3',1,'user_button']]]
 ];

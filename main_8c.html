@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: src/main.c File Reference</title>
+<title>Plant Monitoring System: src/main.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -124,32 +124,129 @@ $(document).ready(function(){initNavTree('main_8c.html',''); initResizable(); })
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">main.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Main application for the interrupt-driven brightness control system.  
+<p>to agps and cogpsrols an RGB LED accordingly.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/kernel.h&gt;</code><br />
 <code>#include &lt;zephyr/sys/printk.h&gt;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="brightness__thread_8h_source.html">brightness_thread.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="rgb__led_8h_source.html">sensors/rgb_led/rgb_led.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="adc_8h_source.html">sensors/adc/adc.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="user__button_8h_source.html">sensors/user_button/user_button.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sensors__thread_8h_source.html">sensors_thread.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="gps__thread_8h_source.html">gps_thread.h</a>&quot;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmain__measurement.html">main_measurement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Main measurements.  <a href="structmain__measurement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a61271b2f6973cde7a3b2c4c6541026c8" id="r_a61271b2f6973cde7a3b2c4c6541026c8"><td class="memItemLeft" align="right" valign="top"><a id="a61271b2f6973cde7a3b2c4c6541026c8" name="a61271b2f6973cde7a3b2c4c6541026c8"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>LONG_PRESS_MS</b>&#160;&#160;&#160;1000</td></tr>
-<tr class="memdesc:a61271b2f6973cde7a3b2c4c6541026c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Long press duration threshold (in milliseconds). <br /></td></tr>
-<tr class="separator:a61271b2f6973cde7a3b2c4c6541026c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6018ed5003208d951b462b7afb4390f9" id="r_a6018ed5003208d951b462b7afb4390f9"><td class="memItemLeft" align="right" valign="top"><a id="a6018ed5003208d951b462b7afb4390f9" name="a6018ed5003208d951b462b7afb4390f9"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>INITIAL_MODE</b>&#160;&#160;&#160;NORMAL_MODE</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INITIAL_MODE</b>&#160;&#160;&#160;TEST_MODE</td></tr>
 <tr class="memdesc:a6018ed5003208d951b462b7afb4390f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial operating mode at startup. <br /></td></tr>
 <tr class="separator:a6018ed5003208d951b462b7afb4390f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16ec7011dea5773b504e875852f35fc1" id="r_a16ec7011dea5773b504e875852f35fc1"><td class="memItemLeft" align="right" valign="top"><a id="a16ec7011dea5773b504e875852f35fc1" name="a16ec7011dea5773b504e875852f35fc1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_RANGE</b>&#160;&#160;&#160;ACCEL_2G</td></tr>
+<tr class="memdesc:a16ec7011dea5773b504e875852f35fc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accelerometer full-scale range setting. <br /></td></tr>
+<tr class="separator:a16ec7011dea5773b504e875852f35fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad694b6bc83a5a3e06ce35a56c8acdbd" id="r_aad694b6bc83a5a3e06ce35a56c8acdbd"><td class="memItemLeft" align="right" valign="top"><a id="aad694b6bc83a5a3e06ce35a56c8acdbd" name="aad694b6bc83a5a3e06ce35a56c8acdbd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RGB_TIMER_PERIOD_MS</b>&#160;&#160;&#160;500</td></tr>
+<tr class="memdesc:aad694b6bc83a5a3e06ce35a56c8acdbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">RGB LED timer period in milliseconds. <br /></td></tr>
+<tr class="separator:aad694b6bc83a5a3e06ce35a56c8acdbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7d20c7d1ec1729bf6892ddabbac3ab0" id="r_ad7d20c7d1ec1729bf6892ddabbac3ab0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#ad7d20c7d1ec1729bf6892ddabbac3ab0">TEMP_MIN</a>&#160;&#160;&#160;-10</td></tr>
+<tr class="memdesc:ad7d20c7d1ec1729bf6892ddabbac3ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min temp.  <br /></td></tr>
+<tr class="separator:ad7d20c7d1ec1729bf6892ddabbac3ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9acb14595bfb9523655370c1bb477506" id="r_a9acb14595bfb9523655370c1bb477506"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a9acb14595bfb9523655370c1bb477506">TEMP_MAX</a>&#160;&#160;&#160;50</td></tr>
+<tr class="memdesc:a9acb14595bfb9523655370c1bb477506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max temp.  <br /></td></tr>
+<tr class="separator:a9acb14595bfb9523655370c1bb477506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa32e95dc12ed32e6c395aafb6c083cc3" id="r_aa32e95dc12ed32e6c395aafb6c083cc3"><td class="memItemLeft" align="right" valign="top"><a id="aa32e95dc12ed32e6c395aafb6c083cc3" name="aa32e95dc12ed32e6c395aafb6c083cc3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>HUM_MIN</b>&#160;&#160;&#160;25</td></tr>
+<tr class="memdesc:aa32e95dc12ed32e6c395aafb6c083cc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min humidity 25.0 %. <br /></td></tr>
+<tr class="separator:aa32e95dc12ed32e6c395aafb6c083cc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad780c5087e79ab6a7497e6f489bf5ba0" id="r_ad780c5087e79ab6a7497e6f489bf5ba0"><td class="memItemLeft" align="right" valign="top"><a id="ad780c5087e79ab6a7497e6f489bf5ba0" name="ad780c5087e79ab6a7497e6f489bf5ba0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>HUM_MAX</b>&#160;&#160;&#160;75</td></tr>
+<tr class="memdesc:ad780c5087e79ab6a7497e6f489bf5ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max humidity 75.0 %. <br /></td></tr>
+<tr class="separator:ad780c5087e79ab6a7497e6f489bf5ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3347250b12c8c59f213baf21f1debf42" id="r_a3347250b12c8c59f213baf21f1debf42"><td class="memItemLeft" align="right" valign="top"><a id="a3347250b12c8c59f213baf21f1debf42" name="a3347250b12c8c59f213baf21f1debf42"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>LIGHT_MIN</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a3347250b12c8c59f213baf21f1debf42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min brightness 0.0 % <br  />
+ <br /></td></tr>
+<tr class="separator:a3347250b12c8c59f213baf21f1debf42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38b06bbd397785d2ff3ace62c6a4f365" id="r_a38b06bbd397785d2ff3ace62c6a4f365"><td class="memItemLeft" align="right" valign="top"><a id="a38b06bbd397785d2ff3ace62c6a4f365" name="a38b06bbd397785d2ff3ace62c6a4f365"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>LIGHT_MAX</b>&#160;&#160;&#160;100</td></tr>
+<tr class="memdesc:a38b06bbd397785d2ff3ace62c6a4f365"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max brightness 100.0 %. <br /></td></tr>
+<tr class="separator:a38b06bbd397785d2ff3ace62c6a4f365"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66ca5fdd7eb02c496d44aac6b23dc9c3" id="r_a66ca5fdd7eb02c496d44aac6b23dc9c3"><td class="memItemLeft" align="right" valign="top"><a id="a66ca5fdd7eb02c496d44aac6b23dc9c3" name="a66ca5fdd7eb02c496d44aac6b23dc9c3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MOISTURE_MIN</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a66ca5fdd7eb02c496d44aac6b23dc9c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min moisture 0.0 %. <br /></td></tr>
+<tr class="separator:a66ca5fdd7eb02c496d44aac6b23dc9c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7cd6fe4206640300d256b6c4ffdb7e9" id="r_ac7cd6fe4206640300d256b6c4ffdb7e9"><td class="memItemLeft" align="right" valign="top"><a id="ac7cd6fe4206640300d256b6c4ffdb7e9" name="ac7cd6fe4206640300d256b6c4ffdb7e9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MOISTURE_MAX</b>&#160;&#160;&#160;100</td></tr>
+<tr class="memdesc:ac7cd6fe4206640300d256b6c4ffdb7e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max moisture 100.0 %. <br /></td></tr>
+<tr class="separator:ac7cd6fe4206640300d256b6c4ffdb7e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01e6449a7e6bc12e0cd4a7dfebb3403b" id="r_a01e6449a7e6bc12e0cd4a7dfebb3403b"><td class="memItemLeft" align="right" valign="top"><a id="a01e6449a7e6bc12e0cd4a7dfebb3403b" name="a01e6449a7e6bc12e0cd4a7dfebb3403b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_CLEAR_MIN</b>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:a01e6449a7e6bc12e0cd4a7dfebb3403b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min color clear channel raw value (dark threshold) <br /></td></tr>
+<tr class="separator:a01e6449a7e6bc12e0cd4a7dfebb3403b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b6e02e63a02da0faa8fe9e9228f77d5" id="r_a6b6e02e63a02da0faa8fe9e9228f77d5"><td class="memItemLeft" align="right" valign="top"><a id="a6b6e02e63a02da0faa8fe9e9228f77d5" name="a6b6e02e63a02da0faa8fe9e9228f77d5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_CLEAR_MAX</b>&#160;&#160;&#160;5000</td></tr>
+<tr class="memdesc:a6b6e02e63a02da0faa8fe9e9228f77d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max color clear channel raw value (saturation threshold) <br /></td></tr>
+<tr class="separator:a6b6e02e63a02da0faa8fe9e9228f77d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25540112e5ab1b3a21341c5149998d57" id="r_a25540112e5ab1b3a21341c5149998d57"><td class="memItemLeft" align="right" valign="top"><a id="a25540112e5ab1b3a21341c5149998d57" name="a25540112e5ab1b3a21341c5149998d57"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RED_MIN</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a25540112e5ab1b3a21341c5149998d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min red channel raw value. <br /></td></tr>
+<tr class="separator:a25540112e5ab1b3a21341c5149998d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c82e201d70da8303a62acd73cbdc9bd" id="r_a4c82e201d70da8303a62acd73cbdc9bd"><td class="memItemLeft" align="right" valign="top"><a id="a4c82e201d70da8303a62acd73cbdc9bd" name="a4c82e201d70da8303a62acd73cbdc9bd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RED_MAX</b>&#160;&#160;&#160;5000</td></tr>
+<tr class="memdesc:a4c82e201d70da8303a62acd73cbdc9bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max red channel raw value. <br /></td></tr>
+<tr class="separator:a4c82e201d70da8303a62acd73cbdc9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73660ba4fb20abf93a3e54e04f133381" id="r_a73660ba4fb20abf93a3e54e04f133381"><td class="memItemLeft" align="right" valign="top"><a id="a73660ba4fb20abf93a3e54e04f133381" name="a73660ba4fb20abf93a3e54e04f133381"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GREEN_MIN</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:a73660ba4fb20abf93a3e54e04f133381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min green channel raw value. <br /></td></tr>
+<tr class="separator:a73660ba4fb20abf93a3e54e04f133381"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb23383e91ea123e15950b4913bbddc3" id="r_afb23383e91ea123e15950b4913bbddc3"><td class="memItemLeft" align="right" valign="top"><a id="afb23383e91ea123e15950b4913bbddc3" name="afb23383e91ea123e15950b4913bbddc3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GREEN_MAX</b>&#160;&#160;&#160;5000</td></tr>
+<tr class="memdesc:afb23383e91ea123e15950b4913bbddc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max green channel raw value. <br /></td></tr>
+<tr class="separator:afb23383e91ea123e15950b4913bbddc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd01aec0e3977a993bb01df3c15d5197" id="r_acd01aec0e3977a993bb01df3c15d5197"><td class="memItemLeft" align="right" valign="top"><a id="acd01aec0e3977a993bb01df3c15d5197" name="acd01aec0e3977a993bb01df3c15d5197"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BLUE_MIN</b>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:acd01aec0e3977a993bb01df3c15d5197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min blue channel raw value. <br /></td></tr>
+<tr class="separator:acd01aec0e3977a993bb01df3c15d5197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0651083fdccdfbc5316913c1e73ffd5c" id="r_a0651083fdccdfbc5316913c1e73ffd5c"><td class="memItemLeft" align="right" valign="top"><a id="a0651083fdccdfbc5316913c1e73ffd5c" name="a0651083fdccdfbc5316913c1e73ffd5c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BLUE_MAX</b>&#160;&#160;&#160;5000</td></tr>
+<tr class="memdesc:a0651083fdccdfbc5316913c1e73ffd5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max blue channel raw value. <br /></td></tr>
+<tr class="separator:a0651083fdccdfbc5316913c1e73ffd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa63bf886c5eee67e9ee9688ed816e39c" id="r_aa63bf886c5eee67e9ee9688ed816e39c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#aa63bf886c5eee67e9ee9688ed816e39c">ACCEL_MIN</a>&#160;&#160;&#160;-2</td></tr>
+<tr class="memdesc:aa63bf886c5eee67e9ee9688ed816e39c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Min accel.  <br /></td></tr>
+<tr class="separator:aa63bf886c5eee67e9ee9688ed816e39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58de3145c0c1e32ca4a7ca67dee79a28" id="r_a58de3145c0c1e32ca4a7ca67dee79a28"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8c.html#a58de3145c0c1e32ca4a7ca67dee79a28">ACCEL_MAX</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memdesc:a58de3145c0c1e32ca4a7ca67dee79a28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Max accel.  <br /></td></tr>
+<tr class="separator:a58de3145c0c1e32ca4a7ca67dee79a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ce8e6a4a671d49104c0f1284b7928dc" id="r_a2ce8e6a4a671d49104c0f1284b7928dc"><td class="memItemLeft" align="right" valign="top"><a id="a2ce8e6a4a671d49104c0f1284b7928dc" name="a2ce8e6a4a671d49104c0f1284b7928dc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_TEMP</b>&#160;&#160;&#160;(1U &lt;&lt; 0)</td></tr>
+<tr class="separator:a2ce8e6a4a671d49104c0f1284b7928dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdbdf2c3ea58b863d7ce17018aa78ec6" id="r_abdbdf2c3ea58b863d7ce17018aa78ec6"><td class="memItemLeft" align="right" valign="top"><a id="abdbdf2c3ea58b863d7ce17018aa78ec6" name="abdbdf2c3ea58b863d7ce17018aa78ec6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_HUM</b>&#160;&#160;&#160;(1U &lt;&lt; 1)</td></tr>
+<tr class="separator:abdbdf2c3ea58b863d7ce17018aa78ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a888acaf305920c20a5fa0c5f67dc1249" id="r_a888acaf305920c20a5fa0c5f67dc1249"><td class="memItemLeft" align="right" valign="top"><a id="a888acaf305920c20a5fa0c5f67dc1249" name="a888acaf305920c20a5fa0c5f67dc1249"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_LIGHT</b>&#160;&#160;&#160;(1U &lt;&lt; 2)</td></tr>
+<tr class="separator:a888acaf305920c20a5fa0c5f67dc1249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74f3926e1621049dc05005f671defa7c" id="r_a74f3926e1621049dc05005f671defa7c"><td class="memItemLeft" align="right" valign="top"><a id="a74f3926e1621049dc05005f671defa7c" name="a74f3926e1621049dc05005f671defa7c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_MOISTURE</b>&#160;&#160;&#160;(1U &lt;&lt; 3)</td></tr>
+<tr class="separator:a74f3926e1621049dc05005f671defa7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a093490a85c75aa71b3deb5ba9430115b" id="r_a093490a85c75aa71b3deb5ba9430115b"><td class="memItemLeft" align="right" valign="top"><a id="a093490a85c75aa71b3deb5ba9430115b" name="a093490a85c75aa71b3deb5ba9430115b"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_COLOR</b>&#160;&#160;&#160;(1U &lt;&lt; 4)</td></tr>
+<tr class="separator:a093490a85c75aa71b3deb5ba9430115b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6cc93443ef8f1843fc38c5a7654da38" id="r_af6cc93443ef8f1843fc38c5a7654da38"><td class="memItemLeft" align="right" valign="top"><a id="af6cc93443ef8f1843fc38c5a7654da38" name="af6cc93443ef8f1843fc38c5a7654da38"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>FLAG_ACCEL</b>&#160;&#160;&#160;(1U &lt;&lt; 5)</td></tr>
+<tr class="separator:af6cc93443ef8f1843fc38c5a7654da38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -158,14 +255,88 @@ Functions</h2></td></tr>
 <tr class="separator:a840291bc02cba5474a4cb46a9b9566fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Main application for the interrupt-driven brightness control system. </p>
-<p>This application reads ambient light using a phototransistor connected to an ADC and controls an RGB LED accordingly. A user button toggles the operating mode (OFF, NORMAL, BLUE). Button presses are processed via interrupts and deferred work. Press duration determines action.</p>
-<p>A brightness thread autonomously performs periodic brightness measurements in NORMAL mode.</p>
-<p>Button behavior:</p><ul>
-<li>Short press (&lt; 1 s): Toggles between NORMAL and BLUE modes.</li>
-<li>Long press (≥ 1 s): Turns the system ON or OFF immediately. </li>
+<div class="textblock"><p>to agps and cogpsrols an RGB LED accordingly. </p>
+<p>A user button toggles</p>
+<p>Plant Monitoring System main module</p>
+<p>Monitors plant conditions (light, soil moisture, temperature/humidity, accelerometer, color sensor) and GPS location. Provides RGB LED visual feedback and button-controlled operating modes.</p>
+<p>Operating modes:</p><ul>
+<li>TEST_MODE: RGB indicates dominant color.</li>
+<li>NORMAL_MODE: Periodic measurements, RGB alerts for out-of-range sensors.</li>
+<li>ADVANCED_MODE: Minimal feedback, system ON.</li>
 </ul>
-</div><h2 class="groupheader">Function Documentation</h2>
+<p>Button behavior:</p><ul>
+<li>Toogles between TEST, NORMAL, and ADVANCED modes on each press. </li>
+</ul>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a58de3145c0c1e32ca4a7ca67dee79a28" name="a58de3145c0c1e32ca4a7ca67dee79a28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58de3145c0c1e32ca4a7ca67dee79a28">&#9670;&#160;</a></span>ACCEL_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ACCEL_MAX&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Max accel. </p>
+<p>2.00 g </p>
+
+</div>
+</div>
+<a id="aa63bf886c5eee67e9ee9688ed816e39c" name="aa63bf886c5eee67e9ee9688ed816e39c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa63bf886c5eee67e9ee9688ed816e39c">&#9670;&#160;</a></span>ACCEL_MIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ACCEL_MIN&#160;&#160;&#160;-2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Min accel. </p>
+<p>-2.00 g </p>
+
+</div>
+</div>
+<a id="a9acb14595bfb9523655370c1bb477506" name="a9acb14595bfb9523655370c1bb477506"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9acb14595bfb9523655370c1bb477506">&#9670;&#160;</a></span>TEMP_MAX</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TEMP_MAX&#160;&#160;&#160;50</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Max temp. </p>
+<p>50.0 C </p>
+
+</div>
+</div>
+<a id="ad7d20c7d1ec1729bf6892ddabbac3ab0" name="ad7d20c7d1ec1729bf6892ddabbac3ab0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7d20c7d1ec1729bf6892ddabbac3ab0">&#9670;&#160;</a></span>TEMP_MIN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TEMP_MIN&#160;&#160;&#160;-10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Min temp. </p>
+<p>-10.0 C </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a840291bc02cba5474a4cb46a9b9566fe" name="a840291bc02cba5474a4cb46a9b9566fe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a840291bc02cba5474a4cb46a9b9566fe">&#9670;&#160;</a></span>main()</h2>
 

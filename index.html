@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: Simple Brightness Control System</title>
+<title>Plant Monitoring System: Plant Monitoring System</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -123,217 +123,10 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Simple Brightness Control System </div></div>
+  <div class="headertitle"><div class="title">Plant Monitoring System </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_main"></a> </p>
-<h1><a class="anchor" id="autotoc_md1"></a>
-Problem statement</h1>
-<p>Two working modes: <b>NORMAL</b> and <b>BLUE</b> modes. The <b>USER button</b> switches the working mode.</p>
-<p>A <b>brightness measure</b> must be taken every <b>2 seconds</b> in <b>NORMAL mode</b>. Depending on the read value, the <b>RGB LED</b>:</p><ul>
-<li>turns <b>RED</b> if brightness is below 33%.</li>
-<li>turns <b>YELLOW</b> if brightness is between 33 and 66%.</li>
-<li>turns <b>GREEN</b> if brightness is above 66%.</li>
-</ul>
-<p>The <b>RGB LED</b> may be controlled either using digital or bus outputs.</p>
-<p>In <b>BLUE mode</b> the <b>RGB LED</b> is <b>BLUE</b> and <b>no brightness measures</b> are taken until back in <b>NORMAL mode</b>.</p>
-<p>In both modes the information is displayed on the Zephyr terminal.</p>
-<p>To control <b>brightness measure</b> and <b>serial connection</b> with an independent thread (using a new file for it).</p>
-<p>If a long press (1 second long) is detected in the <b>USER button</b>, the system enters <b>OFF mode</b>. In such case, <b>RGB LED</b> turns OFF and <b>serial connection</b> sends the message “System OFF”.</p>
-<hr  />
-<h1><a class="anchor" id="autotoc_md3"></a>
-Overview</h1>
-<p>This system reads ambient brightness using a <b>phototransistor</b> and controls an <b>RGB LED</b> based on the measured light. A <b>user button</b> allows switching between different modes and turning the system ON/OFF. The system is built using <b>Zephyr RTOS</b>, with a separate thread for brightness measurement.</p>
-<hr  />
-<h1><a class="anchor" id="autotoc_md5"></a>
-Components</h1>
-<h2><a class="anchor" id="autotoc_md6"></a>
-1. RGB LED</h2>
-<ul>
-<li>Connected via three GPIO pins (Red, Green, Blue). <br  />
-</li>
-<li>Can display colors like <b>Red, Yellow, Green, Blue</b> depending on mode and brightness. <br  />
-</li>
-<li>Controlled via functions in <code><a class="el" href="rgb__led_8c.html" title="Implementation of RGB LED control using GPIO pins.">rgb_led.c</a></code>:<ul>
-<li><code><a class="el" href="rgb__led_8c.html#a2a7489c0dc86c85076b62d0e32b08060" title="Set LED color to red only.">rgb_red()</a></code>, <code><a class="el" href="rgb__led_8c.html#a8105a65c9b53c677e01817aaa41d1228" title="Set LED color to green only.">rgb_green()</a></code>, <code><a class="el" href="rgb__led_8c.html#a69942e746ba81db03e2affd8e9ae62c9" title="Set LED color to blue only.">rgb_blue()</a></code>, <code><a class="el" href="rgb__led_8c.html#acadd86c2ce8020db57b8b0a1afcde95f" title="Set LED color to yellow (red + green).">rgb_yellow()</a></code>, etc. <br  />
-</li>
-<li><code><a class="el" href="rgb__led_8c.html#a8253ee4c4326d609825b1f6df5329749" title="Write a bitmask value to the RGB LED pins.">rgb_led_write()</a></code> writes a bitmask to the pins.</li>
-</ul>
-</li>
-<li>Can be controlled using either digital or bus outputs.</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
-2. Phototransistor (Light Sensor)</h2>
-<ul>
-<li>Connected to an ADC channel. <br  />
-</li>
-<li>Measures ambient light voltage. <br  />
-</li>
-<li>Functions in <code><a class="el" href="adc_8c.html" title="Implementation of ADC initialization and reading functions.">adc.c</a></code>:<ul>
-<li><code><a class="el" href="adc_8c.html#af13c4fdbf602b9447997c3a75d9c730e" title="Read the ADC voltage in millivolts.">adc_read_voltage()</a></code> → returns measured voltage in millivolts.</li>
-<li><code><a class="el" href="adc_8c.html#aab46b67e0e3335450395aede3518f878" title="Read a normalized ADC value between 0.0 and 1.0.">adc_read_normalized()</a></code> → returns normalized brightness (0–1).</li>
-</ul>
-</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md8"></a>
-3. User Button</h2>
-<ul>
-<li>Connected via a GPIO pin with interrupt capability. <br  />
-</li>
-<li>Short press → switches between <b>NORMAL</b> and <b>BLUE</b> modes. <br  />
-</li>
-<li>Long press (1 second) → toggles <b>OFF mode</b>. <br  />
-</li>
-<li>Handled via <code><a class="el" href="user__button_8c.html" title="GPIO-based user button initialization with interrupt support.">user_button.c</a></code>:<ul>
-<li><code><a class="el" href="user__button_8c.html#a9866fa1d764ff7d9dc0e3706b7eb6dff" title="Initialize the user button GPIO and configure edge interrupts.">button_init()</a></code> → initialize GPIO.</li>
-<li><code><a class="el" href="user__button_8c.html#a62624520184701e58bcb7fb0f8de1fb8" title="Attach an ISR callback function to the button interrupt.">button_set_callback()</a></code> → attach ISR.</li>
-</ul>
-</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md9"></a>
-4. Brightness Thread</h2>
-<ul>
-<li>Runs independently from the main loop. <br  />
-</li>
-<li>Periodically reads the ADC and converts voltage to <b>brightness percentage</b>. <br  />
-</li>
-<li>Does <b>not decide mode</b>; it only updates the shared context with the measured brightness.</li>
-<li>Serially prints brightness information to the Zephyr terminal for debugging.</li>
-</ul>
-<hr  />
-<h1><a class="anchor" id="autotoc_md11"></a>
-System Modes</h1>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Mode   </th><th class="markdownTableHeadNone">Behavior    </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><b>OFF</b>   </td><td class="markdownTableBodyNone">RGB LED is off. No brightness measurement. Zephyr terminal prints "System OFF".    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><b>NORMAL</b>   </td><td class="markdownTableBodyNone">RGB LED color depends on brightness: <br  />
- - &lt; 33% → Red <br  />
- - 33–66% → Yellow <br  />
- - &gt; 66% → Green <br  />
- Brightness measurements occur every 2 seconds.    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><b>BLUE</b>   </td><td class="markdownTableBodyNone">RGB LED turns blue. No brightness measurements are performed until returning to NORMAL mode.   </td></tr>
-</table>
-<hr  />
-<h1><a class="anchor" id="autotoc_md13"></a>
-System Operation</h1>
-<ol type="1">
-<li><b>Initialization</b><ul>
-<li>Initialize RGB LED, ADC, and User Button. <br  />
-</li>
-<li>Create a <b>shared context</b> (<code>struct <a class="el" href="structsystem__context.html" title="Shared system context between main and brightness thread.">system_context</a></code>) containing:<ul>
-<li>Current mode (<code>ctx.mode</code>) <br  />
-</li>
-<li>Last brightness value (<code>ctx.brightness</code>) <br  />
-</li>
-<li>ADC configuration (<code>ctx.adc</code>) <br  />
-</li>
-<li>Mutex for thread-safe access (<code>ctx.lock</code>) <br  />
-</li>
-</ul>
-</li>
-<li>Start the <b>brightness thread</b>, which updates <code>ctx.brightness</code> periodically.</li>
-</ul>
-</li>
-<li><b>User Button Handling (Main Loop)</b><ul>
-<li>Short press → toggles <b>NORMAL ↔ BLUE</b> mode. <br  />
-</li>
-<li>Long press → toggles <b>OFF ↔ NORMAL</b> mode. <br  />
-</li>
-<li>Uses GPIO reads and timestamps to detect press duration.</li>
-</ul>
-</li>
-<li><b>LED Control (Main Loop)</b><ul>
-<li>Main loop reads:<ul>
-<li>Current system mode (<code>ctx.mode</code>) <br  />
-</li>
-<li>Last brightness value (<code>ctx.brightness</code>) <br  />
-</li>
-</ul>
-</li>
-<li>Sets the RGB LED accordingly:<ul>
-<li><code>OFF_MODE</code> → LED off <br  />
-</li>
-<li><code>BLUE_MODE</code> → LED blue <br  />
-</li>
-<li><code>NORMAL_MODE</code> → LED color based on brightness<ul>
-<li>&lt; 33% → RED</li>
-<li>33–66% → YELLOW</li>
-<li>&gt; 66% → GREEN</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><b>Brightness Measurement (Thread)</b><ul>
-<li>Runs every 2 seconds <b>only if mode is NORMAL</b>. <br  />
-</li>
-<li>Reads ADC voltage → converts to percentage: <br  />
- <div class="fragment"><div class="line">percent = (mv / vref_mv) * 100</div>
-</div><!-- fragment --></li>
-<li>Updates <code>ctx.brightness</code> with mutex protection. <br  />
-</li>
-<li>Prints value to console for debugging.</li>
-</ul>
-</li>
-<li><b>Serial Output</b><ul>
-<li>The brightness thread sends measured brightness values to the Zephyr terminal. <br  />
-</li>
-<li>Mode changes (NORMAL, BLUE, OFF) are also printed.</li>
-</ul>
-</li>
-</ol>
-<hr  />
-<h1><a class="anchor" id="autotoc_md15"></a>
-Two Working Modes (Summary)</h1>
-<ul>
-<li><b>NORMAL mode</b>: brightness is measured every 2 seconds. LED changes color based on brightness:<ul>
-<li><b>RED</b> if brightness &lt; 33%</li>
-<li><b>YELLOW</b> if brightness 33–66%</li>
-<li><b>GREEN</b> if brightness &gt; 66%</li>
-</ul>
-</li>
-<li><b>BLUE mode</b>: LED is <b>BLUE</b>, no brightness measurements are taken until returning to NORMAL.</li>
-<li><b>OFF mode</b> (activated by long press): LED turns off and terminal prints “System OFF”.</li>
-<li>User button switches modes:<ul>
-<li>Short press: NORMAL ↔ BLUE</li>
-<li>Long press:<ul>
-<li>If in NORMAL or BLUE → OFF</li>
-<li>If in OFF → NORMAL</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>The system initializes all components and starts in OFF mode.</li>
-</ul>
-<hr  />
-<h1><a class="anchor" id="autotoc_md17"></a>
-Thread &amp; Main Separation</h1>
-<ul>
-<li><b>Main thread</b>:<ul>
-<li>Handles system mode logic and LED control. <br  />
-</li>
-<li>Handles user input (button presses). <br  />
-</li>
-</ul>
-</li>
-<li><b>Brightness thread</b>:<ul>
-<li>Only reads ADC and updates brightness in context. <br  />
-</li>
-<li>Serially prints brightness information. <br  />
-</li>
-</ul>
-</li>
-</ul>
-<p>This separation ensures:</p><ul>
-<li>Responsive button handling and LED updates. <br  />
-</li>
-<li>Independent brightness measurement without blocking the main loop. </li>
-</ul>
+<div class="textblock"><p><a class="anchor" id="md_main"></a>This is the documentation for the Plant Monitoring System project. This system is designed to monitor various environmental parameters to ensure optimal conditions for plant growth. It includes sensors for soil moisture, temperature, humidity, and light intensity, and can send alerts when conditions fall outside of predefined thresholds. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

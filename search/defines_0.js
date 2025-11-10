@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['brightness_5fmeasure_5finterval_5fms_0',['BRIGHTNESS_MEASURE_INTERVAL_MS',['../brightness__thread_8c.html#ac7cb0e4c7b02afacde25490d942065c5',1,'brightness_thread.c']]],
-  ['buffer_5fsize_1',['BUFFER_SIZE',['../adc_8h.html#a6b20d41d6252e9871430c242cb1a56e7',1,'adc.h']]],
-  ['bus_5fsize_2',['BUS_SIZE',['../rgb__led_8h.html#a56412fb9c60e88dc42e7af78b0dbbe5e',1,'rgb_led.h']]]
+  ['accel_5fmax_0',['ACCEL_MAX',['../main_8c.html#a58de3145c0c1e32ca4a7ca67dee79a28',1,'main.c']]],
+  ['accel_5fmin_1',['ACCEL_MIN',['../main_8c.html#aa63bf886c5eee67e9ee9688ed816e39c',1,'main.c']]],
+  ['accel_5frange_2',['ACCEL_RANGE',['../main_8c.html#a16ec7011dea5773b504e875852f35fc1',1,'main.c']]],
+  ['auto_5fincrement_3',['AUTO_INCREMENT',['../color_8h.html#a604a69744422d2db7101f9c9dc8e27a3',1,'color.h']]]
 ];

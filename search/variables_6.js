@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['phototransistor_0',['phototransistor',['../structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0',1,'system_context']]],
-  ['pin_5fcount_1',['pin_count',['../structbus__rgb__led.html#aeeb06e0c364c0e0deb070f2014ce3ba1',1,'bus_rgb_led']]],
-  ['pins_2',['pins',['../structbus__rgb__led.html#a593a5e47d358dc162b147e804768f0f3',1,'bus_rgb_led']]]
+  ['main_5fgps_5fsem_0',['main_gps_sem',['../structsystem__context.html#a838795d3f628b7ce00be37a9048b5d65',1,'system_context']]],
+  ['main_5fsensors_5fsem_1',['main_sensors_sem',['../structsystem__context.html#a8170516a44f70146537f053bed889862',1,'system_context']]],
+  ['mode_2',['mode',['../structsystem__context.html#a497903b46418329ff77e573fe793a374',1,'system_context']]],
+  ['moisture_3',['moisture',['../structsystem__measurement.html#a4f37214238e319b8f3da4b88ebd79407',1,'system_measurement']]]
 ];

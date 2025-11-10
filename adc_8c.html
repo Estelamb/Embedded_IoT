@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: src/sensors/adc/adc.c File Reference</title>
+<title>Plant Monitoring System: src/sensors/adc/adc.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -129,28 +129,30 @@ $(document).ready(function(){initNavTree('adc_8c.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p>Implementation of ADC initialization and reading functions.  
+<p>ADC driver implementation for multi-channel usage in Zephyr.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="adc_8h_source.html">adc.h</a>&quot;</code><br />
+<code>#include &lt;zephyr/drivers/adc.h&gt;</code><br />
+<code>#include &lt;zephyr/kernel.h&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a8a9442659c7139e40dc1f7b19e95c3f2" id="r_a8a9442659c7139e40dc1f7b19e95c3f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#a8a9442659c7139e40dc1f7b19e95c3f2">adc_init</a> (const struct <a class="el" href="structadc__config.html">adc_config</a> *cfg)</td></tr>
-<tr class="memdesc:a8a9442659c7139e40dc1f7b19e95c3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the ADC with the given configuration.  <br /></td></tr>
+<tr class="memdesc:a8a9442659c7139e40dc1f7b19e95c3f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the ADC device by verifying its readiness.  <br /></td></tr>
 <tr class="separator:a8a9442659c7139e40dc1f7b19e95c3f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8267648e9036876e5f6a2f80de946700" id="r_a8267648e9036876e5f6a2f80de946700"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#a8267648e9036876e5f6a2f80de946700">adc_read_raw</a> (int16_t *raw_val)</td></tr>
-<tr class="memdesc:a8267648e9036876e5f6a2f80de946700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw ADC value from the configured channel.  <br /></td></tr>
-<tr class="separator:a8267648e9036876e5f6a2f80de946700"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab46b67e0e3335450395aede3518f878" id="r_aab46b67e0e3335450395aede3518f878"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#aab46b67e0e3335450395aede3518f878">adc_read_normalized</a> (void)</td></tr>
-<tr class="memdesc:aab46b67e0e3335450395aede3518f878"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a normalized ADC value between 0.0 and 1.0.  <br /></td></tr>
-<tr class="separator:aab46b67e0e3335450395aede3518f878"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af13c4fdbf602b9447997c3a75d9c730e" id="r_af13c4fdbf602b9447997c3a75d9c730e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#af13c4fdbf602b9447997c3a75d9c730e">adc_read_voltage</a> (int32_t *out_mv)</td></tr>
-<tr class="memdesc:af13c4fdbf602b9447997c3a75d9c730e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the ADC voltage in millivolts.  <br /></td></tr>
-<tr class="separator:af13c4fdbf602b9447997c3a75d9c730e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d504a637e6f4612dfb6321abc556c71" id="r_a3d504a637e6f4612dfb6321abc556c71"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#a3d504a637e6f4612dfb6321abc556c71">adc_read_raw</a> (const struct <a class="el" href="structadc__config.html">adc_config</a> *cfg, int16_t *raw_val)</td></tr>
+<tr class="memdesc:a3d504a637e6f4612dfb6321abc556c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a raw ADC value from the specified channel.  <br /></td></tr>
+<tr class="separator:a3d504a637e6f4612dfb6321abc556c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f4a6d5e564d182bc2d7acbc3436ae27" id="r_a3f4a6d5e564d182bc2d7acbc3436ae27"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#a3f4a6d5e564d182bc2d7acbc3436ae27">adc_read_normalized</a> (const struct <a class="el" href="structadc__config.html">adc_config</a> *cfg)</td></tr>
+<tr class="memdesc:a3f4a6d5e564d182bc2d7acbc3436ae27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read a normalized ADC value (0.0 - 1.0) from the specified channel.  <br /></td></tr>
+<tr class="separator:a3f4a6d5e564d182bc2d7acbc3436ae27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa389f44399fff831361e0b7d334ea333" id="r_aa389f44399fff831361e0b7d334ea333"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="adc_8c.html#aa389f44399fff831361e0b7d334ea333">adc_read_voltage</a> (const struct <a class="el" href="structadc__config.html">adc_config</a> *cfg, int32_t *out_mv)</td></tr>
+<tr class="memdesc:aa389f44399fff831361e0b7d334ea333"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the ADC value in millivolts from the specified channel.  <br /></td></tr>
+<tr class="separator:aa389f44399fff831361e0b7d334ea333"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementation of ADC initialization and reading functions. </p>
-<p>This module provides routines to configure and read data from an analog-to-digital converter (ADC) device using Zephyr's ADC API. </p>
+<div class="textblock"><p>ADC driver implementation for multi-channel usage in Zephyr. </p>
+<p>This module provides functions to initialize and read from ADC devices using dynamic channel configuration. It supports reading raw ADC values, normalized values, and computed voltages in millivolts. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a8a9442659c7139e40dc1f7b19e95c3f2" name="a8a9442659c7139e40dc1f7b19e95c3f2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8a9442659c7139e40dc1f7b19e95c3f2">&#9670;&#160;</a></span>adc_init()</h2>
@@ -168,19 +170,20 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialize the ADC with the given configuration. </p>
+<p>Initialize the ADC device by verifying its readiness. </p>
+<p>This function only checks if the device specified in the configuration is ready. ADC channels are configured dynamically before each read.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cfg</td><td>Pointer to an <a class="el" href="structadc__config.html" title="ADC configuration structure.">adc_config</a> structure with ADC parameters. </td></tr>
+    <tr><td class="paramname">cfg</td><td>Pointer to an ADC configuration structure. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code. </dd></dl>
 
 </div>
 </div>
-<a id="aab46b67e0e3335450395aede3518f878" name="aab46b67e0e3335450395aede3518f878"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab46b67e0e3335450395aede3518f878">&#9670;&#160;</a></span>adc_read_normalized()</h2>
+<a id="a3f4a6d5e564d182bc2d7acbc3436ae27" name="a3f4a6d5e564d182bc2d7acbc3436ae27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f4a6d5e564d182bc2d7acbc3436ae27">&#9670;&#160;</a></span>adc_read_normalized()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,20 +191,27 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">float adc_read_normalized </td>
           <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structadc__config.html">adc_config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read a normalized ADC value between 0.0 and 1.0. </p>
-<dl class="section return"><dt>Returns</dt><dd>Normalized floating-point value, or -1.0 on error. </dd></dl>
+<p>Read a normalized ADC value (0.0 - 1.0) from the specified channel. </p>
+<p>This function reads the raw ADC value and normalizes it to the range 0.0 to 1.0.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfg</td><td>Pointer to an ADC configuration structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Normalized ADC value as a float, or negative error code on failure. </dd></dl>
 
 </div>
 </div>
-<a id="a8267648e9036876e5f6a2f80de946700" name="a8267648e9036876e5f6a2f80de946700"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8267648e9036876e5f6a2f80de946700">&#9670;&#160;</a></span>adc_read_raw()</h2>
+<a id="a3d504a637e6f4612dfb6321abc556c71" name="a3d504a637e6f4612dfb6321abc556c71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d504a637e6f4612dfb6321abc556c71">&#9670;&#160;</a></span>adc_read_raw()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,26 +219,38 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int adc_read_raw </td>
           <td>(</td>
-          <td class="paramtype">int16_t *&#160;</td>
-          <td class="paramname"><em>raw_val</em></td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structadc__config.html">adc_config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>raw_val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read a raw ADC value from the configured channel. </p>
+<p>Read a raw ADC value from the specified channel. </p>
+<p>This function dynamically configures the ADC channel using the provided configuration and reads one raw sample into the provided buffer.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">raw_val</td><td>Pointer where the raw ADC sample will be stored. </td></tr>
+    <tr><td class="paramname">cfg</td><td>Pointer to an ADC configuration structure. </td></tr>
+    <tr><td class="paramname">raw_val</td><td>Pointer to store the raw ADC value. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code. </dd></dl>
 
 </div>
 </div>
-<a id="af13c4fdbf602b9447997c3a75d9c730e" name="af13c4fdbf602b9447997c3a75d9c730e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af13c4fdbf602b9447997c3a75d9c730e">&#9670;&#160;</a></span>adc_read_voltage()</h2>
+<a id="aa389f44399fff831361e0b7d334ea333" name="aa389f44399fff831361e0b7d334ea333"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa389f44399fff831361e0b7d334ea333">&#9670;&#160;</a></span>adc_read_voltage()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,22 +258,33 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int adc_read_voltage </td>
           <td>(</td>
-          <td class="paramtype">int32_t *&#160;</td>
-          <td class="paramname"><em>out_mv</em></td><td>)</td>
+          <td class="paramtype">const struct <a class="el" href="structadc__config.html">adc_config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int32_t *&#160;</td>
+          <td class="paramname"><em>out_mv</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read the ADC voltage in millivolts. </p>
-<p>Converts the raw ADC sample to a voltage using the configured reference.</p>
+<p>Read the ADC value in millivolts from the specified channel. </p>
+<p>This function reads the raw ADC value and converts it to millivolts based on the provided reference voltage.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out_mv</td><td>Pointer where the result voltage (mV) will be stored. </td></tr>
+    <tr><td class="paramname">cfg</td><td>Pointer to an ADC configuration structure. </td></tr>
+    <tr><td class="paramname">out_mv</td><td>Pointer to store the ADC voltage in millivolts. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code. </dd></dl>
 
 </div>
 </div>

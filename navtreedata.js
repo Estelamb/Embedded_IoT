@@ -24,8 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Brightness Control", "index.html", [
-    [ "Simple Brightness Control System", "index.html", "index" ],
+  [ "Plant Monitoring System", "index.html", [
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -48,7 +47,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"adc_8c.html"
+"accel_8h_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

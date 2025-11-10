@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: src/brightness_thread.c File Reference</title>
+<title>Plant Monitoring System: gps_data_t Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -97,7 +97,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('brightness__thread_8c.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structgps__data__t.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -124,72 +124,41 @@ $(document).ready(function(){initNavTree('brightness__thread_8c.html',''); initR
 
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">brightness_thread.c File Reference</div></div>
+<a href="#pub-attribs">Data Fields</a>  </div>
+  <div class="headertitle"><div class="title">gps_data_t Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Implementation of the brightness measurement thread.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="brightness__thread_8h_source.html">brightness_thread.h</a>&quot;</code><br />
-<code>#include &lt;zephyr/kernel.h&gt;</code><br />
-<code>#include &lt;zephyr/sys/printk.h&gt;</code><br />
-</div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a713f45d4301007496def1bcdb4efd007" id="r_a713f45d4301007496def1bcdb4efd007"><td class="memItemLeft" align="right" valign="top"><a id="a713f45d4301007496def1bcdb4efd007" name="a713f45d4301007496def1bcdb4efd007"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BRIGHTNESS_THREAD_STACK_SIZE</b>&#160;&#160;&#160;1024</td></tr>
-<tr class="separator:a713f45d4301007496def1bcdb4efd007"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d879722308a7182e7b5d8947dc4f268" id="r_a6d879722308a7182e7b5d8947dc4f268"><td class="memItemLeft" align="right" valign="top"><a id="a6d879722308a7182e7b5d8947dc4f268" name="a6d879722308a7182e7b5d8947dc4f268"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BRIGHTNESS_THREAD_PRIORITY</b>&#160;&#160;&#160;5</td></tr>
-<tr class="separator:a6d879722308a7182e7b5d8947dc4f268"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7cb0e4c7b02afacde25490d942065c5" id="r_ac7cb0e4c7b02afacde25490d942065c5"><td class="memItemLeft" align="right" valign="top"><a id="ac7cb0e4c7b02afacde25490d942065c5" name="ac7cb0e4c7b02afacde25490d942065c5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BRIGHTNESS_MEASURE_INTERVAL_MS</b>&#160;&#160;&#160;2000</td></tr>
-<tr class="memdesc:ac7cb0e4c7b02afacde25490d942065c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval when in NORMAL mode. <br /></td></tr>
-<tr class="separator:ac7cb0e4c7b02afacde25490d942065c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:adfb7b2d7b7b278c4c8c6ab363b96adae" id="r_adfb7b2d7b7b278c4c8c6ab363b96adae"><td class="memItemLeft" align="right" valign="top"><a id="adfb7b2d7b7b278c4c8c6ab363b96adae" name="adfb7b2d7b7b278c4c8c6ab363b96adae"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>K_THREAD_STACK_DEFINE</b> (brightness_stack, BRIGHTNESS_THREAD_STACK_SIZE)</td></tr>
-<tr class="memdesc:adfb7b2d7b7b278c4c8c6ab363b96adae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack allocation for the brightness thread. <br /></td></tr>
-<tr class="separator:adfb7b2d7b7b278c4c8c6ab363b96adae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2b89a29a90fbc8dadd3564119a33679" id="r_ab2b89a29a90fbc8dadd3564119a33679"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="brightness__thread_8c.html#ab2b89a29a90fbc8dadd3564119a33679">start_brightness_thread</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx)</td></tr>
-<tr class="memdesc:ab2b89a29a90fbc8dadd3564119a33679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the brightness measurement thread.  <br /></td></tr>
-<tr class="separator:ab2b89a29a90fbc8dadd3564119a33679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Data Fields</h2></td></tr>
+<tr class="memitem:ae7572fb625cd90ec74b13626d3bbb1f3" id="r_ae7572fb625cd90ec74b13626d3bbb1f3"><td class="memItemLeft" align="right" valign="top"><a id="ae7572fb625cd90ec74b13626d3bbb1f3" name="ae7572fb625cd90ec74b13626d3bbb1f3"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>lat</b></td></tr>
+<tr class="separator:ae7572fb625cd90ec74b13626d3bbb1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dc2daf738f786abde53243bfbafb7ab" id="r_a8dc2daf738f786abde53243bfbafb7ab"><td class="memItemLeft" align="right" valign="top"><a id="a8dc2daf738f786abde53243bfbafb7ab" name="a8dc2daf738f786abde53243bfbafb7ab"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>lon</b></td></tr>
+<tr class="separator:a8dc2daf738f786abde53243bfbafb7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab784c4431f82ecd9141862471d84c34f" id="r_ab784c4431f82ecd9141862471d84c34f"><td class="memItemLeft" align="right" valign="top"><a id="ab784c4431f82ecd9141862471d84c34f" name="ab784c4431f82ecd9141862471d84c34f"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>alt</b></td></tr>
+<tr class="separator:ab784c4431f82ecd9141862471d84c34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64030c9dd3b2cfd7e1e1c397ac942065" id="r_a64030c9dd3b2cfd7e1e1c397ac942065"><td class="memItemLeft" align="right" valign="top"><a id="a64030c9dd3b2cfd7e1e1c397ac942065" name="a64030c9dd3b2cfd7e1e1c397ac942065"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>sats</b></td></tr>
+<tr class="separator:a64030c9dd3b2cfd7e1e1c397ac942065"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97affbec2705a3c7735886d8e477b59c" id="r_a97affbec2705a3c7735886d8e477b59c"><td class="memItemLeft" align="right" valign="top"><a id="a97affbec2705a3c7735886d8e477b59c" name="a97affbec2705a3c7735886d8e477b59c"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>hdop</b></td></tr>
+<tr class="separator:a97affbec2705a3c7735886d8e477b59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e8ad5ef1073e54f0fe81d251ebdf233" id="r_a1e8ad5ef1073e54f0fe81d251ebdf233"><td class="memItemLeft" align="right" valign="top"><a id="a1e8ad5ef1073e54f0fe81d251ebdf233" name="a1e8ad5ef1073e54f0fe81d251ebdf233"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><b>utc_time</b> [16]</td></tr>
+<tr class="separator:a1e8ad5ef1073e54f0fe81d251ebdf233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementation of the brightness measurement thread. </p>
-<p>The brightness thread runs continuously, checking the current operating mode stored in the shared context. When the mode is NORMAL, it periodically reads the ADC value corresponding to the ambient light level, converts it to a percentage, and updates the shared context. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="ab2b89a29a90fbc8dadd3564119a33679" name="ab2b89a29a90fbc8dadd3564119a33679"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2b89a29a90fbc8dadd3564119a33679">&#9670;&#160;</a></span>start_brightness_thread()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void start_brightness_thread </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structsystem__context.html">system_context</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Starts the brightness measurement thread. </p>
-<p>Initializes and starts the brightness measurement thread. </p>
-
-</div>
-</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/sensors/gps/<a class="el" href="gps_8h_source.html">gps.h</a></li>
+</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="brightness__thread_8c.html">brightness_thread.c</a></li>
+    <li class="navelem"><a class="el" href="structgps__data__t.html">gps_data_t</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

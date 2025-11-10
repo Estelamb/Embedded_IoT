@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['brightness_20control_20system_0',['Simple Brightness Control System',['../index.html',1,'']]]
+  ['monitoring_20system_0',['Plant Monitoring System',['../index.html',1,'']]]
 ];

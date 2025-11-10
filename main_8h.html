@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: src/main.h File Reference</title>
+<title>Plant Monitoring System: src/main.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -125,6 +125,7 @@ $(document).ready(function(){initNavTree('main_8h.html',''); initResizable(); })
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">main.h File Reference</div></div>
 </div><!--header-->
@@ -135,20 +136,42 @@ $(document).ready(function(){initNavTree('main_8h.html',''); initResizable(); })
 <div class="textblock"><code>#include &lt;zephyr/kernel.h&gt;</code><br />
 <code>#include &lt;zephyr/sys/atomic.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="adc_8h_source.html">sensors/adc/adc.h</a>&quot;</code><br />
+<code>#include &quot;sensors/i2c/i2c.h&quot;</code><br />
+<code>#include &quot;sensors/i2c/accel.h&quot;</code><br />
+<code>#include &quot;sensors/i2c/temp_hum.h&quot;</code><br />
+<code>#include &quot;<a class="el" href="color_8h_source.html">sensors/i2c/color.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="gps_8h_source.html">sensors/gps/gps.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="rgb__led_8h_source.html">sensors/led/rgb_led.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="board__led_8h_source.html">sensors/led/board_led.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="user__button_8h_source.html">sensors/user_button/user_button.h</a>&quot;</code><br />
 </div>
 <p><a href="main_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__context.html">system_context</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared system context between main and brightness thread.  <a href="structsystem__context.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared system context between main, sensors thread and gps thread.  <a href="structsystem__context.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__measurement.html">system_measurement</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared system measurement between main, sensors thread and gps thread.  <a href="structsystem__measurement.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ab909f9f81838bb1a709819e54cf4359e" id="r_ab909f9f81838bb1a709819e54cf4359e"><td class="memItemLeft" align="right" valign="top"><a id="ab909f9f81838bb1a709819e54cf4359e" name="ab909f9f81838bb1a709819e54cf4359e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_MODE_CADENCE</b>&#160;&#160;&#160;2000</td></tr>
+<tr class="memdesc:ab909f9f81838bb1a709819e54cf4359e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval in TEST mode (ms). <br /></td></tr>
+<tr class="separator:ab909f9f81838bb1a709819e54cf4359e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f6260dacee6f9f8c5fd36141f018a68" id="r_a8f6260dacee6f9f8c5fd36141f018a68"><td class="memItemLeft" align="right" valign="top"><a id="a8f6260dacee6f9f8c5fd36141f018a68" name="a8f6260dacee6f9f8c5fd36141f018a68"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NORMAL_MODE_CADENCE</b>&#160;&#160;&#160;30000</td></tr>
+<tr class="memdesc:a8f6260dacee6f9f8c5fd36141f018a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval in NORMAL mode (ms). <br /></td></tr>
+<tr class="separator:a8f6260dacee6f9f8c5fd36141f018a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a6e4cea4b6246f491c526211f5405627d" id="r_a6e4cea4b6246f491c526211f5405627d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a> { <b>OFF_MODE</b> = 0
+<tr class="memitem:a6e4cea4b6246f491c526211f5405627d" id="r_a6e4cea4b6246f491c526211f5405627d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a> { <b>TEST_MODE</b> = 0
 , <b>NORMAL_MODE</b>
-, <b>BLUE_MODE</b>
+, <b>ADVANCED_MODE</b>
  }</td></tr>
 <tr class="memdesc:a6e4cea4b6246f491c526211f5405627d"><td class="mdescLeft">&#160;</td><td class="mdescRight">System operating modes.  <a href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">More...</a><br /></td></tr>
 <tr class="separator:a6e4cea4b6246f491c526211f5405627d"><td class="memSeparator" colspan="2">&#160;</td></tr>

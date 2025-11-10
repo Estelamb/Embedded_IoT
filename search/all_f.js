@@ -1,20 +1,6 @@
 var searchData=
 [
-  ['ref_0',['ref',['../structadc__config.html#afc43c6ed07214f3167ed6223ba3f7cba',1,'adc_config']]],
-  ['resolution_1',['resolution',['../structadc__config.html#a3b3cfed37e9b901905b7a3c6a45ad14c',1,'adc_config']]],
-  ['rgb_20led_2',['1. RGB LED',['../index.html#autotoc_md6',1,'']]],
-  ['rgb_5fblack_3',['rgb_black',['../rgb__led_8c.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fblue_4',['rgb_blue',['../rgb__led_8c.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fcyan_5',['rgb_cyan',['../rgb__led_8c.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fgreen_6',['rgb_green',['../rgb__led_8c.html#a8105a65c9b53c677e01817aaa41d1228',1,'rgb_green(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a8105a65c9b53c677e01817aaa41d1228',1,'rgb_green(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_2ec_7',['rgb_led.c',['../rgb__led_8c.html',1,'']]],
-  ['rgb_5fled_2eh_8',['rgb_led.h',['../rgb__led_8h.html',1,'']]],
-  ['rgb_5fled_5finit_9',['rgb_led_init',['../rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848',1,'rgb_led_init(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8c.html#a4d37c0e4277f62fd9cff6431baf6a848',1,'rgb_led_init(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_5foff_10',['rgb_led_off',['../rgb__led_8c.html#a85db3995642fedac5456fef4bd9ecf49',1,'rgb_led_off(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49',1,'rgb_led_off(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_5fon_11',['rgb_led_on',['../rgb__led_8c.html#ad71ce397299423dc9d86d40a866e64e1',1,'rgb_led_on(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1',1,'rgb_led_on(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_5fwrite_12',['rgb_led_write',['../rgb__led_8c.html#a8253ee4c4326d609825b1f6df5329749',1,'rgb_led_write(struct bus_rgb_led *rgb_led, int value):&#160;rgb_led.c'],['../rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749',1,'rgb_led_write(struct bus_rgb_led *rgb_led, int value):&#160;rgb_led.c']]],
-  ['rgb_5fpurple_13',['rgb_purple',['../rgb__led_8c.html#a8241f3fcf6f859124c2e1304b00220e2',1,'rgb_purple(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2',1,'rgb_purple(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fred_14',['rgb_red',['../rgb__led_8c.html#a2a7489c0dc86c85076b62d0e32b08060',1,'rgb_red(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060',1,'rgb_red(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fwhite_15',['rgb_white',['../rgb__led_8c.html#a0867d776bfa4f41e533e8be89a54b02e',1,'rgb_white(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0867d776bfa4f41e533e8be89a54b02e',1,'rgb_white(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fyellow_16',['rgb_yellow',['../rgb__led_8c.html#acadd86c2ce8020db57b8b0a1afcde95f',1,'rgb_yellow(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#acadd86c2ce8020db57b8b0a1afcde95f',1,'rgb_yellow(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]]
+  ['user_5fbutton_0',['user_button',['../structuser__button.html',1,'']]],
+  ['user_5fbutton_2ec_1',['user_button.c',['../user__button_8c.html',1,'']]],
+  ['user_5fbutton_2eh_2',['user_button.h',['../user__button_8h.html',1,'']]]
 ];

@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Brightness Control: adc_config Struct Reference</title>
+<title>Plant Monitoring System: adc_config Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Brightness Control
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('structadc__config.html',''); initResiz
 Data Fields</h2></td></tr>
 <tr class="memitem:a4c71fc9ade4de7925354cc54fcbfe204" id="r_a4c71fc9ade4de7925354cc54fcbfe204"><td class="memItemLeft" align="right" valign="top"><a id="a4c71fc9ade4de7925354cc54fcbfe204" name="a4c71fc9ade4de7925354cc54fcbfe204"></a>
 const struct device *&#160;</td><td class="memItemRight" valign="bottom"><b>dev</b></td></tr>
-<tr class="memdesc:a4c71fc9ade4de7925354cc54fcbfe204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to ADC device. <br /></td></tr>
+<tr class="memdesc:a4c71fc9ade4de7925354cc54fcbfe204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the ADC device. <br /></td></tr>
 <tr class="separator:a4c71fc9ade4de7925354cc54fcbfe204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d034ebeff23ceab5490ec204015dc04" id="r_a9d034ebeff23ceab5490ec204015dc04"><td class="memItemLeft" align="right" valign="top"><a id="a9d034ebeff23ceab5490ec204015dc04" name="a9d034ebeff23ceab5490ec204015dc04"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>channel_id</b></td></tr>
@@ -167,6 +167,7 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>vref_mv</b></td></
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ADC configuration structure. </p>
+<p>This structure contains the necessary information to configure and read from an ADC channel. Each sensor using the ADC should have its own instance. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/sensors/adc/<a class="el" href="adc_8h_source.html">adc.h</a></li>
 </ul>

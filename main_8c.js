@@ -1,6 +1,26 @@
 var main_8c =
 [
+    [ "main_measurement", "structmain__measurement.html", null ],
+    [ "ACCEL_MAX", "main_8c.html#a58de3145c0c1e32ca4a7ca67dee79a28", null ],
+    [ "ACCEL_MIN", "main_8c.html#aa63bf886c5eee67e9ee9688ed816e39c", null ],
+    [ "ACCEL_RANGE", "main_8c.html#a16ec7011dea5773b504e875852f35fc1", null ],
+    [ "BLUE_MAX", "main_8c.html#a0651083fdccdfbc5316913c1e73ffd5c", null ],
+    [ "BLUE_MIN", "main_8c.html#acd01aec0e3977a993bb01df3c15d5197", null ],
+    [ "COLOR_CLEAR_MAX", "main_8c.html#a6b6e02e63a02da0faa8fe9e9228f77d5", null ],
+    [ "COLOR_CLEAR_MIN", "main_8c.html#a01e6449a7e6bc12e0cd4a7dfebb3403b", null ],
+    [ "GREEN_MAX", "main_8c.html#afb23383e91ea123e15950b4913bbddc3", null ],
+    [ "GREEN_MIN", "main_8c.html#a73660ba4fb20abf93a3e54e04f133381", null ],
+    [ "HUM_MAX", "main_8c.html#ad780c5087e79ab6a7497e6f489bf5ba0", null ],
+    [ "HUM_MIN", "main_8c.html#aa32e95dc12ed32e6c395aafb6c083cc3", null ],
     [ "INITIAL_MODE", "main_8c.html#a6018ed5003208d951b462b7afb4390f9", null ],
-    [ "LONG_PRESS_MS", "main_8c.html#a61271b2f6973cde7a3b2c4c6541026c8", null ],
+    [ "LIGHT_MAX", "main_8c.html#a38b06bbd397785d2ff3ace62c6a4f365", null ],
+    [ "LIGHT_MIN", "main_8c.html#a3347250b12c8c59f213baf21f1debf42", null ],
+    [ "MOISTURE_MAX", "main_8c.html#ac7cd6fe4206640300d256b6c4ffdb7e9", null ],
+    [ "MOISTURE_MIN", "main_8c.html#a66ca5fdd7eb02c496d44aac6b23dc9c3", null ],
+    [ "RED_MAX", "main_8c.html#a4c82e201d70da8303a62acd73cbdc9bd", null ],
+    [ "RED_MIN", "main_8c.html#a25540112e5ab1b3a21341c5149998d57", null ],
+    [ "RGB_TIMER_PERIOD_MS", "main_8c.html#aad694b6bc83a5a3e06ce35a56c8acdbd", null ],
+    [ "TEMP_MAX", "main_8c.html#a9acb14595bfb9523655370c1bb477506", null ],
+    [ "TEMP_MIN", "main_8c.html#ad7d20c7d1ec1729bf6892ddabbac3ab0", null ],
     [ "main", "main_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ]
 ];

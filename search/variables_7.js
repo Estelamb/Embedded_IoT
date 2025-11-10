@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['ref_0',['ref',['../structadc__config.html#afc43c6ed07214f3167ed6223ba3f7cba',1,'adc_config']]],
-  ['resolution_1',['resolution',['../structadc__config.html#a3b3cfed37e9b901905b7a3c6a45ad14c',1,'adc_config']]]
+  ['phototransistor_0',['phototransistor',['../structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0',1,'system_context']]],
+  ['pin_5fcount_1',['pin_count',['../structbus__led.html#a1004c3380429c4ab2433f4929362ca5b',1,'bus_led::pin_count'],['../structbus__rgb__led.html#aeeb06e0c364c0e0deb070f2014ce3ba1',1,'bus_rgb_led::pin_count']]],
+  ['pins_2',['pins',['../structbus__led.html#a0bf9867fba5f5afb351da45127c684af',1,'bus_led::pins'],['../structbus__rgb__led.html#a593a5e47d358dc162b147e804768f0f3',1,'bus_rgb_led::pins']]]
 ];
