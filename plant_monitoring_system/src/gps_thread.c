@@ -1,6 +1,15 @@
 /**
  * @file gps_thread.c
- * @brief Implementation of the GPS measurement thread (with scaled values).
+ * @brief Implementation of the GPS measurement thread.
+ *
+ * This module defines the GPS measurement thread responsible for
+ * periodically acquiring GPS data, parsing it, and updating the
+ * shared measurement structure with scaled integer values.
+ * 
+ * ## Features:
+ * - Periodic GPS polling controlled by system mode (TEST/NORMAL/ADVANCED)
+ * - Thread synchronization through semaphores and poll events
+ * - Scaled integer storage for latitude, longitude, and altitude
  */
 
 #include "gps_thread.h"
@@ -8,32 +17,44 @@
 #include <zephyr/kernel.h>
 #include <zephyr/sys/printk.h>
 
-#define GPS_THREAD_STACK_SIZE 1024
-#define GPS_THREAD_PRIORITY   5
+/* --- Thread configuration --------------------------------------------------- */
+#define GPS_THREAD_STACK_SIZE 1024  /**< Stack size allocated for the GPS thread. */
+#define GPS_THREAD_PRIORITY   5     /**< Thread priority (lower = higher priority). */
 
-K_THREAD_STACK_DEFINE(gps_stack, GPS_THREAD_STACK_SIZE);
-static struct k_thread gps_thread_data;
+K_THREAD_STACK_DEFINE(gps_stack, GPS_THREAD_STACK_SIZE); /**< GPS thread stack. */
+static struct k_thread gps_thread_data;                  /**< GPS thread control block. */
 
-/* Timer and semaphore for periodic GPS measurements */
-static struct k_timer gps_timer;
-static struct k_sem gps_timer_sem;
+/* --- Timer and synchronization ---------------------------------------------- */
+static struct k_timer gps_timer;     /**< Periodic timer for GPS measurements. */
+static struct k_sem gps_timer_sem;   /**< Semaphore released when timer expires. */
 
-/* Poll events for timer and manual trigger */
+/** @brief Poll events for timer expiration and manual GPS trigger. */
 static struct k_poll_event gps_poll_events[2];
 
-/* --------------------------------------------------------
+/* ---------------------------------------------------------------------------
  * Helper functions
- * --------------------------------------------------------*/
+ * ---------------------------------------------------------------------------*/
 
 /**
- * @brief Timer handler: wakes up the thread when it expires.
+ * @brief Timer callback handler.
+ *
+ * Called automatically when the GPS timer expires. It wakes up the GPS
+ * measurement thread by releasing the @ref gps_timer_sem semaphore.
+ *
+ * @param timer_id Pointer to the timer that triggered the event.
  */
 static void gps_timer_handler(struct k_timer *timer_id) {
     k_sem_give(&gps_timer_sem);
 }
 
 /**
- * @brief Initialize the poll events for the GPS thread.
+ * @brief Initialize poll events used by the GPS thread.
+ *
+ * Sets up two poll events:
+ * - Index 0 → Triggered by GPS timer expiration.
+ * - Index 1 → Triggered by manual semaphore release (e.g., mode change).
+ *
+ * @param ctx Pointer to the shared system context.
  */
 static void init_gps_poll_events(struct system_context *ctx) {
     gps_poll_events[0].type  = K_POLL_TYPE_SEM_AVAILABLE;
@@ -48,7 +69,11 @@ static void init_gps_poll_events(struct system_context *ctx) {
 }
 
 /**
- * @brief Waits for whichever occurs first: gps_timer_sem or ctx->gps_sem.
+ * @brief Wait for a GPS event (timer or manual trigger).
+ *
+ * Blocks the thread until either the GPS timer expires or an external
+ * semaphore (ctx->gps_sem) is released. After handling the event,
+ * it resets both poll states.
  */
 static void wait_for_gps_event(void) {
     k_poll(gps_poll_events, 2, K_FOREVER);
@@ -65,7 +90,13 @@ static void wait_for_gps_event(void) {
 }
 
 /**
- * @brief Configure GPS timer based on current mode.
+ * @brief Update GPS timer according to the current system mode.
+ *
+ * - **TEST_MODE:** Shorter interval for frequent updates.
+ * - **NORMAL_MODE:** Standard measurement cadence.
+ * - **ADVANCED_MODE:** Timer remains stopped.
+ *
+ * @param mode Current operating mode.
  */
 static void update_gps_timer(system_mode_t mode) {
     k_timer_stop(&gps_timer);
@@ -84,46 +115,61 @@ static void update_gps_timer(system_mode_t mode) {
 }
 
 /**
- * @brief Reads GPS data and updates the measurement structure.
- * @param data Pointer to a persistent gps_data_t buffer.
+ * @brief Read GPS data and update shared measurements.
+ *
+ * This function waits for a valid NMEA GGA sentence, parses its fields,
+ * and updates the shared @ref system_measurement structure with scaled
+ * integer values for safe atomic storage.
+ *
+ * @param data Pointer to a persistent @ref gps_data_t buffer.
+ * @param measure Pointer to the shared measurement structure.
+ * @param ctx Pointer to the shared system context.
  */
 static void read_gps_data(gps_data_t *data,
                           struct system_measurement *measure,
                           struct system_context *ctx) {
 
     if (gps_wait_for_gga(data, K_MSEC(30000)) == 0) {
+        /* Convert and store scaled GPS values */
         atomic_set(&measure->gps_lat,  (int32_t)(data->lat  * 1e6f));
         atomic_set(&measure->gps_lon,  (int32_t)(data->lon  * 1e6f));
         atomic_set(&measure->gps_alt,  (int32_t)(data->alt  * 100.0f));
         atomic_set(&measure->gps_sats, (int32_t)data->sats);
 
+        /* Parse UTC time in HHMMSS format */
         if (strlen(data->utc_time) >= 6) {
             int hh = (data->utc_time[0] - '0') * 10 + (data->utc_time[1] - '0');
             int mm = (data->utc_time[2] - '0') * 10 + (data->utc_time[3] - '0');
             int ss = (data->utc_time[4] - '0') * 10 + (data->utc_time[5] - '0');
-                
-            int time_int = hh * 10000 + mm * 100 + ss; // entero HHMMSS
+
+            int time_int = hh * 10000 + mm * 100 + ss; /**< Encoded time as HHMMSS integer. */
             atomic_set(&measure->gps_time, time_int);
         } else {
-            atomic_set(&measure->gps_time, -1); // valor inválido
+            atomic_set(&measure->gps_time, -1); /**< Invalid or missing time. */
         }
-
 
     } else {
         printk("[GPS] - Timeout or invalid data\n");
     }
 }
 
-
-/* --------------------------------------------------------
- * Thread main function
- * --------------------------------------------------------*/
+/* ---------------------------------------------------------------------------
+ * GPS Thread
+ * ---------------------------------------------------------------------------*/
 
 /**
- * @brief GPS measurement thread function.
+ * @brief GPS measurement thread entry function.
+ *
+ * Continuously monitors the system mode and performs GPS readings
+ * according to the configured update rate. Synchronizes with the
+ * main thread via semaphores.
+ *
+ * @param arg1 Pointer to the shared @ref system_context structure.
+ * @param arg2 Pointer to the shared @ref system_measurement structure.
+ * @param arg3 Unused (set to NULL).
  */
 static void gps_thread_fn(void *arg1, void *arg2, void *arg3) {
-    struct system_context *ctx     = (struct system_context *)arg1;
+    struct system_context *ctx = (struct system_context *)arg1;
     struct system_measurement *measure = (struct system_measurement *)arg2;
 
     system_mode_t previous_mode = atomic_get(&ctx->mode);
@@ -160,12 +206,19 @@ static void gps_thread_fn(void *arg1, void *arg2, void *arg3) {
     }
 }
 
-/* --------------------------------------------------------
- * Thread startup
- * --------------------------------------------------------*/
+/* ---------------------------------------------------------------------------
+ * Thread Startup
+ * ---------------------------------------------------------------------------*/
 
 /**
- * @brief Starts the GPS measurement thread.
+ * @brief Start the GPS measurement thread.
+ *
+ * Initializes the GPS timer, semaphores, and creates the GPS thread
+ * that continuously manages GPS data acquisition and synchronization
+ * with the main thread.
+ *
+ * @param ctx Pointer to the shared @ref system_context structure.
+ * @param measure Pointer to the shared @ref system_measurement structure.
  */
 void start_gps_thread(struct system_context *ctx, struct system_measurement *measure) {
     k_sem_init(&gps_timer_sem, 0, 1);

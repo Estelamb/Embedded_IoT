@@ -1,9 +1,11 @@
 /**
  * @file main.h
- * @brief Shared definitions for the brightness control system.
+ * @brief Shared definitions for the Plant Monitoring System.
  *
- * This header defines the system mode enumeration and shared context
- * structure used by both the main application and the brightness thread.
+ * This header defines shared data structures and enumerations
+ * used across the main application, sensors thread, and GPS thread.
+ * It provides a unified context for system configuration and
+ * sensor measurements.
  */
 
 #ifndef MAIN_H
@@ -21,73 +23,82 @@
 #include "sensors/led/board_led.h"
 #include "sensors/user_button/user_button.h"
 
-#define TEST_MODE_CADENCE 2000 /**< Measurement interval in TEST mode (ms). */
-#define NORMAL_MODE_CADENCE 30000 /**< Measurement interval in NORMAL mode (ms). */
+/** @brief Measurement interval in TEST mode (milliseconds). */
+#define TEST_MODE_CADENCE 2000
+
+/** @brief Measurement interval in NORMAL mode (milliseconds). */
+#define NORMAL_MODE_CADENCE 30000
 
 /**
+ * @enum system_mode_t
  * @brief System operating modes.
  *
- * - OFF_MODE: Device is turned off and LEDs are off.
- * - NORMAL_MODE: Normal operation where ambient brightness is measured
- *   and the LED color indicates the brightness level.
- * - BLUE_MODE: Special mode where the blue LED is shown continuously.
+ * These modes define how the system behaves:
+ * - **TEST_MODE:** Shows the dominant detected color through the RGB LED.
+ * - **NORMAL_MODE:** Periodically measures sensors and alerts if any reading
+ *   is out of range.
+ * - **ADVANCED_MODE:** Operates silently with minimal LED feedback.
  */
 typedef enum {
-    TEST_MODE = 0,
-    NORMAL_MODE,
-    ADVANCED_MODE
+    TEST_MODE = 0,    /**< Test mode – displays the dominant color. */
+    NORMAL_MODE,      /**< Normal mode – periodic measurement and alerts. */
+    ADVANCED_MODE     /**< Advanced mode – minimal visual feedback. */
 } system_mode_t;
 
 /**
- * @brief Shared system context between main, sensors thread and gps thread.
+ * @struct system_context
+ * @brief Shared system context between main, sensors, and GPS threads.
+ *
+ * This structure contains pointers to configuration objects, semaphores,
+ * and shared state used to coordinate between the main, sensors, and GPS threads.
  */
 struct system_context {
-    struct adc_config *phototransistor; /**< Phototransistor ADC configuration */
-    
-    struct adc_config *soil_moisture;   /**< Soil moisture ADC configuration */
+    struct adc_config *phototransistor; /**< Phototransistor ADC configuration. */
+    struct adc_config *soil_moisture;   /**< Soil moisture ADC configuration. */
 
-    struct i2c_dt_spec *accelerometer;  /**< Accelerometer I2C device specification */
-    uint8_t accel_range;                /**< Full-scale range (FS_2G, FS_4G, FS_8G) */
+    struct i2c_dt_spec *accelerometer;  /**< Accelerometer I2C device specification. */
+    uint8_t accel_range;                /**< Accelerometer full-scale range (e.g., 2G, 4G, 8G). */
 
-    struct i2c_dt_spec *temp_hum;       /**< Temperature and Humidity I2C device specification */
+    struct i2c_dt_spec *temp_hum;       /**< Temperature and humidity sensor I2C specification. */
+    struct i2c_dt_spec *color;          /**< Color sensor I2C device specification. */
+    struct gps_config *gps;             /**< GPS module configuration. */
 
-    struct i2c_dt_spec *color;         /**< Color sensor I2C device specification */
+    struct k_sem *main_sensors_sem;     /**< Semaphore for main-to-sensors synchronization. */
+    struct k_sem *main_gps_sem;         /**< Semaphore for main-to-GPS synchronization. */
+    struct k_sem *sensors_sem;          /**< Semaphore to trigger sensor measurement. */
+    struct k_sem *gps_sem;              /**< Semaphore to trigger GPS measurement. */
 
-    struct gps_config *gps;             /**< GPS configuration */
-
-    struct k_sem *main_sensors_sem;     /**< Semaphore for main thread */
-    struct k_sem *main_gps_sem;         /**< Semaphore for main thread */
-    struct k_sem *sensors_sem;          /**< Semaphore for sensors measurement */
-    struct k_sem *gps_sem;              /**< Semaphore for GPS measurement */
-    
-    atomic_t mode;                      /**< Current operating mode (atomic enum) */
+    atomic_t mode;                      /**< Current operating mode (atomic). */
 };
 
 /**
- * @brief Shared system measurement between main, sensors thread and gps thread.
+ * @struct system_measurement
+ * @brief Shared sensor data between main, sensors, and GPS threads.
+ *
+ * Contains the most recent measurements for all sensors, stored
+ * in atomic variables for thread-safe access.
  */
 struct system_measurement {
-    atomic_t brightness;                /**< Latest brightness percent (0-100, atomic) */
+    atomic_t brightness;  /**< Latest ambient brightness (0–100%). */
+    atomic_t moisture;    /**< Latest soil moisture (0–100%). */
 
-    atomic_t moisture;                  /**< Latest soil moisture percent (0-100, atomic) */
+    atomic_t accel_x_g;   /**< Latest X-axis acceleration (in g). */
+    atomic_t accel_y_g;   /**< Latest Y-axis acceleration (in g). */
+    atomic_t accel_z_g;   /**< Latest Z-axis acceleration (in g). */
 
-    atomic_t accel_x_g;                 /**< Latest X-axis acceleration in g (atomic float) */
-    atomic_t accel_y_g;                 /**< Latest Y-axis acceleration in g (atomic float) */
-    atomic_t accel_z_g;                 /**< Latest Z-axis acceleration in g (atomic float) */
+    atomic_t temp;        /**< Latest temperature (°C). */
+    atomic_t hum;         /**< Latest relative humidity (%RH). */
 
-    atomic_t temp;                      /**< Latest temperature in °C (atomic float) */
-    atomic_t hum;                       /**< Latest relative humidity in %RH (atomic float) */
+    atomic_t red;         /**< Latest red color value (raw). */
+    atomic_t green;       /**< Latest green color value (raw). */
+    atomic_t blue;        /**< Latest blue color value (raw). */
+    atomic_t clear;       /**< Latest clear color channel value (raw). */
 
-    atomic_t red;                       /**< Latest red color value (atomic int) */
-    atomic_t green;                     /**< Latest green color value (atomic int) */
-    atomic_t blue;                      /**< Latest blue color value (atomic int) */
-    atomic_t clear;                     /**< Latest clear color value (atomic int) */
-    
-    atomic_t gps_lat;                   /**< Latest GPS latitude (atomic float) */
-    atomic_t gps_lon;                   /**< Latest GPS longitude (atomic float) */
-    atomic_t gps_alt;                   /**< Latest GPS altitude (atomic float) */
-    atomic_t gps_sats;                  /**< Latest GPS satellites (atomic int) */
-    atomic_t gps_time;                  /**< Latest GPS time (atomic float) */
+    atomic_t gps_lat;     /**< Latest GPS latitude (degrees). */
+    atomic_t gps_lon;     /**< Latest GPS longitude (degrees). */
+    atomic_t gps_alt;     /**< Latest GPS altitude (meters). */
+    atomic_t gps_sats;    /**< Latest number of satellites in view. */
+    atomic_t gps_time;    /**< Latest GPS timestamp (float or encoded). */
 };
 
 #endif /* MAIN_H */
