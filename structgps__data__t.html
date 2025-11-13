@@ -128,29 +128,43 @@ $(document).ready(function(){initNavTree('structgps__data__t.html',''); initResi
   <div class="headertitle"><div class="title">gps_data_t Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Parsed GPS data from a GGA sentence.  
+ <a href="structgps__data__t.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="gps_8h_source.html">gps.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Data Fields</h2></td></tr>
 <tr class="memitem:ae7572fb625cd90ec74b13626d3bbb1f3" id="r_ae7572fb625cd90ec74b13626d3bbb1f3"><td class="memItemLeft" align="right" valign="top"><a id="ae7572fb625cd90ec74b13626d3bbb1f3" name="ae7572fb625cd90ec74b13626d3bbb1f3"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>lat</b></td></tr>
+<tr class="memdesc:ae7572fb625cd90ec74b13626d3bbb1f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latitude in decimal degrees. <br /></td></tr>
 <tr class="separator:ae7572fb625cd90ec74b13626d3bbb1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dc2daf738f786abde53243bfbafb7ab" id="r_a8dc2daf738f786abde53243bfbafb7ab"><td class="memItemLeft" align="right" valign="top"><a id="a8dc2daf738f786abde53243bfbafb7ab" name="a8dc2daf738f786abde53243bfbafb7ab"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>lon</b></td></tr>
+<tr class="memdesc:a8dc2daf738f786abde53243bfbafb7ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Longitude in decimal degrees. <br /></td></tr>
 <tr class="separator:a8dc2daf738f786abde53243bfbafb7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab784c4431f82ecd9141862471d84c34f" id="r_ab784c4431f82ecd9141862471d84c34f"><td class="memItemLeft" align="right" valign="top"><a id="ab784c4431f82ecd9141862471d84c34f" name="ab784c4431f82ecd9141862471d84c34f"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>alt</b></td></tr>
+<tr class="memdesc:ab784c4431f82ecd9141862471d84c34f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Altitude in meters above mean sea level. <br /></td></tr>
 <tr class="separator:ab784c4431f82ecd9141862471d84c34f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64030c9dd3b2cfd7e1e1c397ac942065" id="r_a64030c9dd3b2cfd7e1e1c397ac942065"><td class="memItemLeft" align="right" valign="top"><a id="a64030c9dd3b2cfd7e1e1c397ac942065" name="a64030c9dd3b2cfd7e1e1c397ac942065"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>sats</b></td></tr>
+<tr class="memdesc:a64030c9dd3b2cfd7e1e1c397ac942065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of satellites currently in use. <br /></td></tr>
 <tr class="separator:a64030c9dd3b2cfd7e1e1c397ac942065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97affbec2705a3c7735886d8e477b59c" id="r_a97affbec2705a3c7735886d8e477b59c"><td class="memItemLeft" align="right" valign="top"><a id="a97affbec2705a3c7735886d8e477b59c" name="a97affbec2705a3c7735886d8e477b59c"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>hdop</b></td></tr>
+<tr class="memdesc:a97affbec2705a3c7735886d8e477b59c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Horizontal dilution of precision. <br /></td></tr>
 <tr class="separator:a97affbec2705a3c7735886d8e477b59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e8ad5ef1073e54f0fe81d251ebdf233" id="r_a1e8ad5ef1073e54f0fe81d251ebdf233"><td class="memItemLeft" align="right" valign="top"><a id="a1e8ad5ef1073e54f0fe81d251ebdf233" name="a1e8ad5ef1073e54f0fe81d251ebdf233"></a>
 char&#160;</td><td class="memItemRight" valign="bottom"><b>utc_time</b> [16]</td></tr>
+<tr class="memdesc:a1e8ad5ef1073e54f0fe81d251ebdf233"><td class="mdescLeft">&#160;</td><td class="mdescRight">UTC time (hhmmss.ss), null-terminated if available. <br /></td></tr>
 <tr class="separator:a1e8ad5ef1073e54f0fe81d251ebdf233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this struct was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Parsed GPS data from a GGA sentence. </p>
+<p>Contains geographic and fix-related data parsed from an NMEA GGA message. All numeric fields are expressed as floats for simplicity. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/sensors/gps/<a class="el" href="gps_8h_source.html">gps.h</a></li>
 </ul>
 </div><!-- contents -->

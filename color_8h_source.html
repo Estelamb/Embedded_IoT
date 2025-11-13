@@ -132,65 +132,74 @@ $(document).ready(function(){initNavTree('color_8h_source.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <a href="color_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#ifndef COLOR_H</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define COLOR_H</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;zephyr/drivers/i2c.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/* === TCS34725 I2C Configuration === */</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="color_8h.html#a256daf5c71233f510985b759c5d88e99">   17</a></span><span class="preprocessor">#define COLOR_I2C_ADDR    0x29  </span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="color_8h.html#a292d401035a5f5cea995f788f232f917">   18</a></span><span class="preprocessor">#define COLOR_COMMAND 0x80  </span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="color_8h.html#a604a69744422d2db7101f9c9dc8e27a3">   19</a></span><span class="preprocessor">#define AUTO_INCREMENT 0x20 </span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">/* === Register Addresses === */</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#define COLOR_ENABLE   0x00</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#define COLOR_ATIME    0x01</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#define COLOR_CONTROL  0x0F</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#define COLOR_CLEAR_L  0x14</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#define COLOR_RED_L    0x16</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#define COLOR_GREEN_L  0x18</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#define COLOR_BLUE_L   0x1A</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/* === ENABLE register bits === */</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="color_8h.html#a39a356369d272160f753bc85a24d1826">   31</a></span><span class="preprocessor">#define ENABLE_PON  0x01  </span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="color_8h.html#ae584c5badfa5d772e2bae3908b7181dd">   32</a></span><span class="preprocessor">#define ENABLE_AEN  0x02  </span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">/* === Gain settings === */</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#define GAIN_1X    0x00</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="preprocessor">#define GAIN_4X    0x01</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#define GAIN_16X   0x02</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#define GAIN_60X   0x03</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">/* === Integration time settings (ATIME register) === */</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define INTEGRATION_2_4MS   0xFF</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#define INTEGRATION_24MS    0xF6</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#define INTEGRATION_101MS   0xD5</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define INTEGRATION_154MS   0xC0</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#define INTEGRATION_700MS   0x00</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="foldopen" id="foldopen00048" data-start="{" data-end="};">
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structColorSensorData.html">   48</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    uint16_t clear;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    uint16_t <a class="code hl_function" href="board__led_8c.html#af2acb95b6cf64e405e2a6435636ed425">red</a>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    uint16_t <a class="code hl_function" href="board__led_8c.html#aa01abe321ebd655934c0572b1f3d38f3">green</a>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    uint16_t <a class="code hl_function" href="board__led_8c.html#a151f494c623a3c72e2828dc56a43197d">blue</a>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>} <a class="code hl_struct" href="structColorSensorData.html">ColorSensorData</a>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#ifndef COLOR_H</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#define COLOR_H</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;zephyr/drivers/i2c.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/* === TCS34725 I2C Configuration === */</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="color_8h.html#a256daf5c71233f510985b759c5d88e99">   18</a></span><span class="preprocessor">#define COLOR_I2C_ADDR    0x29  </span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="color_8h.html#a292d401035a5f5cea995f788f232f917">   19</a></span><span class="preprocessor">#define COLOR_COMMAND     0x80  </span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="color_8h.html#a604a69744422d2db7101f9c9dc8e27a3">   20</a></span><span class="preprocessor">#define AUTO_INCREMENT    0x20  </span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/* === Register Addresses === */</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="color_8h.html#a7b4c3b399639743f2175459ac46d540f">   23</a></span><span class="preprocessor">#define COLOR_ENABLE      0x00  </span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="color_8h.html#af93e74c1f770948956409196a272ac43">   24</a></span><span class="preprocessor">#define COLOR_ATIME       0x01  </span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="color_8h.html#ad3efba8899884004d3821395cd1acc83">   25</a></span><span class="preprocessor">#define COLOR_CONTROL     0x0F  </span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="color_8h.html#a99fcf7c779a555604e93e310ce66bd7d">   26</a></span><span class="preprocessor">#define COLOR_CLEAR_L     0x14  </span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="color_8h.html#a958d3ce8c7d5277ef37c41698a23ec4c">   27</a></span><span class="preprocessor">#define COLOR_RED_L       0x16  </span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="color_8h.html#a7a5d401f15b8f890b55e0568736cc70e">   28</a></span><span class="preprocessor">#define COLOR_GREEN_L     0x18  </span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="color_8h.html#a7f6349be7f76baba36501a3a4a8e58cb">   29</a></span><span class="preprocessor">#define COLOR_BLUE_L      0x1A  </span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">/* === ENABLE register bits === */</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="color_8h.html#a39a356369d272160f753bc85a24d1826">   32</a></span><span class="preprocessor">#define ENABLE_PON        0x01  </span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="color_8h.html#ae584c5badfa5d772e2bae3908b7181dd">   33</a></span><span class="preprocessor">#define ENABLE_AEN        0x02  </span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">/* === Gain settings (CONTROL register) === */</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="color_8h.html#ab629773a35e7292544ca1a4113727e80">   36</a></span><span class="preprocessor">#define GAIN_1X           0x00  </span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="color_8h.html#af347421f25d65f25a8468dd183fbc621">   37</a></span><span class="preprocessor">#define GAIN_4X           0x01  </span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="color_8h.html#a13b2bbbc03aedd53588b3c81ec41c518">   38</a></span><span class="preprocessor">#define GAIN_16X          0x02  </span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="color_8h.html#a2021aed05179188240f7e87029e1ad10">   39</a></span><span class="preprocessor">#define GAIN_60X          0x03  </span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/* === Integration time settings (ATIME register) === */</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="color_8h.html#a729222d4fe89ed0d69ff10dd948b65b1">   42</a></span><span class="preprocessor">#define INTEGRATION_2_4MS   0xFF </span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="color_8h.html#a944a5335e22059a97309faf55667ff48">   43</a></span><span class="preprocessor">#define INTEGRATION_24MS    0xF6 </span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="color_8h.html#a870335cbbc77d7e327bf9226f46fc8a6">   44</a></span><span class="preprocessor">#define INTEGRATION_101MS   0xD5 </span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="color_8h.html#a426acf4c0a27d2dcbda5c7016ec49ed3">   45</a></span><span class="preprocessor">#define INTEGRATION_154MS   0xC0 </span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="color_8h.html#a258ceb4a107826146e9e059f7deac629">   46</a></span><span class="preprocessor">#define INTEGRATION_700MS   0x00 </span></div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="};">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="structColorSensorData.html">   51</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structColorSensorData.html#a5937f6795825b42bdb76ad9098597871">   52</a></span>    uint16_t <a class="code hl_variable" href="structColorSensorData.html#a5937f6795825b42bdb76ad9098597871">clear</a>;  </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="structColorSensorData.html#a2bb16873d39fc1b327c1ac04ced245ee">   53</a></span>    uint16_t <a class="code hl_variable" href="structColorSensorData.html#a2bb16873d39fc1b327c1ac04ced245ee">red</a>;    </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="structColorSensorData.html#aba5595aaba7099f62ea9c0313bb7ee20">   54</a></span>    uint16_t <a class="code hl_variable" href="structColorSensorData.html#aba5595aaba7099f62ea9c0313bb7ee20">green</a>;  </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structColorSensorData.html#a8d42aa5e8fbb405db64dc5bf9657b361">   55</a></span>    uint16_t <a class="code hl_variable" href="structColorSensorData.html#a8d42aa5e8fbb405db64dc5bf9657b361">blue</a>;   </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>} <a class="code hl_struct" href="structColorSensorData.html">ColorSensorData</a>;</div>
 </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">/* === Function prototypes === */</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">int</span> color_init(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="keywordtype">int</span> color_wake_up(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keywordtype">int</span> color_sleep(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keywordtype">int</span> color_set_gain(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, uint8_t gain);</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="keywordtype">int</span> color_set_integration(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, uint8_t atime);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keywordtype">int</span> color_read_rgb(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, <a class="code hl_struct" href="structColorSensorData.html">ColorSensorData</a> *data);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="preprocessor">#endif </span><span class="comment">/* COLOR_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aboard__led_8c_html_a151f494c623a3c72e2828dc56a43197d"><div class="ttname"><a href="board__led_8c.html#a151f494c623a3c72e2828dc56a43197d">blue</a></div><div class="ttdeci">int blue(struct bus_led *led)</div><div class="ttdoc">Set LED color to blue only.</div><div class="ttdef"><b>Definition</b> board_led.c:76</div></div>
-<div class="ttc" id="aboard__led_8c_html_aa01abe321ebd655934c0572b1f3d38f3"><div class="ttname"><a href="board__led_8c.html#aa01abe321ebd655934c0572b1f3d38f3">green</a></div><div class="ttdeci">int green(struct bus_led *led)</div><div class="ttdoc">Set LED color to green only.</div><div class="ttdef"><b>Definition</b> board_led.c:73</div></div>
-<div class="ttc" id="aboard__led_8c_html_af2acb95b6cf64e405e2a6435636ed425"><div class="ttname"><a href="board__led_8c.html#af2acb95b6cf64e405e2a6435636ed425">red</a></div><div class="ttdeci">int red(struct bus_led *led)</div><div class="ttdoc">Set LED color to red only.</div><div class="ttdef"><b>Definition</b> board_led.c:70</div></div>
-<div class="ttc" id="astructColorSensorData_html"><div class="ttname"><a href="structColorSensorData.html">ColorSensorData</a></div><div class="ttdoc">Structure for color sensor data.</div><div class="ttdef"><b>Definition</b> color.h:48</div></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">/* === Function Prototypes === */</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="keywordtype">int</span> <a class="code hl_function" href="color_8h.html#a558daf189093bbccbc6675f1e413651f">color_init</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="keywordtype">int</span> <a class="code hl_function" href="color_8h.html#a806959eb09f81167a9b3b7222631cd7c">color_wake_up</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keywordtype">int</span> <a class="code hl_function" href="color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a">color_sleep</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="keywordtype">int</span> <a class="code hl_function" href="color_8h.html#a9976808512ca2455105ad26af55abba2">color_set_gain</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, uint8_t gain);</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keywordtype">int</span> <a class="code hl_function" href="color_8h.html#ac17cda32275201beb9894890368c4ce8">color_set_integration</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, uint8_t atime);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="keywordtype">int</span> <a class="code hl_function" href="color_8h.html#ad0b08cf29337fbe7351b05a34fd3f9f4">color_read_rgb</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, <a class="code hl_struct" href="structColorSensorData.html">ColorSensorData</a> *data);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#endif </span><span class="comment">/* COLOR_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="acolor_8h_html_a558daf189093bbccbc6675f1e413651f"><div class="ttname"><a href="color_8h.html#a558daf189093bbccbc6675f1e413651f">color_init</a></div><div class="ttdeci">int color_init(const struct i2c_dt_spec *dev)</div><div class="ttdoc">Initialize the color sensor (I2C check, default settings).</div><div class="ttdef"><b>Definition</b> color.c:58</div></div>
+<div class="ttc" id="acolor_8h_html_a806959eb09f81167a9b3b7222631cd7c"><div class="ttname"><a href="color_8h.html#a806959eb09f81167a9b3b7222631cd7c">color_wake_up</a></div><div class="ttdeci">int color_wake_up(const struct i2c_dt_spec *dev)</div><div class="ttdoc">Wake up the color sensor (enable ADC and power).</div><div class="ttdef"><b>Definition</b> color.c:87</div></div>
+<div class="ttc" id="acolor_8h_html_a9976808512ca2455105ad26af55abba2"><div class="ttname"><a href="color_8h.html#a9976808512ca2455105ad26af55abba2">color_set_gain</a></div><div class="ttdeci">int color_set_gain(const struct i2c_dt_spec *dev, uint8_t gain)</div><div class="ttdoc">Set the gain of the sensor.</div><div class="ttdef"><b>Definition</b> color.c:119</div></div>
+<div class="ttc" id="acolor_8h_html_ac17cda32275201beb9894890368c4ce8"><div class="ttname"><a href="color_8h.html#ac17cda32275201beb9894890368c4ce8">color_set_integration</a></div><div class="ttdeci">int color_set_integration(const struct i2c_dt_spec *dev, uint8_t atime)</div><div class="ttdoc">Set the integration time (ATIME) of the sensor.</div><div class="ttdef"><b>Definition</b> color.c:132</div></div>
+<div class="ttc" id="acolor_8h_html_ad0b08cf29337fbe7351b05a34fd3f9f4"><div class="ttname"><a href="color_8h.html#ad0b08cf29337fbe7351b05a34fd3f9f4">color_read_rgb</a></div><div class="ttdeci">int color_read_rgb(const struct i2c_dt_spec *dev, ColorSensorData *data)</div><div class="ttdoc">Read raw RGB and clear channel data from the sensor.</div><div class="ttdef"><b>Definition</b> color.c:144</div></div>
+<div class="ttc" id="acolor_8h_html_ae5e24bcb0cd6ea744d8193a45e01ff4a"><div class="ttname"><a href="color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a">color_sleep</a></div><div class="ttdeci">int color_sleep(const struct i2c_dt_spec *dev)</div><div class="ttdoc">Put the color sensor into sleep mode (disable ADC).</div><div class="ttdef"><b>Definition</b> color.c:107</div></div>
+<div class="ttc" id="astructColorSensorData_html"><div class="ttname"><a href="structColorSensorData.html">ColorSensorData</a></div><div class="ttdoc">Structure for storing raw color sensor data.</div><div class="ttdef"><b>Definition</b> color.h:51</div></div>
+<div class="ttc" id="astructColorSensorData_html_a2bb16873d39fc1b327c1ac04ced245ee"><div class="ttname"><a href="structColorSensorData.html#a2bb16873d39fc1b327c1ac04ced245ee">ColorSensorData::red</a></div><div class="ttdeci">uint16_t red</div><div class="ttdoc">Red channel value.</div><div class="ttdef"><b>Definition</b> color.h:53</div></div>
+<div class="ttc" id="astructColorSensorData_html_a5937f6795825b42bdb76ad9098597871"><div class="ttname"><a href="structColorSensorData.html#a5937f6795825b42bdb76ad9098597871">ColorSensorData::clear</a></div><div class="ttdeci">uint16_t clear</div><div class="ttdoc">Clear channel value.</div><div class="ttdef"><b>Definition</b> color.h:52</div></div>
+<div class="ttc" id="astructColorSensorData_html_a8d42aa5e8fbb405db64dc5bf9657b361"><div class="ttname"><a href="structColorSensorData.html#a8d42aa5e8fbb405db64dc5bf9657b361">ColorSensorData::blue</a></div><div class="ttdeci">uint16_t blue</div><div class="ttdoc">Blue channel value.</div><div class="ttdef"><b>Definition</b> color.h:55</div></div>
+<div class="ttc" id="astructColorSensorData_html_aba5595aaba7099f62ea9c0313bb7ee20"><div class="ttname"><a href="structColorSensorData.html#aba5595aaba7099f62ea9c0313bb7ee20">ColorSensorData::green</a></div><div class="ttdeci">uint16_t green</div><div class="ttdoc">Green channel value.</div><div class="ttdef"><b>Definition</b> color.h:54</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

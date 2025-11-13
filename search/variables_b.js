@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['vref_5fmv_0',['vref_mv',['../structadc__config.html#ac43e766b635d2bf53b0ea2ca585da9d3',1,'adc_config']]]
+  ['temp_0',['temp',['../structsystem__measurement.html#ad14647be52b836a3d4bd543eee248c28',1,'system_measurement']]],
+  ['temp_5fhum_1',['temp_hum',['../structsystem__context.html#a37b19c05038a5c416db2c6d4cc344df7',1,'system_context']]]
 ];

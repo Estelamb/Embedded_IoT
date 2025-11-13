@@ -25,6 +25,31 @@
 var NAVTREE =
 [
   [ "Plant Monitoring System", "index.html", [
+    [ "Overview", "index.html#autotoc_md1", [
+      [ "Key Features", "index.html#autotoc_md2", null ]
+    ] ],
+    [ "Architecture", "index.html#autotoc_md4", [
+      [ "System Context (<tt>system_context</tt>)", "index.html#autotoc_md5", null ],
+      [ "System Measurement (<tt>system_measurement</tt>)", "index.html#autotoc_md6", null ]
+    ] ],
+    [ "Operating Modes", "index.html#autotoc_md8", null ],
+    [ "Sensor Interfaces", "index.html#autotoc_md10", [
+      [ "ADC Sensors", "index.html#autotoc_md11", null ],
+      [ "I2C Sensors", "index.html#autotoc_md12", [
+        [ "Accelerometer (e.g., MMA8451)", "index.html#autotoc_md13", null ],
+        [ "Temperature & Humidity (Si7021)", "index.html#autotoc_md14", null ],
+        [ "Color Sensor (TCS34725)", "index.html#autotoc_md15", null ]
+      ] ]
+    ] ],
+    [ "GPS Interface", "index.html#autotoc_md17", null ],
+    [ "Thread Design", "index.html#autotoc_md19", [
+      [ "Sensors Thread", "index.html#autotoc_md20", null ],
+      [ "GPS Thread", "index.html#autotoc_md21", null ]
+    ] ],
+    [ "Synchronization", "index.html#autotoc_md23", null ],
+    [ "Usage", "index.html#autotoc_md25", null ],
+    [ "Notes", "index.html#autotoc_md26", null ],
+    [ "Conclusion", "index.html#autotoc_md27", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -49,7 +74,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"accel_8h_source.html"
+"accel_8c.html",
+"structbus__led.html#a0bf9867fba5f5afb351da45127c684af"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

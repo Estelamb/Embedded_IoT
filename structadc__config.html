@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('structadc__config.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
-<p>ADC configuration structure.  
+<p>ADC channel configuration structure.  
  <a href="structadc__config.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="adc_8h_source.html">adc.h</a>&gt;</code></p>
@@ -138,27 +138,27 @@ $(document).ready(function(){initNavTree('structadc__config.html',''); initResiz
 Data Fields</h2></td></tr>
 <tr class="memitem:a4c71fc9ade4de7925354cc54fcbfe204" id="r_a4c71fc9ade4de7925354cc54fcbfe204"><td class="memItemLeft" align="right" valign="top"><a id="a4c71fc9ade4de7925354cc54fcbfe204" name="a4c71fc9ade4de7925354cc54fcbfe204"></a>
 const struct device *&#160;</td><td class="memItemRight" valign="bottom"><b>dev</b></td></tr>
-<tr class="memdesc:a4c71fc9ade4de7925354cc54fcbfe204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the ADC device. <br /></td></tr>
+<tr class="memdesc:a4c71fc9ade4de7925354cc54fcbfe204"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the ADC device instance. <br /></td></tr>
 <tr class="separator:a4c71fc9ade4de7925354cc54fcbfe204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d034ebeff23ceab5490ec204015dc04" id="r_a9d034ebeff23ceab5490ec204015dc04"><td class="memItemLeft" align="right" valign="top"><a id="a9d034ebeff23ceab5490ec204015dc04" name="a9d034ebeff23ceab5490ec204015dc04"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>channel_id</b></td></tr>
-<tr class="memdesc:a9d034ebeff23ceab5490ec204015dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC channel number. <br /></td></tr>
+<tr class="memdesc:a9d034ebeff23ceab5490ec204015dc04"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC channel number (input pin). <br /></td></tr>
 <tr class="separator:a9d034ebeff23ceab5490ec204015dc04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b3cfed37e9b901905b7a3c6a45ad14c" id="r_a3b3cfed37e9b901905b7a3c6a45ad14c"><td class="memItemLeft" align="right" valign="top"><a id="a3b3cfed37e9b901905b7a3c6a45ad14c" name="a3b3cfed37e9b901905b7a3c6a45ad14c"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>resolution</b></td></tr>
-<tr class="memdesc:a3b3cfed37e9b901905b7a3c6a45ad14c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC resolution in bits. <br /></td></tr>
+<tr class="memdesc:a3b3cfed37e9b901905b7a3c6a45ad14c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversion resolution in bits. <br /></td></tr>
 <tr class="separator:a3b3cfed37e9b901905b7a3c6a45ad14c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace15829443009e5d02b215d7d1a020d2" id="r_ace15829443009e5d02b215d7d1a020d2"><td class="memItemLeft" align="right" valign="top"><a id="ace15829443009e5d02b215d7d1a020d2" name="ace15829443009e5d02b215d7d1a020d2"></a>
 enum adc_gain&#160;</td><td class="memItemRight" valign="bottom"><b>gain</b></td></tr>
-<tr class="memdesc:ace15829443009e5d02b215d7d1a020d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC gain setting. <br /></td></tr>
+<tr class="memdesc:ace15829443009e5d02b215d7d1a020d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Programmable gain amplifier setting. <br /></td></tr>
 <tr class="separator:ace15829443009e5d02b215d7d1a020d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc43c6ed07214f3167ed6223ba3f7cba" id="r_afc43c6ed07214f3167ed6223ba3f7cba"><td class="memItemLeft" align="right" valign="top"><a id="afc43c6ed07214f3167ed6223ba3f7cba" name="afc43c6ed07214f3167ed6223ba3f7cba"></a>
 enum adc_reference&#160;</td><td class="memItemRight" valign="bottom"><b>ref</b></td></tr>
-<tr class="memdesc:afc43c6ed07214f3167ed6223ba3f7cba"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC reference source. <br /></td></tr>
+<tr class="memdesc:afc43c6ed07214f3167ed6223ba3f7cba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Voltage reference source for conversion. <br /></td></tr>
 <tr class="separator:afc43c6ed07214f3167ed6223ba3f7cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a354354493138b29213cc54768ac44c2c" id="r_a354354493138b29213cc54768ac44c2c"><td class="memItemLeft" align="right" valign="top"><a id="a354354493138b29213cc54768ac44c2c" name="a354354493138b29213cc54768ac44c2c"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>acquisition_time</b></td></tr>
-<tr class="memdesc:a354354493138b29213cc54768ac44c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acquisition time in microseconds. <br /></td></tr>
+<tr class="memdesc:a354354493138b29213cc54768ac44c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sampling acquisition time in microseconds. <br /></td></tr>
 <tr class="separator:a354354493138b29213cc54768ac44c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac43e766b635d2bf53b0ea2ca585da9d3" id="r_ac43e766b635d2bf53b0ea2ca585da9d3"><td class="memItemLeft" align="right" valign="top"><a id="ac43e766b635d2bf53b0ea2ca585da9d3" name="ac43e766b635d2bf53b0ea2ca585da9d3"></a>
 int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>vref_mv</b></td></tr>
@@ -166,8 +166,8 @@ int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>vref_mv</b></td></
 <tr class="separator:ac43e766b635d2bf53b0ea2ca585da9d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>ADC configuration structure. </p>
-<p>This structure contains the necessary information to configure and read from an ADC channel. Each sensor using the ADC should have its own instance. </p>
+<div class="textblock"><p>ADC channel configuration structure. </p>
+<p>Defines all parameters required to configure and operate an ADC channel for sensor data acquisition. Multiple instances can be used for different sensors sharing the same ADC peripheral. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/sensors/adc/<a class="el" href="adc_8h_source.html">adc.h</a></li>
 </ul>

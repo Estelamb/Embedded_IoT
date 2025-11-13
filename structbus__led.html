@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('structbus__led.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
-<p>Structure representing an LED connected via GPIO pins.  
+<p>LED descriptor structure for GPIO-controlled LEDs.  
  <a href="structbus__led.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="board__led_8h_source.html">board_led.h</a>&gt;</code></p>
@@ -138,15 +138,16 @@ $(document).ready(function(){initNavTree('structbus__led.html',''); initResizabl
 Data Fields</h2></td></tr>
 <tr class="memitem:a0bf9867fba5f5afb351da45127c684af" id="r_a0bf9867fba5f5afb351da45127c684af"><td class="memItemLeft" align="right" valign="top"><a id="a0bf9867fba5f5afb351da45127c684af" name="a0bf9867fba5f5afb351da45127c684af"></a>
 struct gpio_dt_spec&#160;</td><td class="memItemRight" valign="bottom"><b>pins</b> [<a class="el" href="board__led_8h.html#a56412fb9c60e88dc42e7af78b0dbbe5e">BUS_SIZE</a>]</td></tr>
-<tr class="memdesc:a0bf9867fba5f5afb351da45127c684af"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO pin specifications for R, G, B. <br /></td></tr>
+<tr class="memdesc:a0bf9867fba5f5afb351da45127c684af"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO pin specifications for R, G, and B. <br /></td></tr>
 <tr class="separator:a0bf9867fba5f5afb351da45127c684af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1004c3380429c4ab2433f4929362ca5b" id="r_a1004c3380429c4ab2433f4929362ca5b"><td class="memItemLeft" align="right" valign="top"><a id="a1004c3380429c4ab2433f4929362ca5b" name="a1004c3380429c4ab2433f4929362ca5b"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>pin_count</b></td></tr>
-<tr class="memdesc:a1004c3380429c4ab2433f4929362ca5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of pins in use (should be 3). <br /></td></tr>
+<tr class="memdesc:a1004c3380429c4ab2433f4929362ca5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of active pins (typically 3 for RGB). <br /></td></tr>
 <tr class="separator:a1004c3380429c4ab2433f4929362ca5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Structure representing an LED connected via GPIO pins. </p>
+<div class="textblock"><p>LED descriptor structure for GPIO-controlled LEDs. </p>
+<p>Represents an LED or RGB LED using one or more GPIO pins. Each element in <a class="el" href="structbus__led.html#a0bf9867fba5f5afb351da45127c684af">pins</a> corresponds to a color channel. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/sensors/led/<a class="el" href="board__led_8h_source.html">board_led.h</a></li>
 </ul>

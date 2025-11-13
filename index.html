@@ -126,7 +126,244 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">Plant Monitoring System </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_main"></a>This is the documentation for the Plant Monitoring System project. This system is designed to monitor various environmental parameters to ensure optimal conditions for plant growth. It includes sensors for soil moisture, temperature, humidity, and light intensity, and can send alerts when conditions fall outside of predefined thresholds. </p>
+<div class="textblock"><p><a class="anchor" id="md_main"></a> </p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Overview</h1>
+<p>This project implements a <b>Plant Monitoring System</b> using the Zephyr RTOS. It integrates multiple sensors and actuators to monitor environmental conditions, log measurements, and provide visual feedback. The system is modular, thread-safe, and supports different operating modes.</p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Key Features</h2>
+<ul>
+<li>Periodic acquisition of environmental sensor data:<ul>
+<li>Ambient light (phototransistor)</li>
+<li>Soil moisture</li>
+<li>Accelerometer (XYZ axes)</li>
+<li>Temperature &amp; humidity (Si7021)</li>
+<li>Color detection (TCS34725)</li>
+<li>GPS positioning</li>
+</ul>
+</li>
+<li>Multi-threaded architecture using Zephyr threads:<ul>
+<li><b>Sensors thread</b>: acquires ADC and I2C sensor data</li>
+<li><b>GPS thread</b>: reads GPS data periodically or on demand</li>
+</ul>
+</li>
+<li>Thread-safe shared structures using atomic variables</li>
+<li>Mode-dependent behavior:<ul>
+<li><b>TEST_MODE</b>: fast sampling, RGB LED shows dominant color</li>
+<li><b>NORMAL_MODE</b>: standard periodic sampling with alerts</li>
+<li><b>ADVANCED_MODE</b>: minimal visual feedback, threads idle until triggered</li>
+</ul>
+</li>
+<li>Synchronization using semaphores and timers</li>
+<li>Scaled integer representation of sensor values for atomic storage</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md4"></a>
+Architecture</h1>
+<p>The system is structured as follows:</p>
+<p>+-------------&mdash;+ | Main Thread | &lt;&ndash; Manages mode, triggers sensors/GPS +-------------&mdash;+ | v +-------------&mdash;+ +-------------&mdash;+ | Sensors Thread | | GPS Thread | | (ADC/I2C) | | (NMEA parsing) | +-------------&mdash;+ +-------------&mdash;+ | | v v <a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a> <a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a> (atomic variables) (atomic variables)</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
+System Context (&lt;tt&gt;system_context&lt;/tt&gt;)</h2>
+<p>The <code><a class="el" href="structsystem__context.html" title="Shared system context between main, sensors, and GPS threads.">system_context</a></code> structure provides all shared pointers and synchronization objects needed by threads:</p>
+<ul>
+<li>ADC configurations for phototransistor and soil moisture</li>
+<li>I2C device specifications for accelerometer, temperature/humidity, and color sensor</li>
+<li>GPS configuration</li>
+<li>Semaphores for synchronizing with the main thread and for internal triggers</li>
+<li>Atomic variable storing the current <code>system_mode_t</code></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md6"></a>
+System Measurement (&lt;tt&gt;system_measurement&lt;/tt&gt;)</h2>
+<p>The <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code> structure stores the most recent readings:</p>
+<ul>
+<li><b>Brightness &amp; Moisture</b>: 0–100%</li>
+<li><b>Accelerometer</b>: X, Y, Z in g (scaled)</li>
+<li><b>Temperature</b>: °C ×100</li>
+<li><b>Humidity</b>: RH ×100</li>
+<li><b>Color</b>: Red, Green, Blue, Clear channels (raw)</li>
+<li><b>GPS</b>: Latitude/Longitude ×1e6, Altitude ×100, Satellites count, UTC time</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md8"></a>
+Operating Modes</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Mode   </th><th class="markdownTableHeadNone">Description    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>TEST_MODE</b>   </td><td class="markdownTableBodyNone">Fast sensor updates, RGB LED shows dominant color    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>NORMAL_MODE</b>   </td><td class="markdownTableBodyNone">Periodic measurement, alerts on out-of-range values    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>ADVANCED_MODE</b>   </td><td class="markdownTableBodyNone">Minimal visual feedback, threads idle until re-triggered   </td></tr>
+</table>
+<p>Mode is stored atomically and can be changed at runtime.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md10"></a>
+Sensor Interfaces</h1>
+<h2><a class="anchor" id="autotoc_md11"></a>
+ADC Sensors</h2>
+<ul>
+<li>Phototransistor (ambient brightness)</li>
+<li>Soil moisture</li>
+<li>Values are read via <code><a class="el" href="adc_8c.html#aa389f44399fff831361e0b7d334ea333" title="Reads the ADC value and converts it to millivolts.">adc_read_voltage()</a></code> and scaled to 0–100%</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md12"></a>
+I2C Sensors</h2>
+<h3><a class="anchor" id="autotoc_md13"></a>
+Accelerometer (e.g., MMA8451)</h3>
+<ul>
+<li>Registers read via I2C</li>
+<li>Supports full-scale ranges: 2G, 4G, 8G</li>
+<li>Functions:<ul>
+<li><code><a class="el" href="accel_8c.html#a178c0833baa1aa5d6de2e91ab60cd431" title="Initialize accelerometer.">accel_init()</a></code></li>
+<li><code><a class="el" href="accel_8c.html#a406de74c8b14b9e18ba4e0e52040fc7a" title="Read raw accelerometer X, Y, Z values.">accel_read_xyz()</a></code></li>
+<li><code><a class="el" href="accel_8c.html#ab91bbd32faa8f56272715698848e753c" title="Convert raw accelerometer value to g units.">accel_convert_to_g()</a></code></li>
+<li><code><a class="el" href="accel_8c.html#acdf624b8fec684eaf85094b589938861" title="Convert raw accelerometer value to meters per second squared (m/s²).">accel_convert_to_ms2()</a></code></li>
+</ul>
+</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md14"></a>
+Temperature &amp; Humidity (Si7021)</h3>
+<ul>
+<li>Provides RH and °C</li>
+<li>Functions:<ul>
+<li><code><a class="el" href="temp__hum_8c.html#afa3db34ae3e574f315b5eab5888e27b8" title="Initialize the Si7021 temperature and humidity sensor.">temp_hum_init()</a></code></li>
+<li><code><a class="el" href="temp__hum_8c.html#a484cfb38b5815a990a627a38f043da49" title="Read relative humidity from the Si7021 sensor.">temp_hum_read_humidity()</a></code></li>
+<li><code><a class="el" href="temp__hum_8c.html#aceff2003bfe66de6f90b1998cf617a7e" title="Read temperature from the Si7021 sensor in degrees Celsius.">temp_hum_read_temperature()</a></code></li>
+</ul>
+</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md15"></a>
+Color Sensor (TCS34725)</h3>
+<ul>
+<li>Reads raw RGB and clear channel</li>
+<li>Supports gain and integration time configuration</li>
+<li>Functions:<ul>
+<li><code><a class="el" href="color_8c.html#a558daf189093bbccbc6675f1e413651f" title="Initialize the TCS34725 sensor.">color_init()</a></code></li>
+<li><code><a class="el" href="color_8c.html#a806959eb09f81167a9b3b7222631cd7c" title="Wake up the sensor (power on and enable ADC).">color_wake_up()</a></code></li>
+<li><code><a class="el" href="color_8c.html#ae5e24bcb0cd6ea744d8193a45e01ff4a" title="Put the sensor into sleep mode (disable ADC and power off).">color_sleep()</a></code></li>
+<li><code><a class="el" href="color_8c.html#a9976808512ca2455105ad26af55abba2" title="Set the sensor gain.">color_set_gain()</a></code></li>
+<li><code><a class="el" href="color_8c.html#ac17cda32275201beb9894890368c4ce8" title="Set the sensor integration time (ATIME register).">color_set_integration()</a></code></li>
+<li><code><a class="el" href="color_8c.html#ad0b08cf29337fbe7351b05a34fd3f9f4" title="Read raw RGB and clear channel values from the sensor.">color_read_rgb()</a></code></li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md17"></a>
+GPS Interface</h1>
+<ul>
+<li>GPS data parsed from NMEA GGA sentences</li>
+<li>Fields stored in <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code>:<ul>
+<li>Latitude / Longitude (degrees ×1e6)</li>
+<li>Altitude (meters ×100)</li>
+<li>Satellites in view</li>
+<li>UTC time encoded as HHMMSS integer</li>
+</ul>
+</li>
+<li>Thread uses a periodic timer in TEST/NORMAL mode, and waits for semaphore in ADVANCED mode</li>
+<li>Functions:<ul>
+<li><code><a class="el" href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da" title="Start the GPS measurement thread.">start_gps_thread()</a></code></li>
+<li><code><a class="el" href="gps_8c.html#a6f341f66e68728b28f0045ad6e52ae88" title="Waits for the next valid GGA sentence to be parsed.">gps_wait_for_gga()</a></code></li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md19"></a>
+Thread Design</h1>
+<h2><a class="anchor" id="autotoc_md20"></a>
+Sensors Thread</h2>
+<ul>
+<li><b>Stack size</b>: 1024 bytes <br  />
+</li>
+<li><b>Priority</b>: 5 <br  />
+</li>
+<li>Periodically reads:<ul>
+<li>ADC sensors (brightness &amp; moisture)</li>
+<li>Accelerometer (XYZ)</li>
+<li>Temperature &amp; humidity</li>
+<li>Color sensor (RGB + clear)</li>
+</ul>
+</li>
+<li>Synchronization:<ul>
+<li>Uses a timer semaphore</li>
+<li>Polls for timer expiration or manual trigger</li>
+</ul>
+</li>
+<li>Stores data atomically for thread-safe access</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md21"></a>
+GPS Thread</h2>
+<ul>
+<li><b>Stack size</b>: 1024 bytes <br  />
+</li>
+<li><b>Priority</b>: 5 <br  />
+</li>
+<li>Periodically reads GPS data in TEST/NORMAL modes</li>
+<li>In ADVANCED mode, waits for external trigger semaphore</li>
+<li>Uses a timer for periodic updates</li>
+<li>Converts GPS floating point values to scaled integers for atomic storage</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md23"></a>
+Synchronization</h1>
+<ul>
+<li><b>Semaphores</b>:<ul>
+<li><code>main_sensors_sem</code>: main thread waits for sensor update</li>
+<li><code>main_gps_sem</code>: main thread waits for GPS update</li>
+<li><code>sensors_sem</code>: manual trigger for sensor thread</li>
+<li><code>gps_sem</code>: manual trigger for GPS thread</li>
+</ul>
+</li>
+<li><b>Timers</b>:<ul>
+<li>Control measurement cadence depending on operating mode</li>
+</ul>
+</li>
+<li><b>Atomic variables</b>:<ul>
+<li>All sensor measurements stored atomically for thread-safe reads/writes</li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md25"></a>
+Usage</h1>
+<ol type="1">
+<li>Initialize sensors and GPS:</li>
+</ol>
+<div class="fragment"><div class="line"><a class="code hl_struct" href="structsystem__context.html">system_context</a> ctx;</div>
+<div class="line"><a class="code hl_struct" href="structsystem__measurement.html">system_measurement</a> measure;</div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_function" href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a>(&amp;ctx, &amp;measure);</div>
+<div class="line"><a class="code hl_function" href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a>(&amp;ctx, &amp;measure);</div>
+<div class="ttc" id="agps__thread_8c_html_ac636fc80c6c873e0e0071029e9c922da"><div class="ttname"><a href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a></div><div class="ttdeci">void start_gps_thread(struct system_context *ctx, struct system_measurement *measure)</div><div class="ttdoc">Start the GPS measurement thread.</div><div class="ttdef"><b>Definition</b> gps_thread.c:223</div></div>
+<div class="ttc" id="asensors__thread_8c_html_a49e974fd7ad7abcc0c28fdaaaba893ea"><div class="ttname"><a href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a></div><div class="ttdeci">void start_sensors_thread(struct system_context *ctx, struct system_measurement *measure)</div><div class="ttdoc">Start the sensors measurement thread.</div><div class="ttdef"><b>Definition</b> sensors_thread.c:296</div></div>
+<div class="ttc" id="astructsystem__context_html"><div class="ttname"><a href="structsystem__context.html">system_context</a></div><div class="ttdoc">Shared system context between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:55</div></div>
+<div class="ttc" id="astructsystem__measurement_html"><div class="ttname"><a href="structsystem__measurement.html">system_measurement</a></div><div class="ttdoc">Shared sensor data between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:81</div></div>
+</div><!-- fragment --><ol type="1">
+<li>Main loop waits for semaphore events and reads shared measurements:</li>
+</ol>
+<div class="fragment"><div class="line">k_sem_take(&amp;ctx.<a class="code hl_variable" href="structsystem__context.html#a8170516a44f70146537f053bed889862">main_sensors_sem</a>, K_FOREVER);</div>
+<div class="line"><span class="keywordtype">int</span> brightness = atomic_get(&amp;measure.<a class="code hl_variable" href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">brightness</a>);</div>
+<div class="ttc" id="astructsystem__context_html_a8170516a44f70146537f053bed889862"><div class="ttname"><a href="structsystem__context.html#a8170516a44f70146537f053bed889862">system_context::main_sensors_sem</a></div><div class="ttdeci">struct k_sem * main_sensors_sem</div><div class="ttdoc">Semaphore for main-to-sensors synchronization.</div><div class="ttdef"><b>Definition</b> main.h:66</div></div>
+<div class="ttc" id="astructsystem__measurement_html_ac003d622b2be6c6b6d5c7e459fb52306"><div class="ttname"><a href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">system_measurement::brightness</a></div><div class="ttdeci">atomic_t brightness</div><div class="ttdoc">Latest ambient brightness (0–100%).</div><div class="ttdef"><b>Definition</b> main.h:82</div></div>
+</div><!-- fragment --><ol type="1">
+<li>Switch system modes by updating ctx.mode atomically:</li>
+</ol>
+<div class="fragment"><div class="line">atomic_set(&amp;ctx.<a class="code hl_variable" href="structsystem__context.html#a497903b46418329ff77e573fe793a374">mode</a>, <a class="code hl_enumvalue" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>);</div>
+<div class="ttc" id="amain_8h_html_a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148"><div class="ttname"><a href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a></div><div class="ttdeci">@ NORMAL_MODE</div><div class="ttdoc">Normal mode – periodic measurement and alerts.</div><div class="ttdef"><b>Definition</b> main.h:44</div></div>
+<div class="ttc" id="astructsystem__context_html_a497903b46418329ff77e573fe793a374"><div class="ttname"><a href="structsystem__context.html#a497903b46418329ff77e573fe793a374">system_context::mode</a></div><div class="ttdeci">atomic_t mode</div><div class="ttdoc">Current operating mode (atomic).</div><div class="ttdef"><b>Definition</b> main.h:71</div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md26"></a>
+Notes</h1>
+<ul>
+<li>All sensor readings are scaled appropriately to allow atomic storage.</li>
+<li>I2C devices are checked for readiness before communication.</li>
+<li>Accelerometer and color sensors are set to standby or active modes as needed.</li>
+<li>GPS UTC time is stored as an integer HHMMSS for atomic safety.</li>
+<li>RGB LED can be used to display dominant color in TEST_MODE.</li>
+<li>ADC readings are converted to percentages ×10 for precision.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md27"></a>
+Conclusion</h1>
+<p>This Plant Monitoring System is a modular, multi-threaded system designed for embedded platforms using Zephyr. It integrates multiple sensors, synchronizes data safely between threads, and supports different operating modes with adaptive behavior. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

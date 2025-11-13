@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('gps_8h.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 
-<p>Simple GPS helper: UART ISR, GGA parse and waiting API.  
+<p>GPS interface for UART-based NMEA parsing (GGA sentence support).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/device.h&gt;</code><br />
 <code>#include &lt;zephyr/kernel.h&gt;</code><br />
@@ -142,27 +142,144 @@ $(document).ready(function(){initNavTree('gps_8h.html',''); initResizable(); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgps__config.html">gps_config</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPS configuration structure.  <a href="structgps__config.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structgps__data__t.html">gps_data_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parsed GPS data from a GGA sentence.  <a href="structgps__data__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aa19e319fe42fe0bffecff03cd1d5785b" id="r_aa19e319fe42fe0bffecff03cd1d5785b"><td class="memItemLeft" align="right" valign="top"><a id="aa19e319fe42fe0bffecff03cd1d5785b" name="aa19e319fe42fe0bffecff03cd1d5785b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>gps_init</b> (const struct <a class="el" href="structgps__config.html">gps_config</a> *cfg)</td></tr>
+<tr class="memitem:aa19e319fe42fe0bffecff03cd1d5785b" id="r_aa19e319fe42fe0bffecff03cd1d5785b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gps_8h.html#aa19e319fe42fe0bffecff03cd1d5785b">gps_init</a> (const struct <a class="el" href="structgps__config.html">gps_config</a> *cfg)</td></tr>
+<tr class="memdesc:aa19e319fe42fe0bffecff03cd1d5785b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the GPS module UART and interrupt service routine.  <br /></td></tr>
 <tr class="separator:aa19e319fe42fe0bffecff03cd1d5785b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f341f66e68728b28f0045ad6e52ae88" id="r_a6f341f66e68728b28f0045ad6e52ae88"><td class="memItemLeft" align="right" valign="top"><a id="a6f341f66e68728b28f0045ad6e52ae88" name="a6f341f66e68728b28f0045ad6e52ae88"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>gps_wait_for_gga</b> (<a class="el" href="structgps__data__t.html">gps_data_t</a> *out, k_timeout_t timeout)</td></tr>
+<tr class="memitem:a6f341f66e68728b28f0045ad6e52ae88" id="r_a6f341f66e68728b28f0045ad6e52ae88"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gps_8h.html#a6f341f66e68728b28f0045ad6e52ae88">gps_wait_for_gga</a> (<a class="el" href="structgps__data__t.html">gps_data_t</a> *out, k_timeout_t timeout)</td></tr>
+<tr class="memdesc:a6f341f66e68728b28f0045ad6e52ae88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Waits for the next parsed GGA sentence.  <br /></td></tr>
 <tr class="separator:a6f341f66e68728b28f0045ad6e52ae88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Simple GPS helper: UART ISR, GGA parse and waiting API. </p>
-<p>This module provides:</p><ul>
-<li>gps_init(&amp;cfg) to initialize the UART and ISR.</li>
-<li>gps_wait_for_gga(data, timeout) to block until a parsed GGA is available.</li>
+<div class="textblock"><p>GPS interface for UART-based NMEA parsing (GGA sentence support). </p>
+<p>This module provides a simple GPS helper for parsing NMEA GGA sentences received through a UART interface. It includes initialization, interrupt setup, and a blocking wait API to obtain the most recent parsed position.</p>
+<p>Functions:</p><ul>
+<li><a class="el" href="gps_8c.html#aa19e319fe42fe0bffecff03cd1d5785b">gps_init()</a> to initialize the UART and enable ISR-based reception.</li>
+<li><a class="el" href="gps_8c.html#a6f341f66e68728b28f0045ad6e52ae88">gps_wait_for_gga()</a> to wait for a parsed GGA sentence.</li>
 </ul>
-<p>The parsed numeric values are returned as floats in <a class="el" href="structgps__data__t.html">gps_data_t</a>. </p>
-</div></div><!-- contents -->
+<p>Parsed data is returned as floating-point values in a <a class="el" href="structgps__data__t.html">gps_data_t</a> structure. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="aa19e319fe42fe0bffecff03cd1d5785b" name="aa19e319fe42fe0bffecff03cd1d5785b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa19e319fe42fe0bffecff03cd1d5785b">&#9670;&#160;</a></span>gps_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gps_init </td>
+          <td>(</td>
+          <td class="paramtype">const struct <a class="el" href="structgps__config.html">gps_config</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes the GPS module UART and interrupt service routine. </p>
+<p>Configures the UART device for receiving NMEA data from the GPS module and sets up an interrupt-based handler to process incoming bytes.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfg</td><td>Pointer to the GPS configuration structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If initialization was successful. </td></tr>
+    <tr><td class="paramname">Negative</td><td>error code if UART configuration or ISR setup failed.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Initializes the GPS module UART and interrupt service routine.</p>
+<p>Validates the provided configuration, verifies UART readiness, sets up the ISR for GPS data reception, and enables RX interrupts.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfg</td><td>Pointer to the GPS configuration structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If initialization succeeded. </td></tr>
+    <tr><td class="paramname">-EINVAL</td><td>If configuration is invalid. </td></tr>
+    <tr><td class="paramname">-ENODEV</td><td>If the UART device is not ready. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6f341f66e68728b28f0045ad6e52ae88" name="a6f341f66e68728b28f0045ad6e52ae88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f341f66e68728b28f0045ad6e52ae88">&#9670;&#160;</a></span>gps_wait_for_gga()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int gps_wait_for_gga </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgps__data__t.html">gps_data_t</a> *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">k_timeout_t&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Waits for the next parsed GGA sentence. </p>
+<p>Blocks until a new, valid GGA sentence has been parsed or until the specified timeout expires. On success, the parsed data is written into the provided <a class="el" href="structgps__data__t.html">gps_data_t</a> structure.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>Pointer to store the parsed GPS data. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Timeout duration (e.g. <code>K_FOREVER</code>, <code>K_MSEC(2000)</code>, <code>K_NO_WAIT</code>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If a valid GGA sentence was received and parsed successfully. </td></tr>
+    <tr><td class="paramname">-ETIMEDOUT</td><td>If no valid GGA sentence was received before timeout.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section note"><dt>Note</dt><dd>This function is typically used after calling <a class="el" href="gps_8c.html#aa19e319fe42fe0bffecff03cd1d5785b">gps_init()</a>.</dd></dl>
+<p>Waits for the next parsed GGA sentence.</p>
+<p>Blocks until a new GGA frame is available or the specified timeout expires. On success, copies the latest parsed data into the provided buffer.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">out</td><td>Pointer to store the parsed GPS data. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Timeout duration (e.g. <code>K_FOREVER</code>, <code>K_MSEC(2000)</code>, <code>K_NO_WAIT</code>). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If valid GPS data was received before timeout. </td></tr>
+    <tr><td class="paramname">-ETIMEDOUT</td><td>If no new GGA sentence was parsed within the timeout period. </td></tr>
+    <tr><td class="paramname">-EINVAL</td><td>If the output pointer is invalid. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

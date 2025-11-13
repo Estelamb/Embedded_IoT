@@ -157,7 +157,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a6018ed5003208d951b462b7afb4390f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial operating mode at startup. <br /></td></tr>
 <tr class="separator:a6018ed5003208d951b462b7afb4390f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16ec7011dea5773b504e875852f35fc1" id="r_a16ec7011dea5773b504e875852f35fc1"><td class="memItemLeft" align="right" valign="top"><a id="a16ec7011dea5773b504e875852f35fc1" name="a16ec7011dea5773b504e875852f35fc1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_RANGE</b>&#160;&#160;&#160;ACCEL_2G</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_RANGE</b>&#160;&#160;&#160;<a class="el" href="accel_8h.html#adce3bf2dea7bd001b53e2ca18575f1c0">ACCEL_2G</a></td></tr>
 <tr class="memdesc:a16ec7011dea5773b504e875852f35fc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accelerometer full-scale range setting. <br /></td></tr>
 <tr class="separator:a16ec7011dea5773b504e875852f35fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad694b6bc83a5a3e06ce35a56c8acdbd" id="r_aad694b6bc83a5a3e06ce35a56c8acdbd"><td class="memItemLeft" align="right" valign="top"><a id="aad694b6bc83a5a3e06ce35a56c8acdbd" name="aad694b6bc83a5a3e06ce35a56c8acdbd"></a>
@@ -275,14 +275,14 @@ struct <a class="el" href="structstats__measurements.html">stats_measurements</a
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Plant Monitoring System main module. </p>
 <p>This module monitors plant conditions such as light, soil moisture, temperature/humidity, acceleration, color, and GPS location. It provides visual feedback through an RGB LED and allows the user to switch operating modes via a button.</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Operating Modes:</h2>
 <ul>
 <li><b>TEST_MODE:</b> RGB LED shows the dominant color detected.</li>
 <li><b>NORMAL_MODE:</b> Periodic measurements; RGB LED alerts if any sensor is out of range.</li>
 <li><b>ADVANCED_MODE:</b> Minimal feedback; system remains operational.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Button Behavior:</h2>
 <ul>
 <li>Toggles between TEST, NORMAL, and ADVANCED modes with each press. </li>

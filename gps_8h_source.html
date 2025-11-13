@@ -132,45 +132,46 @@ $(document).ready(function(){initNavTree('gps_8h_source.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <a href="gps_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#ifndef GPS_H_</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define GPS_H_</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &lt;zephyr/kernel.h&gt;</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structgps__config.html">   20</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structgps__config.html">gps_config</a> {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">const</span> <span class="keyword">struct </span>device *dev; <span class="comment">/* UART device already resolved by caller */</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
-</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#ifndef GPS_H_</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#define GPS_H_</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &lt;zephyr/kernel.h&gt;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="};">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structgps__data__t.html">   24</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">float</span> lat;    <span class="comment">/* degrees (decimal) */</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">float</span> lon;    <span class="comment">/* degrees (decimal) */</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keywordtype">float</span> alt;    <span class="comment">/* meters */</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keywordtype">int</span>   sats;   <span class="comment">/* number of satellites */</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">float</span> hdop;   <span class="comment">/* horizontal dilution of precision */</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">char</span>  utc_time[16]; <span class="comment">/* hhmmss.ss null-terminated if available */</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>} <a class="code hl_struct" href="structgps__data__t.html">gps_data_t</a>;</div>
+<div class="foldopen" id="foldopen00030" data-start="{" data-end="};">
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structgps__config.html">   30</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structgps__config.html">gps_config</a> {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structgps__config.html#ae536b0a3029f6ada87b880bc253838b4">   31</a></span>    <span class="keyword">const</span> <span class="keyword">struct </span>device *<a class="code hl_variable" href="structgps__config.html#ae536b0a3029f6ada87b880bc253838b4">dev</a>; </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
 </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">/* Initialize GPS UART and ISR.</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * Returns 0 on success, negative on error.</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="keywordtype">int</span> gps_init(<span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structgps__config.html">gps_config</a> *cfg);</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/* Wait for next parsed GGA. Returns 0 on success, -ETIMEDOUT on timeout.</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> * Timeout examples: K_FOREVER, K_MSEC(2000), K_NO_WAIT</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> * On success fills gps_data_t.</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">int</span> gps_wait_for_gga(<a class="code hl_struct" href="structgps__data__t.html">gps_data_t</a> *out, k_timeout_t timeout);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif </span><span class="comment">/* GPS_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="astructgps__config_html"><div class="ttname"><a href="structgps__config.html">gps_config</a></div><div class="ttdef"><b>Definition</b> gps.h:20</div></div>
-<div class="ttc" id="astructgps__data__t_html"><div class="ttname"><a href="structgps__data__t.html">gps_data_t</a></div><div class="ttdef"><b>Definition</b> gps.h:24</div></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="};">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structgps__data__t.html">   40</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="structgps__data__t.html#ae7572fb625cd90ec74b13626d3bbb1f3">   41</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structgps__data__t.html#ae7572fb625cd90ec74b13626d3bbb1f3">lat</a>;           </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structgps__data__t.html#a8dc2daf738f786abde53243bfbafb7ab">   42</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structgps__data__t.html#a8dc2daf738f786abde53243bfbafb7ab">lon</a>;           </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structgps__data__t.html#ab784c4431f82ecd9141862471d84c34f">   43</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structgps__data__t.html#ab784c4431f82ecd9141862471d84c34f">alt</a>;           </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structgps__data__t.html#a64030c9dd3b2cfd7e1e1c397ac942065">   44</a></span>    <span class="keywordtype">int</span>   <a class="code hl_variable" href="structgps__data__t.html#a64030c9dd3b2cfd7e1e1c397ac942065">sats</a>;          </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structgps__data__t.html#a97affbec2705a3c7735886d8e477b59c">   45</a></span>    <span class="keywordtype">float</span> <a class="code hl_variable" href="structgps__data__t.html#a97affbec2705a3c7735886d8e477b59c">hdop</a>;          </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structgps__data__t.html#a1e8ad5ef1073e54f0fe81d251ebdf233">   46</a></span>    <span class="keywordtype">char</span>  utc_time[16];  </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>} <a class="code hl_struct" href="structgps__data__t.html">gps_data_t</a>;</div>
+</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keywordtype">int</span> <a class="code hl_function" href="gps_8h.html#aa19e319fe42fe0bffecff03cd1d5785b">gps_init</a>(<span class="keyword">const</span> <span class="keyword">struct</span> <a class="code hl_struct" href="structgps__config.html">gps_config</a> *cfg);</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keywordtype">int</span> <a class="code hl_function" href="gps_8h.html#a6f341f66e68728b28f0045ad6e52ae88">gps_wait_for_gga</a>(<a class="code hl_struct" href="structgps__data__t.html">gps_data_t</a> *out, k_timeout_t timeout);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#endif </span><span class="comment">/* GPS_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="agps_8h_html_a6f341f66e68728b28f0045ad6e52ae88"><div class="ttname"><a href="gps_8h.html#a6f341f66e68728b28f0045ad6e52ae88">gps_wait_for_gga</a></div><div class="ttdeci">int gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout)</div><div class="ttdoc">Waits for the next parsed GGA sentence.</div><div class="ttdef"><b>Definition</b> gps.c:231</div></div>
+<div class="ttc" id="agps_8h_html_aa19e319fe42fe0bffecff03cd1d5785b"><div class="ttname"><a href="gps_8h.html#aa19e319fe42fe0bffecff03cd1d5785b">gps_init</a></div><div class="ttdeci">int gps_init(const struct gps_config *cfg)</div><div class="ttdoc">Initializes the GPS module UART and interrupt service routine.</div><div class="ttdef"><b>Definition</b> gps.c:197</div></div>
+<div class="ttc" id="astructgps__config_html"><div class="ttname"><a href="structgps__config.html">gps_config</a></div><div class="ttdoc">GPS configuration structure.</div><div class="ttdef"><b>Definition</b> gps.h:30</div></div>
+<div class="ttc" id="astructgps__config_html_ae536b0a3029f6ada87b880bc253838b4"><div class="ttname"><a href="structgps__config.html#ae536b0a3029f6ada87b880bc253838b4">gps_config::dev</a></div><div class="ttdeci">const struct device * dev</div><div class="ttdoc">UART device instance used by the GPS module.</div><div class="ttdef"><b>Definition</b> gps.h:31</div></div>
+<div class="ttc" id="astructgps__data__t_html"><div class="ttname"><a href="structgps__data__t.html">gps_data_t</a></div><div class="ttdoc">Parsed GPS data from a GGA sentence.</div><div class="ttdef"><b>Definition</b> gps.h:40</div></div>
+<div class="ttc" id="astructgps__data__t_html_a64030c9dd3b2cfd7e1e1c397ac942065"><div class="ttname"><a href="structgps__data__t.html#a64030c9dd3b2cfd7e1e1c397ac942065">gps_data_t::sats</a></div><div class="ttdeci">int sats</div><div class="ttdoc">Number of satellites currently in use.</div><div class="ttdef"><b>Definition</b> gps.h:44</div></div>
+<div class="ttc" id="astructgps__data__t_html_a8dc2daf738f786abde53243bfbafb7ab"><div class="ttname"><a href="structgps__data__t.html#a8dc2daf738f786abde53243bfbafb7ab">gps_data_t::lon</a></div><div class="ttdeci">float lon</div><div class="ttdoc">Longitude in decimal degrees.</div><div class="ttdef"><b>Definition</b> gps.h:42</div></div>
+<div class="ttc" id="astructgps__data__t_html_a97affbec2705a3c7735886d8e477b59c"><div class="ttname"><a href="structgps__data__t.html#a97affbec2705a3c7735886d8e477b59c">gps_data_t::hdop</a></div><div class="ttdeci">float hdop</div><div class="ttdoc">Horizontal dilution of precision.</div><div class="ttdef"><b>Definition</b> gps.h:45</div></div>
+<div class="ttc" id="astructgps__data__t_html_ab784c4431f82ecd9141862471d84c34f"><div class="ttname"><a href="structgps__data__t.html#ab784c4431f82ecd9141862471d84c34f">gps_data_t::alt</a></div><div class="ttdeci">float alt</div><div class="ttdoc">Altitude in meters above mean sea level.</div><div class="ttdef"><b>Definition</b> gps.h:43</div></div>
+<div class="ttc" id="astructgps__data__t_html_ae7572fb625cd90ec74b13626d3bbb1f3"><div class="ttname"><a href="structgps__data__t.html#ae7572fb625cd90ec74b13626d3bbb1f3">gps_data_t::lat</a></div><div class="ttdeci">float lat</div><div class="ttdoc">Latitude in decimal degrees.</div><div class="ttdef"><b>Definition</b> gps.h:41</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

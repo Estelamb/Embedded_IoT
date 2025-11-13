@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['main_5fgps_5fsem_0',['main_gps_sem',['../structsystem__context.html#a838795d3f628b7ce00be37a9048b5d65',1,'system_context']]],
-  ['main_5fsensors_5fsem_1',['main_sensors_sem',['../structsystem__context.html#a8170516a44f70146537f053bed889862',1,'system_context']]],
-  ['mode_2',['mode',['../structsystem__context.html#a497903b46418329ff77e573fe793a374',1,'system_context']]],
-  ['moisture_3',['moisture',['../structsystem__measurement.html#a4f37214238e319b8f3da4b88ebd79407',1,'system_measurement']]]
+  ['lat_0',['lat',['../structgps__data__t.html#ae7572fb625cd90ec74b13626d3bbb1f3',1,'gps_data_t']]],
+  ['lon_1',['lon',['../structgps__data__t.html#a8dc2daf738f786abde53243bfbafb7ab',1,'gps_data_t']]]
 ];

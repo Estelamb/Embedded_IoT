@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('board__led_8h.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for controlling an LED using GPIO pins.  
+<p>LED control interface using GPIO pins.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/drivers/gpio.h&gt;</code><br />
 <code>#include &lt;zephyr/kernel.h&gt;</code><br />
@@ -141,60 +141,164 @@ $(document).ready(function(){initNavTree('board__led_8h.html',''); initResizable
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structbus__led.html">bus_led</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing an LED connected via GPIO pins.  <a href="structbus__led.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">LED descriptor structure for GPIO-controlled LEDs.  <a href="structbus__led.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a56412fb9c60e88dc42e7af78b0dbbe5e" id="r_a56412fb9c60e88dc42e7af78b0dbbe5e"><td class="memItemLeft" align="right" valign="top"><a id="a56412fb9c60e88dc42e7af78b0dbbe5e" name="a56412fb9c60e88dc42e7af78b0dbbe5e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>BUS_SIZE</b>&#160;&#160;&#160;3</td></tr>
-<tr class="memdesc:a56412fb9c60e88dc42e7af78b0dbbe5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of pins for the LED (R, G, B). <br /></td></tr>
+<tr class="memdesc:a56412fb9c60e88dc42e7af78b0dbbe5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of GPIO pins used to control an RGB LED (R, G, B). <br /></td></tr>
 <tr class="separator:a56412fb9c60e88dc42e7af78b0dbbe5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a04077e6c637717c4dabfd90acc0ebcad" id="r_a04077e6c637717c4dabfd90acc0ebcad"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#a04077e6c637717c4dabfd90acc0ebcad">led_init</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:a04077e6c637717c4dabfd90acc0ebcad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize all LED GPIO pins.  <br /></td></tr>
+<tr class="memdesc:a04077e6c637717c4dabfd90acc0ebcad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes GPIO pins for LED control.  <br /></td></tr>
 <tr class="separator:a04077e6c637717c4dabfd90acc0ebcad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfc7e350e18ded1729d5b922b2c3f64c" id="r_adfc7e350e18ded1729d5b922b2c3f64c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#adfc7e350e18ded1729d5b922b2c3f64c">led_write</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led, int value)</td></tr>
-<tr class="memdesc:adfc7e350e18ded1729d5b922b2c3f64c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a bitmask value to the LED pins.  <br /></td></tr>
+<tr class="memdesc:adfc7e350e18ded1729d5b922b2c3f64c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a raw value to the LED GPIO pins.  <br /></td></tr>
 <tr class="separator:adfc7e350e18ded1729d5b922b2c3f64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf1e8c6340ed8223c84e7c89c6e9446e" id="r_acf1e8c6340ed8223c84e7c89c6e9446e"><td class="memItemLeft" align="right" valign="top"><a id="acf1e8c6340ed8223c84e7c89c6e9446e" name="acf1e8c6340ed8223c84e7c89c6e9446e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>led_on</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:acf1e8c6340ed8223c84e7c89c6e9446e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn on all LED colors. <br /></td></tr>
+<tr class="memitem:acf1e8c6340ed8223c84e7c89c6e9446e" id="r_acf1e8c6340ed8223c84e7c89c6e9446e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#acf1e8c6340ed8223c84e7c89c6e9446e">led_on</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:acf1e8c6340ed8223c84e7c89c6e9446e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns the LED on (activates all configured pins).  <br /></td></tr>
 <tr class="separator:acf1e8c6340ed8223c84e7c89c6e9446e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2743f8c33e12fcf8b0c3fca28df8f7e2" id="r_a2743f8c33e12fcf8b0c3fca28df8f7e2"><td class="memItemLeft" align="right" valign="top"><a id="a2743f8c33e12fcf8b0c3fca28df8f7e2" name="a2743f8c33e12fcf8b0c3fca28df8f7e2"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>led_off</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:a2743f8c33e12fcf8b0c3fca28df8f7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turn off all LED colors. <br /></td></tr>
+<tr class="memitem:a2743f8c33e12fcf8b0c3fca28df8f7e2" id="r_a2743f8c33e12fcf8b0c3fca28df8f7e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#a2743f8c33e12fcf8b0c3fca28df8f7e2">led_off</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:a2743f8c33e12fcf8b0c3fca28df8f7e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns the LED off (deactivates all configured pins).  <br /></td></tr>
 <tr class="separator:a2743f8c33e12fcf8b0c3fca28df8f7e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2acb95b6cf64e405e2a6435636ed425" id="r_af2acb95b6cf64e405e2a6435636ed425"><td class="memItemLeft" align="right" valign="top"><a id="af2acb95b6cf64e405e2a6435636ed425" name="af2acb95b6cf64e405e2a6435636ed425"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>red</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:af2acb95b6cf64e405e2a6435636ed425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set LED color to red only. <br /></td></tr>
+<tr class="memitem:af2acb95b6cf64e405e2a6435636ed425" id="r_af2acb95b6cf64e405e2a6435636ed425"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#af2acb95b6cf64e405e2a6435636ed425">red</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:af2acb95b6cf64e405e2a6435636ed425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activates only the red LED channel.  <br /></td></tr>
 <tr class="separator:af2acb95b6cf64e405e2a6435636ed425"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa01abe321ebd655934c0572b1f3d38f3" id="r_aa01abe321ebd655934c0572b1f3d38f3"><td class="memItemLeft" align="right" valign="top"><a id="aa01abe321ebd655934c0572b1f3d38f3" name="aa01abe321ebd655934c0572b1f3d38f3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>green</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:aa01abe321ebd655934c0572b1f3d38f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set LED color to green only. <br /></td></tr>
+<tr class="memitem:aa01abe321ebd655934c0572b1f3d38f3" id="r_aa01abe321ebd655934c0572b1f3d38f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#aa01abe321ebd655934c0572b1f3d38f3">green</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:aa01abe321ebd655934c0572b1f3d38f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activates only the green LED channel.  <br /></td></tr>
 <tr class="separator:aa01abe321ebd655934c0572b1f3d38f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a151f494c623a3c72e2828dc56a43197d" id="r_a151f494c623a3c72e2828dc56a43197d"><td class="memItemLeft" align="right" valign="top"><a id="a151f494c623a3c72e2828dc56a43197d" name="a151f494c623a3c72e2828dc56a43197d"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>blue</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:a151f494c623a3c72e2828dc56a43197d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set LED color to blue only. <br /></td></tr>
+<tr class="memitem:a151f494c623a3c72e2828dc56a43197d" id="r_a151f494c623a3c72e2828dc56a43197d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#a151f494c623a3c72e2828dc56a43197d">blue</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:a151f494c623a3c72e2828dc56a43197d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activates only the blue LED channel.  <br /></td></tr>
 <tr class="separator:a151f494c623a3c72e2828dc56a43197d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af007a7b25e06bea074dc3462b89afa2a" id="r_af007a7b25e06bea074dc3462b89afa2a"><td class="memItemLeft" align="right" valign="top"><a id="af007a7b25e06bea074dc3462b89afa2a" name="af007a7b25e06bea074dc3462b89afa2a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>red_green</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:af007a7b25e06bea074dc3462b89afa2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set LED color to red and green only. <br /></td></tr>
+<tr class="memitem:af007a7b25e06bea074dc3462b89afa2a" id="r_af007a7b25e06bea074dc3462b89afa2a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#af007a7b25e06bea074dc3462b89afa2a">red_green</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:af007a7b25e06bea074dc3462b89afa2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activates both red and green LED channels.  <br /></td></tr>
 <tr class="separator:af007a7b25e06bea074dc3462b89afa2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5f3eefda15a99cc7d9219e552948193" id="r_af5f3eefda15a99cc7d9219e552948193"><td class="memItemLeft" align="right" valign="top"><a id="af5f3eefda15a99cc7d9219e552948193" name="af5f3eefda15a99cc7d9219e552948193"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>green_blue</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:af5f3eefda15a99cc7d9219e552948193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set LED color to green and blue only. <br /></td></tr>
+<tr class="memitem:af5f3eefda15a99cc7d9219e552948193" id="r_af5f3eefda15a99cc7d9219e552948193"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#af5f3eefda15a99cc7d9219e552948193">green_blue</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:af5f3eefda15a99cc7d9219e552948193"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activates both green and blue LED channels.  <br /></td></tr>
 <tr class="separator:af5f3eefda15a99cc7d9219e552948193"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c1c764c91e73f5970230fd09160deb9" id="r_a8c1c764c91e73f5970230fd09160deb9"><td class="memItemLeft" align="right" valign="top"><a id="a8c1c764c91e73f5970230fd09160deb9" name="a8c1c764c91e73f5970230fd09160deb9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>red_blue</b> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
-<tr class="memdesc:a8c1c764c91e73f5970230fd09160deb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set LED color to red and blue only. <br /></td></tr>
+<tr class="memitem:a8c1c764c91e73f5970230fd09160deb9" id="r_a8c1c764c91e73f5970230fd09160deb9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="board__led_8h.html#a8c1c764c91e73f5970230fd09160deb9">red_blue</a> (struct <a class="el" href="structbus__led.html">bus_led</a> *led)</td></tr>
+<tr class="memdesc:a8c1c764c91e73f5970230fd09160deb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Activates both red and blue LED channels.  <br /></td></tr>
 <tr class="separator:a8c1c764c91e73f5970230fd09160deb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for controlling an LED using GPIO pins. </p>
+<div class="textblock"><p>LED control interface using GPIO pins. </p>
+<p>This module provides a simple abstraction for controlling single or multi-channel LEDs (e.g., RGB) via GPIO outputs. It defines initialization and control functions for on/off operations as well as combined color states. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a151f494c623a3c72e2828dc56a43197d" name="a151f494c623a3c72e2828dc56a43197d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a151f494c623a3c72e2828dc56a43197d">&#9670;&#160;</a></span>blue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int blue </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Activates only the blue LED channel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa01abe321ebd655934c0572b1f3d38f3" name="aa01abe321ebd655934c0572b1f3d38f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa01abe321ebd655934c0572b1f3d38f3">&#9670;&#160;</a></span>green()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int green </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Activates only the green LED channel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af5f3eefda15a99cc7d9219e552948193" name="af5f3eefda15a99cc7d9219e552948193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5f3eefda15a99cc7d9219e552948193">&#9670;&#160;</a></span>green_blue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int green_blue </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Activates both green and blue LED channels. </p>
+<p>Produces a cyan color on RGB LEDs.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Activates both green and blue LED channels.</p>
+<p>Produces cyan on an RGB LED.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a04077e6c637717c4dabfd90acc0ebcad" name="a04077e6c637717c4dabfd90acc0ebcad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a04077e6c637717c4dabfd90acc0ebcad">&#9670;&#160;</a></span>led_init()</h2>
 
@@ -211,15 +315,130 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>red_blue</b> (struct <
       </table>
 </div><div class="memdoc">
 
-<p>Initialize all LED GPIO pins. </p>
-<p>Checks if each GPIO port is ready, and configures all pins as outputs with initial inactive (off) state.</p>
+<p>Initializes GPIO pins for LED control. </p>
+<p>Configures all pins defined in the LED structure for output mode and ensures they are ready for use.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">led</td><td>Pointer to the LED bus structure. </td></tr>
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If initialization succeeded. </td></tr>
+    <tr><td class="paramname">-EINVAL</td><td>If the LED configuration is invalid. </td></tr>
+    <tr><td class="paramname">-EIO</td><td>If one or more GPIO devices could not be configured.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Initializes GPIO pins for LED control.</p>
+<p>Each pin defined in the <a class="el" href="structbus__led.html">bus_led</a> structure is verified to ensure the corresponding GPIO device is ready. The pins are then configured as outputs and set to an inactive (off) state by default.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If initialization succeeded. </td></tr>
+    <tr><td class="paramname">-ENODEV</td><td>If a GPIO device is not ready. </td></tr>
+    <tr><td class="paramname">Other</td><td>Negative error code from gpio_pin_configure_dt. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2743f8c33e12fcf8b0c3fca28df8f7e2" name="a2743f8c33e12fcf8b0c3fca28df8f7e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2743f8c33e12fcf8b0c3fca28df8f7e2">&#9670;&#160;</a></span>led_off()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int led_off </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Turns the LED off (deactivates all configured pins). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Turns the LED off (deactivates all configured pins).</p>
+<p>Equivalent to setting the RGB bitmask to 0x0 (all off).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acf1e8c6340ed8223c84e7c89c6e9446e" name="acf1e8c6340ed8223c84e7c89c6e9446e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf1e8c6340ed8223c84e7c89c6e9446e">&#9670;&#160;</a></span>led_on()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int led_on </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Turns the LED on (activates all configured pins). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Turns the LED on (activates all configured pins).</p>
+<p>Equivalent to setting the RGB bitmask to 0x7 (all colors active).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -249,20 +468,172 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>red_blue</b> (struct <
       </table>
 </div><div class="memdoc">
 
-<p>Write a bitmask value to the LED pins. </p>
-<p>Bit mapping:</p><ul>
+<p>Writes a raw value to the LED GPIO pins. </p>
+<p>Each bit of the provided value corresponds to an LED channel. Example: bit0=R, bit1=G, bit2=B.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+    <tr><td class="paramname">value</td><td>Bitmask specifying which LED channels are active. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the write operation succeeded.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Writes a raw value to the LED GPIO pins.</p>
+<p>Each bit in the input value corresponds to one LED channel:</p><ul>
 <li>Bit 0 → Red</li>
 <li>Bit 1 → Green</li>
 <li>Bit 2 → Blue</li>
 </ul>
+<p>Example:</p><ul>
+<li><code>0x1</code> → Red ON</li>
+<li><code>0x3</code> → Red + Green ON (Yellow)</li>
+<li><code>0x7</code> → All ON (White)</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">led</td><td>Pointer to the LED bus structure. </td></tr>
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
     <tr><td class="paramname">value</td><td>Bitmask (0–7) controlling the color combination. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, or a negative error code on failure. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+    <tr><td class="paramname">-EIO</td><td>If a GPIO write failed. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af2acb95b6cf64e405e2a6435636ed425" name="af2acb95b6cf64e405e2a6435636ed425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2acb95b6cf64e405e2a6435636ed425">&#9670;&#160;</a></span>red()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int red </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Activates only the red LED channel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8c1c764c91e73f5970230fd09160deb9" name="a8c1c764c91e73f5970230fd09160deb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c1c764c91e73f5970230fd09160deb9">&#9670;&#160;</a></span>red_blue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int red_blue </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Activates both red and blue LED channels. </p>
+<p>Produces a magenta color on RGB LEDs.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Activates both red and blue LED channels.</p>
+<p>Produces magenta on an RGB LED.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af007a7b25e06bea074dc3462b89afa2a" name="af007a7b25e06bea074dc3462b89afa2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af007a7b25e06bea074dc3462b89afa2a">&#9670;&#160;</a></span>red_green()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int red_green </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__led.html">bus_led</a> *&#160;</td>
+          <td class="paramname"><em>led</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Activates both red and green LED channels. </p>
+<p>Produces a yellow color on RGB LEDs.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Activates both red and green LED channels.</p>
+<p>Produces yellow on an RGB LED.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">led</td><td>Pointer to the LED descriptor structure. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

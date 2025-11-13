@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['red_0',['red',['../structsystem__measurement.html#a66a798f1395f38c94ade6b78972d85fb',1,'system_measurement::red'],['../board__led_8c.html#af2acb95b6cf64e405e2a6435636ed425',1,'red(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#af2acb95b6cf64e405e2a6435636ed425',1,'red(struct bus_led *led):&#160;board_led.c']]],
+  ['red_0',['red',['../structsystem__measurement.html#a66a798f1395f38c94ade6b78972d85fb',1,'system_measurement::red'],['../structColorSensorData.html#a2bb16873d39fc1b327c1ac04ced245ee',1,'ColorSensorData::red'],['../board__led_8c.html#af2acb95b6cf64e405e2a6435636ed425',1,'red(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#af2acb95b6cf64e405e2a6435636ed425',1,'red(struct bus_led *led):&#160;board_led.c']]],
   ['red_5fblue_1',['red_blue',['../board__led_8c.html#a8c1c764c91e73f5970230fd09160deb9',1,'red_blue(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#a8c1c764c91e73f5970230fd09160deb9',1,'red_blue(struct bus_led *led):&#160;board_led.c']]],
   ['red_5fgreen_2',['red_green',['../board__led_8c.html#af007a7b25e06bea074dc3462b89afa2a',1,'red_green(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#af007a7b25e06bea074dc3462b89afa2a',1,'red_green(struct bus_led *led):&#160;board_led.c']]],
   ['red_5fmax_3',['RED_MAX',['../main_8c.html#a4c82e201d70da8303a62acd73cbdc9bd',1,'main.c']]],

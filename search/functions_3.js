@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['k_5fthread_5fstack_5fdefine_0',['k_thread_stack_define',['../gps__thread_8c.html#a4c4ea7042722039debb1876d828bd25c',1,'K_THREAD_STACK_DEFINE(gps_stack, GPS_THREAD_STACK_SIZE):&#160;gps_thread.c'],['../sensors__thread_8c.html#a59459011647e1cd712817ef2162b8a4d',1,'K_THREAD_STACK_DEFINE(sensors_stack, SENSORS_THREAD_STACK_SIZE):&#160;sensors_thread.c']]]
+  ['gps_5finit_0',['gps_init',['../gps_8c.html#aa19e319fe42fe0bffecff03cd1d5785b',1,'gps_init(const struct gps_config *cfg):&#160;gps.c'],['../gps_8h.html#aa19e319fe42fe0bffecff03cd1d5785b',1,'gps_init(const struct gps_config *cfg):&#160;gps.c']]],
+  ['gps_5fwait_5ffor_5fgga_1',['gps_wait_for_gga',['../gps_8c.html#a6f341f66e68728b28f0045ad6e52ae88',1,'gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout):&#160;gps.c'],['../gps_8h.html#a6f341f66e68728b28f0045ad6e52ae88',1,'gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout):&#160;gps.c']]],
+  ['green_2',['green',['../board__led_8c.html#aa01abe321ebd655934c0572b1f3d38f3',1,'green(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#aa01abe321ebd655934c0572b1f3d38f3',1,'green(struct bus_led *led):&#160;board_led.c']]],
+  ['green_5fblue_3',['green_blue',['../board__led_8c.html#af5f3eefda15a99cc7d9219e552948193',1,'green_blue(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#af5f3eefda15a99cc7d9219e552948193',1,'green_blue(struct bus_led *led):&#160;board_led.c']]]
 ];

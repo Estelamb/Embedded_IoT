@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['temp_0',['temp',['../structsystem__measurement.html#ad14647be52b836a3d4bd543eee248c28',1,'system_measurement']]],
-  ['temp_5fhum_1',['temp_hum',['../structsystem__context.html#a37b19c05038a5c416db2c6d4cc344df7',1,'system_context']]]
+  ['sats_0',['sats',['../structgps__data__t.html#a64030c9dd3b2cfd7e1e1c397ac942065',1,'gps_data_t']]],
+  ['sensors_5fsem_1',['sensors_sem',['../structsystem__context.html#adf5259a7bfe53f32f215f67b5236ad51',1,'system_context']]],
+  ['soil_5fmoisture_2',['soil_moisture',['../structsystem__context.html#a2b5436d5ba8c925d1db826fb5a05d162',1,'system_context']]],
+  ['spec_3',['spec',['../structuser__button.html#aa0f3ab66c6e9ff937542d8f9fa057dd3',1,'user_button']]],
+  ['stats_5fdata_4',['stats_data',['../main_8c.html#a7928635ecc8825e2fdf02b83118307a1',1,'main.c']]]
 ];

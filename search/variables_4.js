@@ -8,5 +8,5 @@ var searchData=
   ['gps_5fsats_5',['gps_sats',['../structsystem__measurement.html#a02c790b390a98fbdb685e64fcd4b830a',1,'system_measurement']]],
   ['gps_5fsem_6',['gps_sem',['../structsystem__context.html#a047eda26b36700900ee508d71818aec7',1,'system_context']]],
   ['gps_5ftime_7',['gps_time',['../structsystem__measurement.html#af93b0eea24ff8e4fe9df39ce3ecf7a71',1,'system_measurement']]],
-  ['green_8',['green',['../structsystem__measurement.html#a69e30193e5c378f404142b86ecf3b2e1',1,'system_measurement']]]
+  ['green_8',['green',['../structsystem__measurement.html#a69e30193e5c378f404142b86ecf3b2e1',1,'system_measurement::green'],['../structColorSensorData.html#aba5595aaba7099f62ea9c0313bb7ee20',1,'ColorSensorData::green']]]
 ];

@@ -131,35 +131,39 @@ $(document).ready(function(){initNavTree('temp__hum_8h_source.html',''); initRes
   <div class="headertitle"><div class="title">temp_hum.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef TEMP_HUM_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define TEMP_HUM_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;zephyr/drivers/i2c.h&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment">/* === Si7021 I2C Configuration === */</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define TEMP_HUM_I2C_ADDR          0x40  </span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">/* Si7021 command set */</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define SI7021_MEAS_RH_HOLD        0xE5  </span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#define SI7021_MEAS_TEMP_HOLD      0xE3  </span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#define SI7021_READ_TEMP_FROM_RH   0xE0  </span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#define SI7021_RESET               0xFE  </span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment">/* === Function Prototypes === */</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keywordtype">int</span> temp_hum_init(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
+<a href="temp__hum_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#ifndef TEMP_HUM_H</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define TEMP_HUM_H</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;zephyr/device.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;zephyr/drivers/i2c.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="comment">/* === Si7021 I2C Configuration === */</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="temp__hum_8h.html#a13850647fe78d783e739e30b0df0d986">   17</a></span><span class="preprocessor">#define TEMP_HUM_I2C_ADDR          0x40  </span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">/* === Si7021 command set === */</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="temp__hum_8h.html#a5f21e13c4b3e1f232936548f973888fa">   20</a></span><span class="preprocessor">#define SI7021_MEAS_RH_HOLD        0xE5  </span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="temp__hum_8h.html#aec61c8a6fe3873b621d4b1eeb631f3b6">   21</a></span><span class="preprocessor">#define SI7021_MEAS_TEMP_HOLD      0xE3  </span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="temp__hum_8h.html#aa67f2fa32255ec7562abb04c5dee2dba">   22</a></span><span class="preprocessor">#define SI7021_READ_TEMP_FROM_RH   0xE0  </span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="temp__hum_8h.html#a693ec8dc47178dd99eaf3820785fc10a">   23</a></span><span class="preprocessor">#define SI7021_RESET               0xFE  </span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/* === Function Prototypes === */</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="keywordtype">int</span> temp_hum_read_temperature(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, <span class="keywordtype">float</span> *temperature);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keywordtype">int</span> temp_hum_read_humidity(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, <span class="keywordtype">float</span> *humidity);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#endif </span><span class="comment">/* TEMP_HUM_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keywordtype">int</span> <a class="code hl_function" href="temp__hum_8h.html#afa3db34ae3e574f315b5eab5888e27b8">temp_hum_init</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev);</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keywordtype">int</span> <a class="code hl_function" href="temp__hum_8h.html#aceff2003bfe66de6f90b1998cf617a7e">temp_hum_read_temperature</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, <span class="keywordtype">float</span> *temperature);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">int</span> <a class="code hl_function" href="temp__hum_8h.html#a484cfb38b5815a990a627a38f043da49">temp_hum_read_humidity</a>(<span class="keyword">const</span> <span class="keyword">struct</span> i2c_dt_spec *dev, <span class="keywordtype">float</span> *humidity);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="preprocessor">#endif </span><span class="comment">/* TEMP_HUM_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="atemp__hum_8h_html_a484cfb38b5815a990a627a38f043da49"><div class="ttname"><a href="temp__hum_8h.html#a484cfb38b5815a990a627a38f043da49">temp_hum_read_humidity</a></div><div class="ttdeci">int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)</div><div class="ttdoc">Read relative humidity in percent from the sensor.</div><div class="ttdef"><b>Definition</b> temp_hum.c:78</div></div>
+<div class="ttc" id="atemp__hum_8h_html_aceff2003bfe66de6f90b1998cf617a7e"><div class="ttname"><a href="temp__hum_8h.html#aceff2003bfe66de6f90b1998cf617a7e">temp_hum_read_temperature</a></div><div class="ttdeci">int temp_hum_read_temperature(const struct i2c_dt_spec *dev, float *temperature)</div><div class="ttdoc">Read temperature in degrees Celsius from the sensor.</div><div class="ttdef"><b>Definition</b> temp_hum.c:107</div></div>
+<div class="ttc" id="atemp__hum_8h_html_afa3db34ae3e574f315b5eab5888e27b8"><div class="ttname"><a href="temp__hum_8h.html#afa3db34ae3e574f315b5eab5888e27b8">temp_hum_init</a></div><div class="ttdeci">int temp_hum_init(const struct i2c_dt_spec *dev)</div><div class="ttdoc">Initialize the Si7021 temperature and humidity sensor.</div><div class="ttdef"><b>Definition</b> temp_hum.c:49</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7349e89ef19c117195f8e371603e1b1f.html">sensors</a></li><li class="navelem"><a class="el" href="dir_1b2b3025760fa230ec416a443f96fa32.html">i2c</a></li><li class="navelem"><b>temp_hum.h</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7349e89ef19c117195f8e371603e1b1f.html">sensors</a></li><li class="navelem"><a class="el" href="dir_1b2b3025760fa230ec416a443f96fa32.html">i2c</a></li><li class="navelem"><a class="el" href="temp__hum_8h.html">temp_hum.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
