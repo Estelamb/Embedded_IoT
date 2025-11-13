@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['temp_5fmax_0',['TEMP_MAX',['../main_8c.html#a9acb14595bfb9523655370c1bb477506',1,'main.c']]],
-  ['temp_5fmin_1',['TEMP_MIN',['../main_8c.html#ad7d20c7d1ec1729bf6892ddabbac3ab0',1,'main.c']]],
-  ['test_5fmode_5fcadence_2',['TEST_MODE_CADENCE',['../main_8h.html#ab909f9f81838bb1a709819e54cf4359e',1,'main.h']]]
+  ['sensors_5fthread_5fpriority_0',['SENSORS_THREAD_PRIORITY',['../sensors__thread_8c.html#a6aa956354726cca0fd327b670c9591ce',1,'sensors_thread.c']]],
+  ['sensors_5fthread_5fstack_5fsize_1',['SENSORS_THREAD_STACK_SIZE',['../sensors__thread_8c.html#a9a8cf60db93236d59e22a33e57634c93',1,'sensors_thread.c']]],
+  ['stats_5ftimer_5fperiod_5fms_2',['STATS_TIMER_PERIOD_MS',['../main_8c.html#aa832099198e1ab9331cda48c089b1497',1,'main.c']]]
 ];

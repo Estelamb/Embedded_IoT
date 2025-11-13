@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('structsystem__measurement.html',''); i
 </div><!--header-->
 <div class="contents">
 
-<p>Shared system measurement between main, sensors thread and gps thread.  
+<p>Shared sensor data between main, sensors, and GPS threads.  
  <a href="structsystem__measurement.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="main_8h_source.html">main.h</a>&gt;</code></p>
@@ -138,71 +138,72 @@ $(document).ready(function(){initNavTree('structsystem__measurement.html',''); i
 Data Fields</h2></td></tr>
 <tr class="memitem:ac003d622b2be6c6b6d5c7e459fb52306" id="r_ac003d622b2be6c6b6d5c7e459fb52306"><td class="memItemLeft" align="right" valign="top"><a id="ac003d622b2be6c6b6d5c7e459fb52306" name="ac003d622b2be6c6b6d5c7e459fb52306"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>brightness</b></td></tr>
-<tr class="memdesc:ac003d622b2be6c6b6d5c7e459fb52306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest brightness percent (0-100, atomic) <br /></td></tr>
+<tr class="memdesc:ac003d622b2be6c6b6d5c7e459fb52306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest ambient brightness (0–100%). <br /></td></tr>
 <tr class="separator:ac003d622b2be6c6b6d5c7e459fb52306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f37214238e319b8f3da4b88ebd79407" id="r_a4f37214238e319b8f3da4b88ebd79407"><td class="memItemLeft" align="right" valign="top"><a id="a4f37214238e319b8f3da4b88ebd79407" name="a4f37214238e319b8f3da4b88ebd79407"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>moisture</b></td></tr>
-<tr class="memdesc:a4f37214238e319b8f3da4b88ebd79407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest soil moisture percent (0-100, atomic) <br /></td></tr>
+<tr class="memdesc:a4f37214238e319b8f3da4b88ebd79407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest soil moisture (0–100%). <br /></td></tr>
 <tr class="separator:a4f37214238e319b8f3da4b88ebd79407"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a935c4bb27fc18e593ba82ceb6e1ca3" id="r_a0a935c4bb27fc18e593ba82ceb6e1ca3"><td class="memItemLeft" align="right" valign="top"><a id="a0a935c4bb27fc18e593ba82ceb6e1ca3" name="a0a935c4bb27fc18e593ba82ceb6e1ca3"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>accel_x_g</b></td></tr>
-<tr class="memdesc:a0a935c4bb27fc18e593ba82ceb6e1ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest X-axis acceleration in g (atomic float) <br /></td></tr>
+<tr class="memdesc:a0a935c4bb27fc18e593ba82ceb6e1ca3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest X-axis acceleration (in g). <br /></td></tr>
 <tr class="separator:a0a935c4bb27fc18e593ba82ceb6e1ca3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac49c28caf389c0fb2b9df284844e8a1c" id="r_ac49c28caf389c0fb2b9df284844e8a1c"><td class="memItemLeft" align="right" valign="top"><a id="ac49c28caf389c0fb2b9df284844e8a1c" name="ac49c28caf389c0fb2b9df284844e8a1c"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>accel_y_g</b></td></tr>
-<tr class="memdesc:ac49c28caf389c0fb2b9df284844e8a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest Y-axis acceleration in g (atomic float) <br /></td></tr>
+<tr class="memdesc:ac49c28caf389c0fb2b9df284844e8a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest Y-axis acceleration (in g). <br /></td></tr>
 <tr class="separator:ac49c28caf389c0fb2b9df284844e8a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a12840a850b148e159f0bdf90648b55" id="r_a8a12840a850b148e159f0bdf90648b55"><td class="memItemLeft" align="right" valign="top"><a id="a8a12840a850b148e159f0bdf90648b55" name="a8a12840a850b148e159f0bdf90648b55"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>accel_z_g</b></td></tr>
-<tr class="memdesc:a8a12840a850b148e159f0bdf90648b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest Z-axis acceleration in g (atomic float) <br /></td></tr>
+<tr class="memdesc:a8a12840a850b148e159f0bdf90648b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest Z-axis acceleration (in g). <br /></td></tr>
 <tr class="separator:a8a12840a850b148e159f0bdf90648b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad14647be52b836a3d4bd543eee248c28" id="r_ad14647be52b836a3d4bd543eee248c28"><td class="memItemLeft" align="right" valign="top"><a id="ad14647be52b836a3d4bd543eee248c28" name="ad14647be52b836a3d4bd543eee248c28"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>temp</b></td></tr>
-<tr class="memdesc:ad14647be52b836a3d4bd543eee248c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest temperature in °C (atomic float) <br /></td></tr>
+<tr class="memdesc:ad14647be52b836a3d4bd543eee248c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest temperature (°C). <br /></td></tr>
 <tr class="separator:ad14647be52b836a3d4bd543eee248c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a679c5d3346732350507e1e0be622f903" id="r_a679c5d3346732350507e1e0be622f903"><td class="memItemLeft" align="right" valign="top"><a id="a679c5d3346732350507e1e0be622f903" name="a679c5d3346732350507e1e0be622f903"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>hum</b></td></tr>
-<tr class="memdesc:a679c5d3346732350507e1e0be622f903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest relative humidity in RH (atomic float) <br /></td></tr>
+<tr class="memdesc:a679c5d3346732350507e1e0be622f903"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest relative humidity (RH). <br /></td></tr>
 <tr class="separator:a679c5d3346732350507e1e0be622f903"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66a798f1395f38c94ade6b78972d85fb" id="r_a66a798f1395f38c94ade6b78972d85fb"><td class="memItemLeft" align="right" valign="top"><a id="a66a798f1395f38c94ade6b78972d85fb" name="a66a798f1395f38c94ade6b78972d85fb"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>red</b></td></tr>
-<tr class="memdesc:a66a798f1395f38c94ade6b78972d85fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest red color value (atomic int) <br /></td></tr>
+<tr class="memdesc:a66a798f1395f38c94ade6b78972d85fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest red color value (raw). <br /></td></tr>
 <tr class="separator:a66a798f1395f38c94ade6b78972d85fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69e30193e5c378f404142b86ecf3b2e1" id="r_a69e30193e5c378f404142b86ecf3b2e1"><td class="memItemLeft" align="right" valign="top"><a id="a69e30193e5c378f404142b86ecf3b2e1" name="a69e30193e5c378f404142b86ecf3b2e1"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>green</b></td></tr>
-<tr class="memdesc:a69e30193e5c378f404142b86ecf3b2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest green color value (atomic int) <br /></td></tr>
+<tr class="memdesc:a69e30193e5c378f404142b86ecf3b2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest green color value (raw). <br /></td></tr>
 <tr class="separator:a69e30193e5c378f404142b86ecf3b2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a40d675458a9b0f54e5952646e1ad4d76" id="r_a40d675458a9b0f54e5952646e1ad4d76"><td class="memItemLeft" align="right" valign="top"><a id="a40d675458a9b0f54e5952646e1ad4d76" name="a40d675458a9b0f54e5952646e1ad4d76"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>blue</b></td></tr>
-<tr class="memdesc:a40d675458a9b0f54e5952646e1ad4d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest blue color value (atomic int) <br /></td></tr>
+<tr class="memdesc:a40d675458a9b0f54e5952646e1ad4d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest blue color value (raw). <br /></td></tr>
 <tr class="separator:a40d675458a9b0f54e5952646e1ad4d76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57b42b5a6e4098f386aa49cc7a84f196" id="r_a57b42b5a6e4098f386aa49cc7a84f196"><td class="memItemLeft" align="right" valign="top"><a id="a57b42b5a6e4098f386aa49cc7a84f196" name="a57b42b5a6e4098f386aa49cc7a84f196"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>clear</b></td></tr>
-<tr class="memdesc:a57b42b5a6e4098f386aa49cc7a84f196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest clear color value (atomic int) <br /></td></tr>
+<tr class="memdesc:a57b42b5a6e4098f386aa49cc7a84f196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest clear color channel value (raw). <br /></td></tr>
 <tr class="separator:a57b42b5a6e4098f386aa49cc7a84f196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb4fd1b5c9e8e9005291a7e1edbb2224" id="r_adb4fd1b5c9e8e9005291a7e1edbb2224"><td class="memItemLeft" align="right" valign="top"><a id="adb4fd1b5c9e8e9005291a7e1edbb2224" name="adb4fd1b5c9e8e9005291a7e1edbb2224"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>gps_lat</b></td></tr>
-<tr class="memdesc:adb4fd1b5c9e8e9005291a7e1edbb2224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS latitude (atomic float) <br /></td></tr>
+<tr class="memdesc:adb4fd1b5c9e8e9005291a7e1edbb2224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS latitude (degrees). <br /></td></tr>
 <tr class="separator:adb4fd1b5c9e8e9005291a7e1edbb2224"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f7844fd5947597e3c9127bda9a65b35" id="r_a2f7844fd5947597e3c9127bda9a65b35"><td class="memItemLeft" align="right" valign="top"><a id="a2f7844fd5947597e3c9127bda9a65b35" name="a2f7844fd5947597e3c9127bda9a65b35"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>gps_lon</b></td></tr>
-<tr class="memdesc:a2f7844fd5947597e3c9127bda9a65b35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS longitude (atomic float) <br /></td></tr>
+<tr class="memdesc:a2f7844fd5947597e3c9127bda9a65b35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS longitude (degrees). <br /></td></tr>
 <tr class="separator:a2f7844fd5947597e3c9127bda9a65b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89d20f762267eb24053bf632f66c0f96" id="r_a89d20f762267eb24053bf632f66c0f96"><td class="memItemLeft" align="right" valign="top"><a id="a89d20f762267eb24053bf632f66c0f96" name="a89d20f762267eb24053bf632f66c0f96"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>gps_alt</b></td></tr>
-<tr class="memdesc:a89d20f762267eb24053bf632f66c0f96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS altitude (atomic float) <br /></td></tr>
+<tr class="memdesc:a89d20f762267eb24053bf632f66c0f96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS altitude (meters). <br /></td></tr>
 <tr class="separator:a89d20f762267eb24053bf632f66c0f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02c790b390a98fbdb685e64fcd4b830a" id="r_a02c790b390a98fbdb685e64fcd4b830a"><td class="memItemLeft" align="right" valign="top"><a id="a02c790b390a98fbdb685e64fcd4b830a" name="a02c790b390a98fbdb685e64fcd4b830a"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>gps_sats</b></td></tr>
-<tr class="memdesc:a02c790b390a98fbdb685e64fcd4b830a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS satellites (atomic int) <br /></td></tr>
+<tr class="memdesc:a02c790b390a98fbdb685e64fcd4b830a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest number of satellites in view. <br /></td></tr>
 <tr class="separator:a02c790b390a98fbdb685e64fcd4b830a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af93b0eea24ff8e4fe9df39ce3ecf7a71" id="r_af93b0eea24ff8e4fe9df39ce3ecf7a71"><td class="memItemLeft" align="right" valign="top"><a id="af93b0eea24ff8e4fe9df39ce3ecf7a71" name="af93b0eea24ff8e4fe9df39ce3ecf7a71"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>gps_time</b></td></tr>
-<tr class="memdesc:af93b0eea24ff8e4fe9df39ce3ecf7a71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS time (atomic float) <br /></td></tr>
+<tr class="memdesc:af93b0eea24ff8e4fe9df39ce3ecf7a71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Latest GPS timestamp (float or encoded). <br /></td></tr>
 <tr class="separator:af93b0eea24ff8e4fe9df39ce3ecf7a71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Shared system measurement between main, sensors thread and gps thread. </p>
+<div class="textblock"><p>Shared sensor data between main, sensors, and GPS threads. </p>
+<p>Contains the most recent measurements for all sensors, stored in atomic variables for thread-safe access. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="main_8h_source.html">main.h</a></li>
 </ul>

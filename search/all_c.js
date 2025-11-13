@@ -1,25 +1,5 @@
 var searchData=
 [
-  ['red_0',['red',['../structsystem__measurement.html#a66a798f1395f38c94ade6b78972d85fb',1,'system_measurement::red'],['../board__led_8c.html#af2acb95b6cf64e405e2a6435636ed425',1,'red(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#af2acb95b6cf64e405e2a6435636ed425',1,'red(struct bus_led *led):&#160;board_led.c']]],
-  ['red_5fblue_1',['red_blue',['../board__led_8c.html#a8c1c764c91e73f5970230fd09160deb9',1,'red_blue(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#a8c1c764c91e73f5970230fd09160deb9',1,'red_blue(struct bus_led *led):&#160;board_led.c']]],
-  ['red_5fgreen_2',['red_green',['../board__led_8c.html#af007a7b25e06bea074dc3462b89afa2a',1,'red_green(struct bus_led *led):&#160;board_led.c'],['../board__led_8h.html#af007a7b25e06bea074dc3462b89afa2a',1,'red_green(struct bus_led *led):&#160;board_led.c']]],
-  ['red_5fmax_3',['RED_MAX',['../main_8c.html#a4c82e201d70da8303a62acd73cbdc9bd',1,'main.c']]],
-  ['red_5fmin_4',['RED_MIN',['../main_8c.html#a25540112e5ab1b3a21341c5149998d57',1,'main.c']]],
-  ['ref_5',['ref',['../structadc__config.html#afc43c6ed07214f3167ed6223ba3f7cba',1,'adc_config']]],
-  ['resolution_6',['resolution',['../structadc__config.html#a3b3cfed37e9b901905b7a3c6a45ad14c',1,'adc_config']]],
-  ['rgb_5fblack_7',['rgb_black',['../rgb__led_8c.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d',1,'rgb_black(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fblue_8',['rgb_blue',['../rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8c.html#a69942e746ba81db03e2affd8e9ae62c9',1,'rgb_blue(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fcyan_9',['rgb_cyan',['../rgb__led_8c.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a40577554caed83450ce6d6d685651abb',1,'rgb_cyan(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fgreen_10',['rgb_green',['../rgb__led_8c.html#a8105a65c9b53c677e01817aaa41d1228',1,'rgb_green(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a8105a65c9b53c677e01817aaa41d1228',1,'rgb_green(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_2ec_11',['rgb_led.c',['../rgb__led_8c.html',1,'']]],
-  ['rgb_5fled_2eh_12',['rgb_led.h',['../rgb__led_8h.html',1,'']]],
-  ['rgb_5fled_5finit_13',['rgb_led_init',['../rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848',1,'rgb_led_init(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8c.html#a4d37c0e4277f62fd9cff6431baf6a848',1,'rgb_led_init(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_5foff_14',['rgb_led_off',['../rgb__led_8c.html#a85db3995642fedac5456fef4bd9ecf49',1,'rgb_led_off(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49',1,'rgb_led_off(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_5fon_15',['rgb_led_on',['../rgb__led_8c.html#ad71ce397299423dc9d86d40a866e64e1',1,'rgb_led_on(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1',1,'rgb_led_on(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fled_5fwrite_16',['rgb_led_write',['../rgb__led_8c.html#a8253ee4c4326d609825b1f6df5329749',1,'rgb_led_write(struct bus_rgb_led *rgb_led, int value):&#160;rgb_led.c'],['../rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749',1,'rgb_led_write(struct bus_rgb_led *rgb_led, int value):&#160;rgb_led.c']]],
-  ['rgb_5fpurple_17',['rgb_purple',['../rgb__led_8c.html#a8241f3fcf6f859124c2e1304b00220e2',1,'rgb_purple(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2',1,'rgb_purple(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fred_18',['rgb_red',['../rgb__led_8c.html#a2a7489c0dc86c85076b62d0e32b08060',1,'rgb_red(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060',1,'rgb_red(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5ftimer_5fperiod_5fms_19',['RGB_TIMER_PERIOD_MS',['../main_8c.html#aad694b6bc83a5a3e06ce35a56c8acdbd',1,'main.c']]],
-  ['rgb_5fwhite_20',['rgb_white',['../rgb__led_8c.html#a0867d776bfa4f41e533e8be89a54b02e',1,'rgb_white(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#a0867d776bfa4f41e533e8be89a54b02e',1,'rgb_white(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]],
-  ['rgb_5fyellow_21',['rgb_yellow',['../rgb__led_8c.html#acadd86c2ce8020db57b8b0a1afcde95f',1,'rgb_yellow(struct bus_rgb_led *rgb_led):&#160;rgb_led.c'],['../rgb__led_8h.html#acadd86c2ce8020db57b8b0a1afcde95f',1,'rgb_yellow(struct bus_rgb_led *rgb_led):&#160;rgb_led.c']]]
+  ['normal_5fmode_0',['NORMAL_MODE',['../main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148',1,'main.h']]],
+  ['normal_5fmode_5fcadence_1',['NORMAL_MODE_CADENCE',['../main_8h.html#a8f6260dacee6f9f8c5fd36141f018a68',1,'main.h']]]
 ];

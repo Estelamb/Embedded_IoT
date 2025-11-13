@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Plant Monitoring System: src/sensors_thread.h File Reference</title>
+<title>Plant Monitoring System: Globals</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -97,7 +97,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('sensors__thread_8h.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('globals_vars.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -122,94 +122,15 @@ $(document).ready(function(){initNavTree('sensors__thread_8h.html',''); initResi
 </div>
 </div>
 
-<div class="header">
-  <div class="summary">
-<a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">sensors_thread.h File Reference</div></div>
-</div><!--header-->
 <div class="contents">
-
-<p>Interface for the sensors measurement thread.  
-<a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
-</div>
-<p><a href="sensors__thread_8h_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a49e974fd7ad7abcc0c28fdaaaba893ea" id="r_a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sensors__thread_8h.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx, struct <a class="el" href="structsystem__measurement.html">system_measurement</a> *measure)</td></tr>
-<tr class="memdesc:a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the sensors measurement thread.  <br /></td></tr>
-<tr class="separator:a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for the sensors measurement thread. </p>
-<p>This header declares the interface for a Zephyr thread responsible for acquiring environmental data from analog and I²C sensors:</p><ul>
-<li>Ambient brightness (phototransistor, ADC)</li>
-<li>Soil moisture (ADC)</li>
-<li>Accelerometer (I²C)</li>
-<li>Temperature &amp; humidity (I²C)</li>
-<li>Color sensor (I²C)</li>
+<div class="textblock">Here is a list of all documented variables with links to the documentation:</div><ul>
+<li>stats_data&#160;:&#160;<a class="el" href="main_8c.html#a7928635ecc8825e2fdf02b83118307a1">main.c</a></li>
 </ul>
-<p>The thread is active in <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e">TEST_MODE</a> and <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a> and performs periodic sampling. In other modes (e.g., <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063">ADVANCED_MODE</a>) the thread suspends sampling and waits to be re-triggered. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a49e974fd7ad7abcc0c28fdaaaba893ea" name="a49e974fd7ad7abcc0c28fdaaaba893ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49e974fd7ad7abcc0c28fdaaaba893ea">&#9670;&#160;</a></span>start_sensors_thread()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void start_sensors_thread </td>
-          <td>(</td>
-          <td class="paramtype">struct <a class="el" href="structsystem__context.html">system_context</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">struct <a class="el" href="structsystem__measurement.html">system_measurement</a> *&#160;</td>
-          <td class="paramname"><em>measure</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Start the sensors measurement thread. </p>
-<p>Initializes synchronization primitives (timer, semaphores) and launches a dedicated Zephyr thread that periodically samples sensors and stores the results into the provided <a class="el" href="structsystem__measurement.html">system_measurement</a> structure.</p>
-<p>The sampling cadence depends on the system mode:</p><ul>
-<li>TEST_MODE: faster cadence for rapid feedback.</li>
-<li>NORMAL_MODE: regular cadence for ongoing monitoring.</li>
-<li>Other modes: sampling is paused until reactivated.</li>
-</ul>
-<p>The function does not block; the thread runs asynchronously.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ctx</td><td>Pointer to a valid <a class="el" href="structsystem__context.html">system_context</a> containing configuration and semaphores. </td></tr>
-    <tr><td class="paramname">measure</td><td>Pointer to a valid <a class="el" href="structsystem__measurement.html">system_measurement</a> where sensor values will be stored.</td></tr>
-  </table>
-  </dd>
-</dl>
-<p>Initializes synchronization primitives and creates the Zephyr thread that handles periodic sensor data acquisition.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ctx</td><td>Pointer to the shared <a class="el" href="structsystem__context.html">system_context</a> structure. </td></tr>
-    <tr><td class="paramname">measure</td><td>Pointer to the shared <a class="el" href="structsystem__measurement.html">system_measurement</a> structure. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="sensors__thread_8h.html">sensors_thread.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

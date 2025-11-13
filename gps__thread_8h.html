@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('gps__thread_8h.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
-<p>Interface for the gps measurement thread.  
+<p>Interface for the GPS measurement thread.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="main_8h_source.html">main.h</a>&quot;</code><br />
 </div>
@@ -138,13 +138,13 @@ $(document).ready(function(){initNavTree('gps__thread_8h.html',''); initResizabl
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ac636fc80c6c873e0e0071029e9c922da" id="r_ac636fc80c6c873e0e0071029e9c922da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gps__thread_8h.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx, struct <a class="el" href="structsystem__measurement.html">system_measurement</a> *measure)</td></tr>
-<tr class="memdesc:ac636fc80c6c873e0e0071029e9c922da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes and starts the gps measurement thread.  <br /></td></tr>
+<tr class="memdesc:ac636fc80c6c873e0e0071029e9c922da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the GPS measurement thread.  <br /></td></tr>
 <tr class="separator:ac636fc80c6c873e0e0071029e9c922da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Interface for the gps measurement thread. </p>
-<p>This module defines the interface for a Zephyr thread that performs GPS data acquisition and processing.</p>
-<p>The thread periodically measures GPS data only when the system mode is set to NORMAL. Other modes suspend measurement activity. </p>
+<div class="textblock"><p>Interface for the GPS measurement thread. </p>
+<p>This header declares the interface for a Zephyr thread responsible for acquiring and processing GPS data such as latitude, longitude, altitude, satellite count, and UTC time.</p>
+<p>The thread operates periodically in <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e">TEST_MODE</a> and <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>. In other modes (e.g., <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063">ADVANCED_MODE</a>), GPS sampling is suspended until manually triggered. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac636fc80c6c873e0e0071029e9c922da" name="ac636fc80c6c873e0e0071029e9c922da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac636fc80c6c873e0e0071029e9c922da">&#9670;&#160;</a></span>start_gps_thread()</h2>
@@ -172,16 +172,33 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes and starts the gps measurement thread. </p>
-<p>This function sets up synchronization primitives and creates a Zephyr thread that periodically measures GPS data when the system mode is NORMAL.</p>
+<p>Start the GPS measurement thread. </p>
+<p>Initializes synchronization primitives (timer and semaphores) and creates a dedicated Zephyr thread that periodically reads and parses GPS data from the configured GPS module.</p>
+<p>The sampling cadence depends on the active system mode:</p><ul>
+<li>TEST_MODE: fast measurement interval for debugging and validation.</li>
+<li>NORMAL_MODE: regular interval for periodic operation.</li>
+<li>ADVANCED_MODE: measurement suspended until reactivated.</li>
+</ul>
+<p>The thread stores scaled integer values in system_measurement:</p><ul>
+<li>Latitude / Longitude: degrees × 1e6</li>
+<li>Altitude: meters × 100</li>
+<li>Time (UTC): integer in HHMMSS format</li>
+</ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ctx</td><td>Pointer to a valid <a class="el" href="structsystem__context.html">system_context</a> structure. </td></tr>
-    <tr><td class="paramname">measure</td><td>Pointer to a valid <a class="el" href="structsystem__measurement.html">system_measurement</a> structure.</td></tr>
+    <tr><td class="paramname">ctx</td><td>Pointer to a valid <a class="el" href="structsystem__context.html">system_context</a> structure with configuration and semaphores. </td></tr>
+    <tr><td class="paramname">measure</td><td>Pointer to a valid <a class="el" href="structsystem__measurement.html">system_measurement</a> structure to store GPS readings.</td></tr>
   </table>
   </dd>
 </dl>
-<p>Initializes and starts the gps measurement thread. </p>
+<p>Initializes the GPS timer, semaphores, and creates the GPS thread that continuously manages GPS data acquisition and synchronization with the main thread.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>Pointer to the shared <a class="el" href="structsystem__context.html">system_context</a> structure. </td></tr>
+    <tr><td class="paramname">measure</td><td>Pointer to the shared <a class="el" href="structsystem__measurement.html">system_measurement</a> structure. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

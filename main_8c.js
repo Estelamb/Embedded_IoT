@@ -1,6 +1,7 @@
 var main_8c =
 [
     [ "main_measurement", "structmain__measurement.html", null ],
+    [ "stats_measurements", "structstats__measurements.html", null ],
     [ "ACCEL_MAX", "main_8c.html#a58de3145c0c1e32ca4a7ca67dee79a28", null ],
     [ "ACCEL_MIN", "main_8c.html#aa63bf886c5eee67e9ee9688ed816e39c", null ],
     [ "ACCEL_RANGE", "main_8c.html#a16ec7011dea5773b504e875852f35fc1", null ],
@@ -20,7 +21,9 @@ var main_8c =
     [ "RED_MAX", "main_8c.html#a4c82e201d70da8303a62acd73cbdc9bd", null ],
     [ "RED_MIN", "main_8c.html#a25540112e5ab1b3a21341c5149998d57", null ],
     [ "RGB_TIMER_PERIOD_MS", "main_8c.html#aad694b6bc83a5a3e06ce35a56c8acdbd", null ],
+    [ "STATS_TIMER_PERIOD_MS", "main_8c.html#aa832099198e1ab9331cda48c089b1497", null ],
     [ "TEMP_MAX", "main_8c.html#a9acb14595bfb9523655370c1bb477506", null ],
     [ "TEMP_MIN", "main_8c.html#ad7d20c7d1ec1729bf6892ddabbac3ab0", null ],
-    [ "main", "main_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ]
+    [ "main", "main_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ],
+    [ "stats_data", "main_8c.html#a7928635ecc8825e2fdf02b83118307a1", null ]
 ];

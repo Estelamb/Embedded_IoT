@@ -144,22 +144,33 @@ $(document).ready(function(){initNavTree('sensors__thread_8c.html',''); initResi
 Macros</h2></td></tr>
 <tr class="memitem:a9a8cf60db93236d59e22a33e57634c93" id="r_a9a8cf60db93236d59e22a33e57634c93"><td class="memItemLeft" align="right" valign="top"><a id="a9a8cf60db93236d59e22a33e57634c93" name="a9a8cf60db93236d59e22a33e57634c93"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SENSORS_THREAD_STACK_SIZE</b>&#160;&#160;&#160;1024</td></tr>
+<tr class="memdesc:a9a8cf60db93236d59e22a33e57634c93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack size allocated for the sensors thread. <br /></td></tr>
 <tr class="separator:a9a8cf60db93236d59e22a33e57634c93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aa956354726cca0fd327b670c9591ce" id="r_a6aa956354726cca0fd327b670c9591ce"><td class="memItemLeft" align="right" valign="top"><a id="a6aa956354726cca0fd327b670c9591ce" name="a6aa956354726cca0fd327b670c9591ce"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SENSORS_THREAD_PRIORITY</b>&#160;&#160;&#160;5</td></tr>
+<tr class="memdesc:a6aa956354726cca0fd327b670c9591ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread priority (lower = higher priority). <br /></td></tr>
 <tr class="separator:a6aa956354726cca0fd327b670c9591ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a59459011647e1cd712817ef2162b8a4d" id="r_a59459011647e1cd712817ef2162b8a4d"><td class="memItemLeft" align="right" valign="top"><a id="a59459011647e1cd712817ef2162b8a4d" name="a59459011647e1cd712817ef2162b8a4d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>K_THREAD_STACK_DEFINE</b> (sensors_stack, SENSORS_THREAD_STACK_SIZE)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>K_THREAD_STACK_DEFINE</b> (sensors_stack, <a class="el" href="sensors__thread_8c.html#a9a8cf60db93236d59e22a33e57634c93">SENSORS_THREAD_STACK_SIZE</a>)</td></tr>
+<tr class="memdesc:a59459011647e1cd712817ef2162b8a4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread stack for sensors task. <br /></td></tr>
 <tr class="separator:a59459011647e1cd712817ef2162b8a4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49e974fd7ad7abcc0c28fdaaaba893ea" id="r_a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx, struct <a class="el" href="structsystem__measurement.html">system_measurement</a> *measure)</td></tr>
-<tr class="memdesc:a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the sensors measurement thread.  <br /></td></tr>
+<tr class="memdesc:a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the sensors measurement thread.  <br /></td></tr>
 <tr class="separator:a49e974fd7ad7abcc0c28fdaaaba893ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the sensors measurement thread. </p>
+<p>This module defines the Zephyr thread responsible for periodically acquiring data from multiple environmental sensors:</p><ul>
+<li><b>ADC sensors:</b> ambient brightness and soil moisture</li>
+<li><b>I2C sensors:</b> accelerometer, temperature/humidity, and color sensor</li>
+</ul>
+<p>The thread’s activity depends on the current system mode:</p><ul>
+<li>In <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e">TEST_MODE</a> or <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>, periodic sampling is active.</li>
+<li>In <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063">ADVANCED_MODE</a>, the thread remains idle until reactivated. </li>
+</ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a49e974fd7ad7abcc0c28fdaaaba893ea" name="a49e974fd7ad7abcc0c28fdaaaba893ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49e974fd7ad7abcc0c28fdaaaba893ea">&#9670;&#160;</a></span>start_sensors_thread()</h2>
@@ -187,8 +198,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Starts the sensors measurement thread. </p>
-<p>Initializes and starts the sensors measurement thread. </p>
+<p>Start the sensors measurement thread. </p>
+<p>Initializes synchronization primitives and creates the Zephyr thread that handles periodic sensor data acquisition.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>Pointer to the shared <a class="el" href="structsystem__context.html">system_context</a> structure. </td></tr>
+    <tr><td class="paramname">measure</td><td>Pointer to the shared <a class="el" href="structsystem__measurement.html">system_measurement</a> structure. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

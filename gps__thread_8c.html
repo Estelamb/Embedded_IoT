@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('gps__thread_8c.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
-<p>Implementation of the GPS measurement thread (with scaled values).  
+<p>Implementation of the GPS measurement thread.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="gps__thread_8h_source.html">gps_thread.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gps_8h_source.html">sensors/gps/gps.h</a>&quot;</code><br />
@@ -141,22 +141,33 @@ $(document).ready(function(){initNavTree('gps__thread_8c.html',''); initResizabl
 Macros</h2></td></tr>
 <tr class="memitem:a0b3d545c6c2a972d5938cd7554d7d85f" id="r_a0b3d545c6c2a972d5938cd7554d7d85f"><td class="memItemLeft" align="right" valign="top"><a id="a0b3d545c6c2a972d5938cd7554d7d85f" name="a0b3d545c6c2a972d5938cd7554d7d85f"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>GPS_THREAD_STACK_SIZE</b>&#160;&#160;&#160;1024</td></tr>
+<tr class="memdesc:a0b3d545c6c2a972d5938cd7554d7d85f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stack size allocated for the GPS thread. <br /></td></tr>
 <tr class="separator:a0b3d545c6c2a972d5938cd7554d7d85f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae33f6a6241e921b6019a347514f04587" id="r_ae33f6a6241e921b6019a347514f04587"><td class="memItemLeft" align="right" valign="top"><a id="ae33f6a6241e921b6019a347514f04587" name="ae33f6a6241e921b6019a347514f04587"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>GPS_THREAD_PRIORITY</b>&#160;&#160;&#160;5</td></tr>
+<tr class="memdesc:ae33f6a6241e921b6019a347514f04587"><td class="mdescLeft">&#160;</td><td class="mdescRight">Thread priority (lower = higher priority). <br /></td></tr>
 <tr class="separator:ae33f6a6241e921b6019a347514f04587"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a4c4ea7042722039debb1876d828bd25c" id="r_a4c4ea7042722039debb1876d828bd25c"><td class="memItemLeft" align="right" valign="top"><a id="a4c4ea7042722039debb1876d828bd25c" name="a4c4ea7042722039debb1876d828bd25c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>K_THREAD_STACK_DEFINE</b> (gps_stack, GPS_THREAD_STACK_SIZE)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>K_THREAD_STACK_DEFINE</b> (gps_stack, <a class="el" href="gps__thread_8c.html#a0b3d545c6c2a972d5938cd7554d7d85f">GPS_THREAD_STACK_SIZE</a>)</td></tr>
+<tr class="memdesc:a4c4ea7042722039debb1876d828bd25c"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPS thread stack. <br /></td></tr>
 <tr class="separator:a4c4ea7042722039debb1876d828bd25c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac636fc80c6c873e0e0071029e9c922da" id="r_ac636fc80c6c873e0e0071029e9c922da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a> (struct <a class="el" href="structsystem__context.html">system_context</a> *ctx, struct <a class="el" href="structsystem__measurement.html">system_measurement</a> *measure)</td></tr>
-<tr class="memdesc:ac636fc80c6c873e0e0071029e9c922da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the GPS measurement thread.  <br /></td></tr>
+<tr class="memdesc:ac636fc80c6c873e0e0071029e9c922da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the GPS measurement thread.  <br /></td></tr>
 <tr class="separator:ac636fc80c6c873e0e0071029e9c922da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implementation of the GPS measurement thread (with scaled values). </p>
+<div class="textblock"><p>Implementation of the GPS measurement thread. </p>
+<p>This module defines the GPS measurement thread responsible for periodically acquiring GPS data, parsing it, and updating the shared measurement structure with scaled integer values.</p>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Features:</h2>
+<ul>
+<li>Periodic GPS polling controlled by system mode (TEST/NORMAL/ADVANCED)</li>
+<li>Thread synchronization through semaphores and poll events</li>
+<li>Scaled integer storage for latitude, longitude, and altitude </li>
+</ul>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac636fc80c6c873e0e0071029e9c922da" name="ac636fc80c6c873e0e0071029e9c922da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac636fc80c6c873e0e0071029e9c922da">&#9670;&#160;</a></span>start_gps_thread()</h2>
@@ -184,8 +195,15 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Starts the GPS measurement thread. </p>
-<p>Initializes and starts the gps measurement thread. </p>
+<p>Start the GPS measurement thread. </p>
+<p>Initializes the GPS timer, semaphores, and creates the GPS thread that continuously manages GPS data acquisition and synchronization with the main thread.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ctx</td><td>Pointer to the shared <a class="el" href="structsystem__context.html">system_context</a> structure. </td></tr>
+    <tr><td class="paramname">measure</td><td>Pointer to the shared <a class="el" href="structsystem__measurement.html">system_measurement</a> structure. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

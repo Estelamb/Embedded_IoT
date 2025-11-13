@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('structsystem__context.html',''); initR
 </div><!--header-->
 <div class="contents">
 
-<p>Shared system context between main, sensors thread and gps thread.  
+<p>Shared system context between main, sensors, and GPS threads.  
  <a href="structsystem__context.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="main_8h_source.html">main.h</a>&gt;</code></p>
@@ -150,11 +150,11 @@ struct i2c_dt_spec *&#160;</td><td class="memItemRight" valign="bottom"><b>accel
 <tr class="separator:ac6a96ab5220f982e7137780a525635bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b7c6ec9004a47f43cdcf3ffedd05b51" id="r_a7b7c6ec9004a47f43cdcf3ffedd05b51"><td class="memItemLeft" align="right" valign="top"><a id="a7b7c6ec9004a47f43cdcf3ffedd05b51" name="a7b7c6ec9004a47f43cdcf3ffedd05b51"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>accel_range</b></td></tr>
-<tr class="memdesc:a7b7c6ec9004a47f43cdcf3ffedd05b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full-scale range (FS_2G, FS_4G, FS_8G) <br /></td></tr>
+<tr class="memdesc:a7b7c6ec9004a47f43cdcf3ffedd05b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Accelerometer full-scale range (e.g., 2G, 4G, 8G). <br /></td></tr>
 <tr class="separator:a7b7c6ec9004a47f43cdcf3ffedd05b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37b19c05038a5c416db2c6d4cc344df7" id="r_a37b19c05038a5c416db2c6d4cc344df7"><td class="memItemLeft" align="right" valign="top"><a id="a37b19c05038a5c416db2c6d4cc344df7" name="a37b19c05038a5c416db2c6d4cc344df7"></a>
 struct i2c_dt_spec *&#160;</td><td class="memItemRight" valign="bottom"><b>temp_hum</b></td></tr>
-<tr class="memdesc:a37b19c05038a5c416db2c6d4cc344df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature and Humidity I2C device specification. <br /></td></tr>
+<tr class="memdesc:a37b19c05038a5c416db2c6d4cc344df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Temperature and humidity sensor I2C specification. <br /></td></tr>
 <tr class="separator:a37b19c05038a5c416db2c6d4cc344df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a346bdba803bf7fd801808bb51a62f71d" id="r_a346bdba803bf7fd801808bb51a62f71d"><td class="memItemLeft" align="right" valign="top"><a id="a346bdba803bf7fd801808bb51a62f71d" name="a346bdba803bf7fd801808bb51a62f71d"></a>
 struct i2c_dt_spec *&#160;</td><td class="memItemRight" valign="bottom"><b>color</b></td></tr>
@@ -162,31 +162,32 @@ struct i2c_dt_spec *&#160;</td><td class="memItemRight" valign="bottom"><b>color
 <tr class="separator:a346bdba803bf7fd801808bb51a62f71d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af52f9e0f8c57a6ebe9b3fa70bb8f7edf" id="r_af52f9e0f8c57a6ebe9b3fa70bb8f7edf"><td class="memItemLeft" align="right" valign="top"><a id="af52f9e0f8c57a6ebe9b3fa70bb8f7edf" name="af52f9e0f8c57a6ebe9b3fa70bb8f7edf"></a>
 struct <a class="el" href="structgps__config.html">gps_config</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>gps</b></td></tr>
-<tr class="memdesc:af52f9e0f8c57a6ebe9b3fa70bb8f7edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPS configuration. <br /></td></tr>
+<tr class="memdesc:af52f9e0f8c57a6ebe9b3fa70bb8f7edf"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPS module configuration. <br /></td></tr>
 <tr class="separator:af52f9e0f8c57a6ebe9b3fa70bb8f7edf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8170516a44f70146537f053bed889862" id="r_a8170516a44f70146537f053bed889862"><td class="memItemLeft" align="right" valign="top"><a id="a8170516a44f70146537f053bed889862" name="a8170516a44f70146537f053bed889862"></a>
 struct k_sem *&#160;</td><td class="memItemRight" valign="bottom"><b>main_sensors_sem</b></td></tr>
-<tr class="memdesc:a8170516a44f70146537f053bed889862"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore for main thread. <br /></td></tr>
+<tr class="memdesc:a8170516a44f70146537f053bed889862"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore for main-to-sensors synchronization. <br /></td></tr>
 <tr class="separator:a8170516a44f70146537f053bed889862"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a838795d3f628b7ce00be37a9048b5d65" id="r_a838795d3f628b7ce00be37a9048b5d65"><td class="memItemLeft" align="right" valign="top"><a id="a838795d3f628b7ce00be37a9048b5d65" name="a838795d3f628b7ce00be37a9048b5d65"></a>
 struct k_sem *&#160;</td><td class="memItemRight" valign="bottom"><b>main_gps_sem</b></td></tr>
-<tr class="memdesc:a838795d3f628b7ce00be37a9048b5d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore for main thread. <br /></td></tr>
+<tr class="memdesc:a838795d3f628b7ce00be37a9048b5d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore for main-to-GPS synchronization. <br /></td></tr>
 <tr class="separator:a838795d3f628b7ce00be37a9048b5d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf5259a7bfe53f32f215f67b5236ad51" id="r_adf5259a7bfe53f32f215f67b5236ad51"><td class="memItemLeft" align="right" valign="top"><a id="adf5259a7bfe53f32f215f67b5236ad51" name="adf5259a7bfe53f32f215f67b5236ad51"></a>
 struct k_sem *&#160;</td><td class="memItemRight" valign="bottom"><b>sensors_sem</b></td></tr>
-<tr class="memdesc:adf5259a7bfe53f32f215f67b5236ad51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore for sensors measurement. <br /></td></tr>
+<tr class="memdesc:adf5259a7bfe53f32f215f67b5236ad51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore to trigger sensor measurement. <br /></td></tr>
 <tr class="separator:adf5259a7bfe53f32f215f67b5236ad51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a047eda26b36700900ee508d71818aec7" id="r_a047eda26b36700900ee508d71818aec7"><td class="memItemLeft" align="right" valign="top"><a id="a047eda26b36700900ee508d71818aec7" name="a047eda26b36700900ee508d71818aec7"></a>
 struct k_sem *&#160;</td><td class="memItemRight" valign="bottom"><b>gps_sem</b></td></tr>
-<tr class="memdesc:a047eda26b36700900ee508d71818aec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore for GPS measurement. <br /></td></tr>
+<tr class="memdesc:a047eda26b36700900ee508d71818aec7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Semaphore to trigger GPS measurement. <br /></td></tr>
 <tr class="separator:a047eda26b36700900ee508d71818aec7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a497903b46418329ff77e573fe793a374" id="r_a497903b46418329ff77e573fe793a374"><td class="memItemLeft" align="right" valign="top"><a id="a497903b46418329ff77e573fe793a374" name="a497903b46418329ff77e573fe793a374"></a>
 atomic_t&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
-<tr class="memdesc:a497903b46418329ff77e573fe793a374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current operating mode (atomic enum) <br /></td></tr>
+<tr class="memdesc:a497903b46418329ff77e573fe793a374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current operating mode (atomic). <br /></td></tr>
 <tr class="separator:a497903b46418329ff77e573fe793a374"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Shared system context between main, sensors thread and gps thread. </p>
+<div class="textblock"><p>Shared system context between main, sensors, and GPS threads. </p>
+<p>This structure contains pointers to configuration objects, semaphores, and shared state used to coordinate between the main, sensors, and GPS threads. </p>
 </div><hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/<a class="el" href="main_8h_source.html">main.h</a></li>
 </ul>

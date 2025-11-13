@@ -7,6 +7,7 @@ var annotated_dup =
     [ "gps_config", "structgps__config.html", null ],
     [ "gps_data_t", "structgps__data__t.html", null ],
     [ "main_measurement", "structmain__measurement.html", null ],
+    [ "stats_measurements", "structstats__measurements.html", null ],
     [ "system_context", "structsystem__context.html", "structsystem__context" ],
     [ "system_measurement", "structsystem__measurement.html", "structsystem__measurement" ],
     [ "user_button", "structuser__button.html", "structuser__button" ]

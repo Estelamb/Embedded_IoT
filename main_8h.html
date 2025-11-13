@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('main_8h.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 
-<p>Shared definitions for the brightness control system.  
+<p>Shared definitions for the Plant Monitoring System.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;zephyr/kernel.h&gt;</code><br />
 <code>#include &lt;zephyr/sys/atomic.h&gt;</code><br />
@@ -150,35 +150,35 @@ $(document).ready(function(){initNavTree('main_8h.html',''); initResizable(); })
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__context.html">system_context</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared system context between main, sensors thread and gps thread.  <a href="structsystem__context.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared system context between main, sensors, and GPS threads.  <a href="structsystem__context.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structsystem__measurement.html">system_measurement</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared system measurement between main, sensors thread and gps thread.  <a href="structsystem__measurement.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shared sensor data between main, sensors, and GPS threads.  <a href="structsystem__measurement.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ab909f9f81838bb1a709819e54cf4359e" id="r_ab909f9f81838bb1a709819e54cf4359e"><td class="memItemLeft" align="right" valign="top"><a id="ab909f9f81838bb1a709819e54cf4359e" name="ab909f9f81838bb1a709819e54cf4359e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>TEST_MODE_CADENCE</b>&#160;&#160;&#160;2000</td></tr>
-<tr class="memdesc:ab909f9f81838bb1a709819e54cf4359e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval in TEST mode (ms). <br /></td></tr>
+<tr class="memdesc:ab909f9f81838bb1a709819e54cf4359e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval in TEST mode (milliseconds). <br /></td></tr>
 <tr class="separator:ab909f9f81838bb1a709819e54cf4359e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f6260dacee6f9f8c5fd36141f018a68" id="r_a8f6260dacee6f9f8c5fd36141f018a68"><td class="memItemLeft" align="right" valign="top"><a id="a8f6260dacee6f9f8c5fd36141f018a68" name="a8f6260dacee6f9f8c5fd36141f018a68"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NORMAL_MODE_CADENCE</b>&#160;&#160;&#160;30000</td></tr>
-<tr class="memdesc:a8f6260dacee6f9f8c5fd36141f018a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval in NORMAL mode (ms). <br /></td></tr>
+<tr class="memdesc:a8f6260dacee6f9f8c5fd36141f018a68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measurement interval in NORMAL mode (milliseconds). <br /></td></tr>
 <tr class="separator:a8f6260dacee6f9f8c5fd36141f018a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a6e4cea4b6246f491c526211f5405627d" id="r_a6e4cea4b6246f491c526211f5405627d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a> { <b>TEST_MODE</b> = 0
-, <b>NORMAL_MODE</b>
-, <b>ADVANCED_MODE</b>
+<tr class="memitem:a6e4cea4b6246f491c526211f5405627d" id="r_a6e4cea4b6246f491c526211f5405627d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">system_mode_t</a> { <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e">TEST_MODE</a> = 0
+, <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>
+, <a class="el" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063">ADVANCED_MODE</a>
  }</td></tr>
 <tr class="memdesc:a6e4cea4b6246f491c526211f5405627d"><td class="mdescLeft">&#160;</td><td class="mdescRight">System operating modes.  <a href="main_8h.html#a6e4cea4b6246f491c526211f5405627d">More...</a><br /></td></tr>
 <tr class="separator:a6e4cea4b6246f491c526211f5405627d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Shared definitions for the brightness control system. </p>
-<p>This header defines the system mode enumeration and shared context structure used by both the main application and the brightness thread. </p>
+<div class="textblock"><p>Shared definitions for the Plant Monitoring System. </p>
+<p>This header defines shared data structures and enumerations used across the main application, sensors thread, and GPS thread. It provides a unified context for system configuration and sensor measurements. </p>
 </div><h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a6e4cea4b6246f491c526211f5405627d" name="a6e4cea4b6246f491c526211f5405627d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6e4cea4b6246f491c526211f5405627d">&#9670;&#160;</a></span>system_mode_t</h2>
@@ -193,11 +193,19 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 
 <p>System operating modes. </p>
-<ul>
-<li>OFF_MODE: Device is turned off and LEDs are off.</li>
-<li>NORMAL_MODE: Normal operation where ambient brightness is measured and the LED color indicates the brightness level.</li>
-<li>BLUE_MODE: Special mode where the blue LED is shown continuously. </li>
+<p>These modes define how the system behaves:</p><ul>
+<li><b>TEST_MODE:</b> Shows the dominant detected color through the RGB LED.</li>
+<li><b>NORMAL_MODE:</b> Periodically measures sensors and alerts if any reading is out of range.</li>
+<li><b>ADVANCED_MODE:</b> Operates silently with minimal LED feedback. </li>
 </ul>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e" name="a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e"></a>TEST_MODE&#160;</td><td class="fielddoc"><p>Test mode – displays the dominant color. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148" name="a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148"></a>NORMAL_MODE&#160;</td><td class="fielddoc"><p>Normal mode – periodic measurement and alerts. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063" name="a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063"></a>ADVANCED_MODE&#160;</td><td class="fielddoc"><p>Advanced mode – minimal visual feedback. </p>
+</td></tr>
+</table>
 
 </div>
 </div>
