@@ -1,12 +1,14 @@
 /**
  * @file gps.c
- * @brief GPS UART handling and GGA parsing.
+ * @brief GPS UART interrupt handler and NMEA GGA parser implementation.
  *
- * ISR reads bytes from UART, accumulates lines and parses GGA/GNGGA frames.
- * When a GGA frame is parsed successfully, the parsed data is stored and a
- * semaphore is given so other threads can read it using gps_wait_for_gga().
+ * This module handles UART-based reception of NMEA sentences from a GPS module.
+ * The UART interrupt service routine accumulates incoming data lines, detects
+ * complete GGA (or GNGGA) sentences, parses them, and updates the shared
+ * GPS data structure. Once new data is available, a semaphore is released
+ * to notify waiting threads.
  *
- * This implementation is intentionally simple and robust for embedded use.
+ * The design prioritizes simplicity and robustness for embedded systems.
  */
 
 #include "gps.h"
@@ -17,23 +19,33 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define BUF_SIZE 128
-#define MAX_FIELDS 16
+#define BUF_SIZE 128      /**< Maximum NMEA sentence length. */
+#define MAX_FIELDS 16     /**< Maximum number of comma-separated fields per sentence. */
 
 static const struct device *uart_dev = NULL;
 static char nmea_line[BUF_SIZE];
 static uint8_t line_pos = 0;
 
-/* Internal parsed data storage + sync */
+/** @brief Internal storage for parsed GPS data. */
 static gps_data_t parsed_data;
+/** @brief Semaphore signaling when a valid GGA frame is available. */
 static struct k_sem parsed_sem;
 
-/* Helper: convert NMEA lat/lon "DDMM.MMMM" or "DDDMM.MMMM" + dir to degrees decimal */
+/**
+ * @brief Converts an NMEA latitude/longitude string to decimal degrees.
+ *
+ * Converts a coordinate in NMEA format ("DDMM.MMMM" or "DDDMM.MMMM")
+ * to standard decimal degrees, applying hemisphere correction based on
+ * the direction character.
+ *
+ * @param nmea Pointer to the NMEA coordinate string.
+ * @param dir Direction character ('N', 'S', 'E', or 'W').
+ * @return Coordinate in decimal degrees. Returns 0.0f if the input is invalid.
+ */
 static float nmea_to_degrees(const char *nmea, char dir)
 {
     if (!nmea || strlen(nmea) < 4) return 0.0f;
 
-    /* parse integer part before decimal point to simplify (robust for embedded) */
     float value = 0.0f;
     float decimal = 0.0f;
     bool seen_dot = false;
@@ -57,8 +69,7 @@ static float nmea_to_degrees(const char *nmea, char dir)
 
     value += decimal;
 
-    /* separate degrees and minutes */
-    int deg_len = (dir == 'N' || dir == 'S') ? 2 : 3; /* lat uses 2 digits degrees, lon 3 */
+    int deg_len = (dir == 'N' || dir == 'S') ? 2 : 3; /* Latitude: 2 digits; longitude: 3 */
     int degrees = (int)(value / 100.0f);
     float minutes = value - (degrees * 100.0f);
     float result = degrees + (minutes / 60.0f);
@@ -67,17 +78,24 @@ static float nmea_to_degrees(const char *nmea, char dir)
     return result;
 }
 
-/* Simple GGA parser: extracts fields from a GGA line and fills gps_data_t.
- * Returns true if parsing succeeded.
+/**
+ * @brief Parses a single NMEA GGA sentence and extracts relevant fields.
+ *
+ * Extracts latitude, longitude, altitude, HDOP, number of satellites,
+ * and UTC time from a GGA sentence. Populates a @ref gps_data_t structure
+ * with the parsed values.
+ *
+ * @param line Pointer to the null-terminated GGA sentence string.
+ * @param out Pointer to store the parsed GPS data.
+ * @retval true If parsing succeeded and valid data was extracted.
+ * @retval false If the sentence was invalid or incomplete.
  */
 static bool parse_gga(const char *line, gps_data_t *out)
 {
-    /* Make a mutable copy */
     char buf[BUF_SIZE];
     strncpy(buf, line, BUF_SIZE - 1);
     buf[BUF_SIZE - 1] = '\0';
 
-    /* Tokenize by comma */
     char *fields[MAX_FIELDS] = {0};
     char *p = buf;
     int idx = 0;
@@ -91,35 +109,24 @@ static bool parse_gga(const char *line, gps_data_t *out)
         p++;
     }
 
-    /* GGA layout (indices):
-     * 0 = $GPGGA
-     * 1 = UTC time hhmmss.ss
-     * 2 = lat DDMM.MMMM
-     * 3 = N/S
-     * 4 = lon DDDMM.MMMM
-     * 5 = E/W
-     * 6 = fix quality
-     * 7 = num satellites
-     * 8 = HDOP
-     * 9 = altitude
+    /* Expected GGA field layout:
+     *  0 = $GPGGA or $GNGGA
+     *  1 = UTC time (hhmmss.ss)
+     *  2 = Latitude (DDMM.MMMM)
+     *  3 = N/S
+     *  4 = Longitude (DDDMM.MMMM)
+     *  5 = E/W
+     *  6 = Fix quality
+     *  7 = Number of satellites
+     *  8 = HDOP
+     *  9 = Altitude (meters)
      */
-    if (!fields[0]) return false;
-    if (!strstr(fields[0], "GGA")) return false;
-
+    if (!fields[0] || !strstr(fields[0], "GGA")) return false;
     if (!fields[2] || !fields[3] || !fields[4] || !fields[5]) return false;
 
-    float lat = nmea_to_degrees(fields[2], fields[3][0]);
-    float lon = nmea_to_degrees(fields[4], fields[5][0]);
-
-    out->lat = lat;
-    out->lon = lon;
-
-    if (fields[9]) {
-        out->alt = (float)atof(fields[9]); /* meters */
-    } else {
-        out->alt = 0.0f;
-    }
-
+    out->lat = nmea_to_degrees(fields[2], fields[3][0]);
+    out->lon = nmea_to_degrees(fields[4], fields[5][0]);
+    out->alt = fields[9] ? (float)atof(fields[9]) : 0.0f;
     out->sats = fields[7] ? atoi(fields[7]) : 0;
     out->hdop = fields[8] ? (float)atof(fields[8]) : 0.0f;
 
@@ -133,7 +140,17 @@ static bool parse_gga(const char *line, gps_data_t *out)
     return true;
 }
 
-/* UART ISR: read bytes, accumulate lines, parse GGA lines and publish parsed_data */
+/**
+ * @brief UART interrupt handler for GPS data reception.
+ *
+ * Reads incoming bytes from the UART FIFO, reconstructs complete NMEA
+ * sentences, and triggers parsing for GGA or GNGGA messages. Upon successful
+ * parsing, the global GPS data structure is updated and a semaphore is given
+ * to signal waiting threads.
+ *
+ * @param dev Pointer to the UART device generating the interrupt.
+ * @param user_data Optional user data pointer (unused).
+ */
 static void uart_isr(const struct device *dev, void *user_data)
 {
     uint8_t c;
@@ -141,26 +158,23 @@ static void uart_isr(const struct device *dev, void *user_data)
     while (uart_irq_update(dev) && uart_irq_rx_ready(dev)) {
         if (uart_fifo_read(dev, &c, 1) == 1) {
             if (c == '$') {
-                /* start of new sentence */
                 line_pos = 0;
                 nmea_line[line_pos++] = (char)c;
-            } else {
-                if (line_pos < (BUF_SIZE - 1)) {
-                    nmea_line[line_pos++] = (char)c;
-                }
+            } else if (line_pos < (BUF_SIZE - 1)) {
+                nmea_line[line_pos++] = (char)c;
             }
 
             if (c == '\n') {
                 nmea_line[line_pos] = '\0';
-                /* Only parse GGA/GNGGA messages */
+
                 if (strstr(nmea_line, "$GPGGA") || strstr(nmea_line, "$GNGGA")) {
                     gps_data_t tmp;
                     if (parse_gga(nmea_line, &tmp)) {
-                        /* publish */
                         memcpy(&parsed_data, &tmp, sizeof(gps_data_t));
                         k_sem_give(&parsed_sem);
                     }
                 }
+
                 line_pos = 0;
             }
         } else {
@@ -169,6 +183,17 @@ static void uart_isr(const struct device *dev, void *user_data)
     }
 }
 
+/**
+ * @brief Initializes the GPS UART and enables the interrupt handler.
+ *
+ * Validates the provided configuration, verifies UART readiness, sets up
+ * the ISR for GPS data reception, and enables RX interrupts.
+ *
+ * @param cfg Pointer to the GPS configuration structure.
+ * @retval 0 If initialization succeeded.
+ * @retval -EINVAL If configuration is invalid.
+ * @retval -ENODEV If the UART device is not ready.
+ */
 int gps_init(const struct gps_config *cfg)
 {
     if (!cfg || !cfg->dev) {
@@ -184,7 +209,6 @@ int gps_init(const struct gps_config *cfg)
     }
 
     k_sem_init(&parsed_sem, 0, 1);
-
     uart_irq_callback_set(uart_dev, uart_isr);
     uart_irq_rx_enable(uart_dev);
 
@@ -192,6 +216,18 @@ int gps_init(const struct gps_config *cfg)
     return 0;
 }
 
+/**
+ * @brief Waits for the next valid GGA sentence to be parsed.
+ *
+ * Blocks until a new GGA frame is available or the specified timeout expires.
+ * On success, copies the latest parsed data into the provided buffer.
+ *
+ * @param out Pointer to store the parsed GPS data.
+ * @param timeout Timeout duration (e.g. @c K_FOREVER, @c K_MSEC(2000), @c K_NO_WAIT).
+ * @retval 0 If valid GPS data was received before timeout.
+ * @retval -ETIMEDOUT If no new GGA sentence was parsed within the timeout period.
+ * @retval -EINVAL If the output pointer is invalid.
+ */
 int gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout)
 {
     if (!out) return -EINVAL;
@@ -199,7 +235,6 @@ int gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout)
     int ret = k_sem_take(&parsed_sem, timeout);
     if (ret < 0) return ret;
 
-    /* copy parsed data out */
     memcpy(out, &parsed_data, sizeof(gps_data_t));
     return 0;
 }

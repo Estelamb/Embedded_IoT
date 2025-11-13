@@ -2,21 +2,25 @@
  * @file board_led.c
  * @brief Implementation of LED control using GPIO pins.
  *
- * This module provides initialization and color-setting functions for
- * 3 board LEDs.
+ * This module provides initialization and color-setting functions
+ * for LEDs connected via GPIO. It supports RGB combinations through
+ * bitmask-based control.
  */
 
 #include "board_led.h"
 #include <zephyr/sys/printk.h>
 
 /**
- * @brief Initialize all LED GPIO pins.
+ * @brief Initializes all GPIO pins used by the LED.
  *
- * Checks if each GPIO port is ready, and configures all pins as outputs
- * with initial inactive (off) state.
+ * Each pin defined in the @ref bus_led structure is verified to ensure
+ * the corresponding GPIO device is ready. The pins are then configured
+ * as outputs and set to an inactive (off) state by default.
  *
- * @param led Pointer to the LED bus structure.
- * @return 0 on success, or a negative error code on failure.
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If initialization succeeded.
+ * @retval -ENODEV If a GPIO device is not ready.
+ * @retval Other Negative error code from @ref gpio_pin_configure_dt.
  */
 int led_init(struct bus_led *led) {
     for (size_t i = 0; i < led->pin_count; i++) {
@@ -37,16 +41,22 @@ int led_init(struct bus_led *led) {
 }
 
 /**
- * @brief Write a bitmask value to the LED pins.
+ * @brief Writes a bitmask value to the LED GPIO pins.
  *
- * Bit mapping:
+ * Each bit in the input value corresponds to one LED channel:
  * - Bit 0 → Red
  * - Bit 1 → Green
  * - Bit 2 → Blue
  *
- * @param led Pointer to the LED bus structure.
+ * Example:
+ * - `0x1` → Red ON
+ * - `0x3` → Red + Green ON (Yellow)
+ * - `0x7` → All ON (White)
+ *
+ * @param led Pointer to the LED descriptor structure.
  * @param value Bitmask (0–7) controlling the color combination.
- * @return 0 on success, or a negative error code on failure.
+ * @retval 0 If the operation succeeded.
+ * @retval -EIO If a GPIO write failed.
  */
 int led_write(struct bus_led *led, int value) {
     for (size_t i = 0; i < led->pin_count; i++) {
@@ -60,26 +70,76 @@ int led_write(struct bus_led *led, int value) {
     return 0;
 }
 
-/** @brief Turn on all LED colors. */
+/**
+ * @brief Turns on all LED channels.
+ *
+ * Equivalent to setting the RGB bitmask to 0x7 (all colors active).
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int led_on(struct bus_led *led) { return led_write(led, 0x7); }
 
-/** @brief Turn off all LED colors. */
+/**
+ * @brief Turns off all LED channels.
+ *
+ * Equivalent to setting the RGB bitmask to 0x0 (all off).
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int led_off(struct bus_led *led) { return led_write(led, 0x0); }
 
-/** @brief Set LED color to red only. */
+/**
+ * @brief Activates only the red LED channel.
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int red(struct bus_led *led) { return led_write(led, 0x1); }
 
-/** @brief Set LED color to green only. */
+/**
+ * @brief Activates only the green LED channel.
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int green(struct bus_led *led) { return led_write(led, 0x2); }
 
-/** @brief Set LED color to blue only. */
+/**
+ * @brief Activates only the blue LED channel.
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int blue(struct bus_led *led) { return led_write(led, 0x4); }
 
-/** @brief Set LED color to red and green only. */
+/**
+ * @brief Activates red and green LED channels.
+ *
+ * Produces yellow on an RGB LED.
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int red_green(struct bus_led *led) { return led_write(led, 0x3); }
 
-/** @brief Set LED color to green and blue only. */
+/**
+ * @brief Activates green and blue LED channels.
+ *
+ * Produces cyan on an RGB LED.
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int green_blue(struct bus_led *led) { return led_write(led, 0x6); }
 
-/** @brief Set LED color to red and blue only. */
+/**
+ * @brief Activates red and blue LED channels.
+ *
+ * Produces magenta on an RGB LED.
+ *
+ * @param led Pointer to the LED descriptor structure.
+ * @retval 0 If the operation succeeded.
+ */
 int red_blue(struct bus_led *led) { return led_write(led, 0x5); }

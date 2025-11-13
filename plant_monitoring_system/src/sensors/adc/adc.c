@@ -1,26 +1,29 @@
 /**
  * @file adc.c
- * @brief ADC driver implementation for multi-channel usage in Zephyr.
+ * @brief ADC driver implementation for multi-channel analog input using Zephyr.
  *
- * This module provides functions to initialize and read from ADC devices
- * using dynamic channel configuration. It supports reading raw ADC values,
- * normalized values, and computed voltages in millivolts.
+ * This module implements ADC initialization and data acquisition routines
+ * for dynamic, per-channel configuration. It supports reading raw digital
+ * values, normalized floating-point samples, and voltage readings in millivolts.
  */
 
 #include "adc.h"
 #include <zephyr/drivers/adc.h>
 #include <zephyr/kernel.h>
 
+/** @brief Static buffer used for single-sample ADC conversions. */
 static int16_t sample_buffer[BUFFER_SIZE];
 
 /**
- * @brief Initialize the ADC device by verifying its readiness.
+ * @brief Initializes the specified ADC device.
  *
- * This function only checks if the device specified in the configuration
- * is ready. ADC channels are configured dynamically before each read.
+ * Verifies that the ADC device referenced in the configuration is ready
+ * for operation. This function does not configure ADC channels; they are
+ * set up dynamically during each read operation.
  *
- * @param cfg Pointer to an ADC configuration structure.
- * @return 0 on success, or a negative error code.
+ * @param cfg Pointer to the ADC configuration structure.
+ * @retval 0 If the ADC device is ready.
+ * @retval -ENODEV If the device is not available or not ready.
  */
 int adc_init(const struct adc_config *cfg)
 {
@@ -34,14 +37,17 @@ int adc_init(const struct adc_config *cfg)
 }
 
 /**
- * @brief Read a raw ADC value from the specified channel.
+ * @brief Reads a raw ADC sample from the configured channel.
  *
- * This function dynamically configures the ADC channel using the provided
- * configuration and reads one raw sample into the provided buffer.
+ * Dynamically sets up the specified ADC channel using the provided
+ * configuration parameters, performs a single conversion, and returns
+ * the unprocessed raw sample value.
  *
- * @param cfg Pointer to an ADC configuration structure.
- * @param raw_val Pointer to store the raw ADC value.
- * @return 0 on success, or a negative error code.
+ * @param cfg Pointer to the ADC configuration structure.
+ * @param raw_val Pointer to store the raw ADC sample.
+ * @retval 0 If the conversion was successful.
+ * @retval -EIO If the ADC read operation failed.
+ * @retval Negative error code from @ref adc_channel_setup on setup failure.
  */
 int adc_read_raw(const struct adc_config *cfg, int16_t *raw_val)
 {
@@ -76,12 +82,14 @@ int adc_read_raw(const struct adc_config *cfg, int16_t *raw_val)
 }
 
 /**
- * @brief Read a normalized ADC value (0.0 - 1.0) from the specified channel.
+ * @brief Reads and normalizes an ADC sample (0.0–1.0 range).
  *
- * This function reads the raw ADC value and normalizes it to the range 0.0 to 1.0.
+ * Performs a raw ADC conversion and converts the result into a normalized
+ * floating-point value based on the configured resolution.
  *
- * @param cfg Pointer to an ADC configuration structure.
- * @return Normalized ADC value as a float, or negative error code on failure.
+ * @param cfg Pointer to the ADC configuration structure.
+ * @return Normalized ADC value in the range [0.0, 1.0], or a negative
+ *         error code if the conversion failed.
  */
 float adc_read_normalized(const struct adc_config *cfg)
 {
@@ -95,14 +103,16 @@ float adc_read_normalized(const struct adc_config *cfg)
 }
 
 /**
- * @brief Read the ADC value in millivolts from the specified channel.
+ * @brief Reads the ADC value and converts it to millivolts.
  *
- * This function reads the raw ADC value and converts it to millivolts
- * based on the provided reference voltage.
+ * Performs a raw ADC conversion and scales the digital reading
+ * according to the configured reference voltage and resolution.
  *
- * @param cfg Pointer to an ADC configuration structure.
- * @param out_mv Pointer to store the ADC voltage in millivolts.
- * @return 0 on success, or a negative error code.
+ * @param cfg Pointer to the ADC configuration structure.
+ * @param out_mv Pointer to store the resulting voltage in millivolts.
+ * @retval 0 If the voltage computation was successful.
+ * @retval -EIO If the ADC read failed.
+ * @retval Negative error code from @ref adc_read_raw on failure.
  */
 int adc_read_voltage(const struct adc_config *cfg, int32_t *out_mv)
 {

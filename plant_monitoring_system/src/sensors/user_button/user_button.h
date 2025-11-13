@@ -1,10 +1,10 @@
 /**
  * @file user_button.h
- * @brief Interface for GPIO-based user button handling with interrupt support.
+ * @brief GPIO-based user button handling with interrupt support.
  *
- * This driver configures a GPIO input pin for interrupt-triggered events
- * (both rising and falling edges). Button press logic must be implemented
- * by the application through a provided ISR callback.
+ * This driver configures a GPIO input pin for edge-triggered interrupts
+ * (both rising and falling edges). The application must provide an ISR
+ * callback to implement button press/release logic.
  */
 
 #ifndef USER_BUTTON_H
@@ -16,33 +16,37 @@
 /**
  * @brief Structure representing a user button connected via GPIO.
  *
- * Holds the GPIO device specification and ISR callback structure.
+ * Contains the GPIO device specification and the callback structure
+ * used by the Zephyr GPIO driver to handle interrupts.
  */
 struct user_button {
-    struct gpio_dt_spec spec;      /**< GPIO device specification */
-    struct gpio_callback callback; /**< GPIO callback structure */
+    struct gpio_dt_spec spec;      /**< GPIO pin/device specification */
+    struct gpio_callback callback; /**< GPIO callback descriptor */
 };
 
 /**
- * @brief Initialize the user button GPIO and configure edge interrupts.
+ * @brief Initialize a user button GPIO and configure edge interrupts.
  *
- * The pin is configured as input and interrupt triggers are enabled on
- * both rising and falling edges to detect press and release transitions.
+ * Configures the pin as input and enables interrupts on both rising
+ * and falling edges to detect press and release transitions.
  *
- * @param button Pointer to the user_button structure.
- * @return 0 on success, or a negative error code on failure.
+ * @param button Pointer to a `user_button` structure.
+ * @retval 0 If the initialization succeeded.
+ * @retval Negative error code if GPIO configuration failed.
  */
 int button_init(struct user_button *button);
 
 /**
- * @brief Attach an ISR callback function to the button interrupt.
+ * @brief Attach an ISR callback function to the button.
  *
- * The handler function is invoked directly in interrupt context on
- * detected edge transitions.
+ * The callback is executed in interrupt context whenever the configured
+ * edge (rising/falling) is detected. The application should provide
+ * a lightweight handler suitable for ISR execution.
  *
- * @param button Pointer to the user_button structure.
- * @param handler Function pointer to the interrupt handler.
- * @return 0 on success, or a negative error code on failure.
+ * @param button Pointer to the `user_button` structure.
+ * @param handler Function pointer to the GPIO ISR callback.
+ * @retval 0 If the callback was successfully registered.
+ * @retval Negative error code if registration failed.
  */
 int button_set_callback(struct user_button *button, gpio_callback_handler_t handler);
 

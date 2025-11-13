@@ -1,3 +1,11 @@
+/**
+ * @file temp_hum.c
+ * @brief Implementation of Si7021 temperature and humidity sensor driver for Zephyr.
+ *
+ * This module provides initialization, relative humidity (%RH), and temperature (°C)
+ * reading functions via I2C using the Zephyr I2C API.
+ */
+
 #include "temp_hum.h"
 #include "i2c.h"
 #include <zephyr/kernel.h>
@@ -5,7 +13,11 @@
 #include <math.h>
 
 /**
- * @brief Write a single command to the Si7021.
+ * @brief Write a single command to the Si7021 sensor.
+ *
+ * @param dev Pointer to a valid I2C device descriptor.
+ * @param cmd Command byte to send.
+ * @return 0 on success, negative errno code on failure.
  */
 static int si7021_write_cmd(const struct i2c_dt_spec *dev, uint8_t cmd)
 {
@@ -14,6 +26,12 @@ static int si7021_write_cmd(const struct i2c_dt_spec *dev, uint8_t cmd)
 
 /**
  * @brief Read data from Si7021 after sending a command.
+ *
+ * @param dev Pointer to a valid I2C device descriptor.
+ * @param cmd Command byte to initiate the read.
+ * @param buf Pointer to buffer to store received bytes.
+ * @param len Number of bytes to read.
+ * @return 0 on success, negative errno code on failure.
  */
 static int si7021_read_data(const struct i2c_dt_spec *dev, uint8_t cmd, uint8_t *buf, size_t len)
 {
@@ -21,7 +39,12 @@ static int si7021_read_data(const struct i2c_dt_spec *dev, uint8_t cmd, uint8_t 
 }
 
 /**
- * @brief Initialize the Si7021 sensor.
+ * @brief Initialize the Si7021 temperature and humidity sensor.
+ *
+ * Performs a soft reset and verifies that the I2C bus is ready.
+ *
+ * @param dev Pointer to a valid I2C device descriptor.
+ * @return 0 on success, negative errno code on failure.
  */
 int temp_hum_init(const struct i2c_dt_spec *dev)
 {
@@ -37,14 +60,20 @@ int temp_hum_init(const struct i2c_dt_spec *dev)
         return ret;
     }
 
-    k_msleep(50); // Give sensor time to reset
-
+    k_msleep(50); /**< Wait 50ms for sensor to reset */
     printk("[TEMP_HUM] Si7021 initialized successfully\n");
     return 0;
 }
 
 /**
- * @brief Read relative humidity in %RH.
+ * @brief Read relative humidity from the Si7021 sensor.
+ *
+ * Uses the Hold Master mode to measure humidity and converts the raw value
+ * to %RH using the formula from the datasheet.
+ *
+ * @param dev Pointer to a valid I2C device descriptor.
+ * @param humidity Pointer to float variable to store relative humidity (%RH).
+ * @return 0 on success, negative errno code on failure.
  */
 int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
 {
@@ -66,7 +95,14 @@ int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
 }
 
 /**
- * @brief Read temperature in °C.
+ * @brief Read temperature from the Si7021 sensor in degrees Celsius.
+ *
+ * Uses the Hold Master mode to measure temperature and converts the raw
+ * value to °C using the formula from the datasheet.
+ *
+ * @param dev Pointer to a valid I2C device descriptor.
+ * @param temperature Pointer to float variable to store temperature (°C).
+ * @return 0 on success, negative errno code on failure.
  */
 int temp_hum_read_temperature(const struct i2c_dt_spec *dev, float *temperature)
 {

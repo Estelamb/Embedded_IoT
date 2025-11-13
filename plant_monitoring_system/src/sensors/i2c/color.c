@@ -1,6 +1,9 @@
 /**
  * @file color.c
- * @brief Implementation for TCS34725 color sensor driver on Zephyr.
+ * @brief Implementation for the TCS34725 RGB color sensor driver using Zephyr I2C API.
+ *
+ * Provides initialization, configuration, and reading of raw RGB and clear
+ * channel data from the sensor.
  */
 
 #include "color.h"
@@ -9,12 +12,32 @@
 #include <zephyr/sys/printk.h>
 
 /* === Internal helper functions === */
+
+/**
+ * @brief Write a single byte to a sensor register.
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @param reg Register address to write.
+ * @param val Value to write.
+ * @return 0 on success, negative errno on failure.
+ */
 static int color_write_reg(const struct i2c_dt_spec *dev, uint8_t reg, uint8_t val)
 {
     uint8_t buf[2] = { COLOR_COMMAND | reg, val };
     return i2c_write_dt(dev, buf, sizeof(buf));
 }
 
+/**
+ * @brief Read multiple bytes from sensor registers.
+ *
+ * Uses auto-increment to read sequential registers.
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @param reg Starting register address.
+ * @param buf Buffer to store read bytes.
+ * @param len Number of bytes to read.
+ * @return 0 on success, negative errno on failure.
+ */
 static int color_read_regs(const struct i2c_dt_spec *dev, uint8_t reg, uint8_t *buf, size_t len)
 {
     uint8_t reg_cmd = COLOR_COMMAND | AUTO_INCREMENT | reg;
@@ -23,6 +46,15 @@ static int color_read_regs(const struct i2c_dt_spec *dev, uint8_t reg, uint8_t *
 
 /* === Public API === */
 
+/**
+ * @brief Initialize the TCS34725 sensor.
+ *
+ * Checks I2C bus readiness, powers on the sensor, and applies default
+ * integration time and gain settings.
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @return 0 on success, negative errno code on failure.
+ */
 int color_init(const struct i2c_dt_spec *dev)
 {
     if (!device_is_ready(dev->bus)) {
@@ -32,13 +64,13 @@ int color_init(const struct i2c_dt_spec *dev)
 
     printk("[COLOR] Initializing TCS34725...\n");
 
-    /* Power ON then enable ADC */
+    /* Power on and enable ADC */
     if (color_wake_up(dev) < 0) {
         printk("[COLOR SENSOR] - Failed to wake up sensor\n");
         return -EIO;
     }
 
-    /* Default settings */
+    /* Apply default settings */
     color_set_gain(dev, GAIN_4X);
     color_set_integration(dev, INTEGRATION_154MS);
 
@@ -46,12 +78,18 @@ int color_init(const struct i2c_dt_spec *dev)
     return 0;
 }
 
+/**
+ * @brief Wake up the sensor (power on and enable ADC).
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @return 0 on success, negative errno code on failure.
+ */
 int color_wake_up(const struct i2c_dt_spec *dev)
 {
     int ret = color_write_reg(dev, COLOR_ENABLE, ENABLE_PON);
     if (ret < 0) return ret;
 
-    k_msleep(3); /* Wait power-on */
+    k_msleep(3); /* Wait for power-on */
 
     ret = color_write_reg(dev, COLOR_ENABLE, ENABLE_PON | ENABLE_AEN);
     if (ret < 0) return ret;
@@ -60,22 +98,49 @@ int color_wake_up(const struct i2c_dt_spec *dev)
     return 0;
 }
 
+/**
+ * @brief Put the sensor into sleep mode (disable ADC and power off).
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @return 0 on success, negative errno code on failure.
+ */
 int color_sleep(const struct i2c_dt_spec *dev)
 {
     return color_write_reg(dev, COLOR_ENABLE, 0x00);
 }
 
+/**
+ * @brief Set the sensor gain.
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @param gain Gain value: GAIN_1X, GAIN_4X, GAIN_16X, GAIN_60X.
+ * @return 0 on success, negative errno code on failure.
+ */
 int color_set_gain(const struct i2c_dt_spec *dev, uint8_t gain)
 {
     if (gain > GAIN_60X) gain = GAIN_1X;
     return color_write_reg(dev, COLOR_CONTROL, gain);
 }
 
+/**
+ * @brief Set the sensor integration time (ATIME register).
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @param atime Integration time register value.
+ * @return 0 on success, negative errno code on failure.
+ */
 int color_set_integration(const struct i2c_dt_spec *dev, uint8_t atime)
 {
     return color_write_reg(dev, COLOR_ATIME, atime);
 }
 
+/**
+ * @brief Read raw RGB and clear channel values from the sensor.
+ *
+ * @param dev Pointer to I2C device descriptor.
+ * @param data Pointer to ColorSensorData struct to store values.
+ * @return 0 on success, negative errno code on failure.
+ */
 int color_read_rgb(const struct i2c_dt_spec *dev, ColorSensorData *data)
 {
     uint8_t buf[8];
