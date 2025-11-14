@@ -29,27 +29,28 @@ var NAVTREE =
       [ "Key Features", "index.html#autotoc_md2", null ]
     ] ],
     [ "Architecture", "index.html#autotoc_md4", [
-      [ "System Context (<tt>system_context</tt>)", "index.html#autotoc_md5", null ],
-      [ "System Measurement (<tt>system_measurement</tt>)", "index.html#autotoc_md6", null ]
+      [ "Threads", "index.html#autotoc_md5", null ],
+      [ "Shared Structures", "index.html#autotoc_md6", null ],
+      [ "Synchronization", "index.html#autotoc_md7", null ]
     ] ],
-    [ "Operating Modes", "index.html#autotoc_md8", null ],
-    [ "Sensor Interfaces", "index.html#autotoc_md10", [
-      [ "ADC Sensors", "index.html#autotoc_md11", null ],
-      [ "I2C Sensors", "index.html#autotoc_md12", [
-        [ "Accelerometer (e.g., MMA8451)", "index.html#autotoc_md13", null ],
-        [ "Temperature & Humidity (Si7021)", "index.html#autotoc_md14", null ],
-        [ "Color Sensor (TCS34725)", "index.html#autotoc_md15", null ]
+    [ "Operating Modes", "index.html#autotoc_md9", null ],
+    [ "Sensor Interfaces", "index.html#autotoc_md11", [
+      [ "ADC Sensors", "index.html#autotoc_md12", null ],
+      [ "I2C Sensors", "index.html#autotoc_md13", [
+        [ "Accelerometer (e.g., MMA8451)", "index.html#autotoc_md14", null ],
+        [ "Temperature & Humidity (Si7021)", "index.html#autotoc_md15", null ],
+        [ "Color Sensor (TCS34725)", "index.html#autotoc_md16", null ]
       ] ]
     ] ],
-    [ "GPS Interface", "index.html#autotoc_md17", null ],
-    [ "Thread Design", "index.html#autotoc_md19", [
-      [ "Sensors Thread", "index.html#autotoc_md20", null ],
-      [ "GPS Thread", "index.html#autotoc_md21", null ]
+    [ "GPS Interface", "index.html#autotoc_md18", null ],
+    [ "Thread Design", "index.html#autotoc_md20", [
+      [ "Sensors Thread", "index.html#autotoc_md21", null ],
+      [ "GPS Thread", "index.html#autotoc_md22", null ]
     ] ],
-    [ "Synchronization", "index.html#autotoc_md23", null ],
-    [ "Usage", "index.html#autotoc_md25", null ],
-    [ "Notes", "index.html#autotoc_md26", null ],
-    [ "Conclusion", "index.html#autotoc_md27", null ],
+    [ "Synchronization", "index.html#autotoc_md24", null ],
+    [ "Usage", "index.html#autotoc_md26", null ],
+    [ "Notes", "index.html#autotoc_md27", null ],
+    [ "Conclusion", "index.html#autotoc_md28", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -75,7 +76,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "accel_8c.html",
-"structbus__led.html#a0bf9867fba5f5afb351da45127c684af"
+"structbus__led.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

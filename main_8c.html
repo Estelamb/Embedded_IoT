@@ -213,7 +213,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a25540112e5ab1b3a21341c5149998d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum raw red channel value. <br /></td></tr>
 <tr class="separator:a25540112e5ab1b3a21341c5149998d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c82e201d70da8303a62acd73cbdc9bd" id="r_a4c82e201d70da8303a62acd73cbdc9bd"><td class="memItemLeft" align="right" valign="top"><a id="a4c82e201d70da8303a62acd73cbdc9bd" name="a4c82e201d70da8303a62acd73cbdc9bd"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>RED_MAX</b>&#160;&#160;&#160;5000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RED_MAX</b>&#160;&#160;&#160;65535</td></tr>
 <tr class="memdesc:a4c82e201d70da8303a62acd73cbdc9bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum raw red channel value. <br /></td></tr>
 <tr class="separator:a4c82e201d70da8303a62acd73cbdc9bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73660ba4fb20abf93a3e54e04f133381" id="r_a73660ba4fb20abf93a3e54e04f133381"><td class="memItemLeft" align="right" valign="top"><a id="a73660ba4fb20abf93a3e54e04f133381" name="a73660ba4fb20abf93a3e54e04f133381"></a>
@@ -221,7 +221,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a73660ba4fb20abf93a3e54e04f133381"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum raw green channel value. <br /></td></tr>
 <tr class="separator:a73660ba4fb20abf93a3e54e04f133381"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afb23383e91ea123e15950b4913bbddc3" id="r_afb23383e91ea123e15950b4913bbddc3"><td class="memItemLeft" align="right" valign="top"><a id="afb23383e91ea123e15950b4913bbddc3" name="afb23383e91ea123e15950b4913bbddc3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>GREEN_MAX</b>&#160;&#160;&#160;5000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GREEN_MAX</b>&#160;&#160;&#160;65535</td></tr>
 <tr class="memdesc:afb23383e91ea123e15950b4913bbddc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum raw green channel value. <br /></td></tr>
 <tr class="separator:afb23383e91ea123e15950b4913bbddc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd01aec0e3977a993bb01df3c15d5197" id="r_acd01aec0e3977a993bb01df3c15d5197"><td class="memItemLeft" align="right" valign="top"><a id="acd01aec0e3977a993bb01df3c15d5197" name="acd01aec0e3977a993bb01df3c15d5197"></a>
@@ -229,7 +229,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:acd01aec0e3977a993bb01df3c15d5197"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum raw blue channel value. <br /></td></tr>
 <tr class="separator:acd01aec0e3977a993bb01df3c15d5197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0651083fdccdfbc5316913c1e73ffd5c" id="r_a0651083fdccdfbc5316913c1e73ffd5c"><td class="memItemLeft" align="right" valign="top"><a id="a0651083fdccdfbc5316913c1e73ffd5c" name="a0651083fdccdfbc5316913c1e73ffd5c"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>BLUE_MAX</b>&#160;&#160;&#160;5000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>BLUE_MAX</b>&#160;&#160;&#160;65535</td></tr>
 <tr class="memdesc:a0651083fdccdfbc5316913c1e73ffd5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum raw blue channel value. <br /></td></tr>
 <tr class="separator:a0651083fdccdfbc5316913c1e73ffd5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa63bf886c5eee67e9ee9688ed816e39c" id="r_aa63bf886c5eee67e9ee9688ed816e39c"><td class="memItemLeft" align="right" valign="top"><a id="aa63bf886c5eee67e9ee9688ed816e39c" name="aa63bf886c5eee67e9ee9688ed816e39c"></a>
@@ -275,14 +275,14 @@ struct <a class="el" href="structstats__measurements.html">stats_measurements</a
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Plant Monitoring System main module. </p>
 <p>This module monitors plant conditions such as light, soil moisture, temperature/humidity, acceleration, color, and GPS location. It provides visual feedback through an RGB LED and allows the user to switch operating modes via a button.</p>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Operating Modes:</h2>
 <ul>
 <li><b>TEST_MODE:</b> RGB LED shows the dominant color detected.</li>
 <li><b>NORMAL_MODE:</b> Periodic measurements; RGB LED alerts if any sensor is out of range.</li>
 <li><b>ADVANCED_MODE:</b> Minimal feedback; system remains operational.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Button Behavior:</h2>
 <ul>
 <li>Toggles between TEST, NORMAL, and ADVANCED modes with each press. </li>

@@ -4,7 +4,7 @@ var searchData=
   ['channel_5fid_1',['channel_id',['../structadc__config.html#a9d034ebeff23ceab5490ec204015dc04',1,'adc_config']]],
   ['clear_2',['clear',['../structsystem__measurement.html#a57b42b5a6e4098f386aa49cc7a84f196',1,'system_measurement::clear'],['../structColorSensorData.html#a5937f6795825b42bdb76ad9098597871',1,'ColorSensorData::clear']]],
   ['color_3',['color',['../structsystem__context.html#a346bdba803bf7fd801808bb51a62f71d',1,'system_context']]],
-  ['color_20sensor_20tcs34725_4',['Color Sensor (TCS34725)',['../index.html#autotoc_md15',1,'']]],
+  ['color_20sensor_20tcs34725_4',['Color Sensor (TCS34725)',['../index.html#autotoc_md16',1,'']]],
   ['color_2ec_5',['color.c',['../color_8c.html',1,'']]],
   ['color_2eh_6',['color.h',['../color_8h.html',1,'']]],
   ['color_5fatime_7',['COLOR_ATIME',['../color_8h.html#af93e74c1f770948956409196a272ac43',1,'color.h']]],
@@ -25,6 +25,5 @@ var searchData=
   ['color_5fsleep_22',['color_sleep',['../color_8c.html#ae5e24bcb0cd6ea744d8193a45e01ff4a',1,'color_sleep(const struct i2c_dt_spec *dev):&#160;color.c'],['../color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a',1,'color_sleep(const struct i2c_dt_spec *dev):&#160;color.c']]],
   ['color_5fwake_5fup_23',['color_wake_up',['../color_8c.html#a806959eb09f81167a9b3b7222631cd7c',1,'color_wake_up(const struct i2c_dt_spec *dev):&#160;color.c'],['../color_8h.html#a806959eb09f81167a9b3b7222631cd7c',1,'color_wake_up(const struct i2c_dt_spec *dev):&#160;color.c']]],
   ['colorsensordata_24',['ColorSensorData',['../structColorSensorData.html',1,'']]],
-  ['conclusion_25',['Conclusion',['../index.html#autotoc_md27',1,'']]],
-  ['context_20tt_20system_5fcontext_20tt_26',['System Context (&lt;tt&gt;system_context&lt;/tt&gt;)',['../index.html#autotoc_md5',1,'']]]
+  ['conclusion_25',['Conclusion',['../index.html#autotoc_md28',1,'']]]
 ];

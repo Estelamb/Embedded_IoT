@@ -160,31 +160,94 @@ Key Features</h2>
 <hr  />
 <h1><a class="anchor" id="autotoc_md4"></a>
 Architecture</h1>
-<p>The system is structured as follows:</p>
-<p>+-------------&mdash;+ | Main Thread | &lt;&ndash; Manages mode, triggers sensors/GPS +-------------&mdash;+ | v +-------------&mdash;+ +-------------&mdash;+ | Sensors Thread | | GPS Thread | | (ADC/I2C) | | (NMEA parsing) | +-------------&mdash;+ +-------------&mdash;+ | | v v <a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a> <a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a> (atomic variables) (atomic variables)</p>
+<p>The system is organized as a <b>multi-threaded embedded application</b> running on Zephyr RTOS, with clear separation between data acquisition, processing, and main control. <br  />
+</p>
 <h2><a class="anchor" id="autotoc_md5"></a>
-System Context (&lt;tt&gt;system_context&lt;/tt&gt;)</h2>
-<p>The <code><a class="el" href="structsystem__context.html" title="Shared system context between main, sensors, and GPS threads.">system_context</a></code> structure provides all shared pointers and synchronization objects needed by threads:</p>
+Threads</h2>
 <ul>
-<li>ADC configurations for phototransistor and soil moisture</li>
-<li>I2C device specifications for accelerometer, temperature/humidity, and color sensor</li>
-<li>GPS configuration</li>
-<li>Semaphores for synchronizing with the main thread and for internal triggers</li>
-<li>Atomic variable storing the current <code>system_mode_t</code></li>
+<li><b>Main Thread</b> <br  />
+<ul>
+<li>Responsible for system initialization and mode management. <br  />
+</li>
+<li>Triggers sensor and GPS measurements via semaphores. <br  />
+</li>
+<li>Reads the latest measurements from the shared <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code> structure.</li>
+</ul>
+</li>
+<li><b>Sensors Thread</b> <br  />
+<ul>
+<li>Periodically reads ADC and I²C sensors according to the system mode. <br  />
+</li>
+<li>Sensors include: <br  />
+<ul>
+<li>Phototransistor (ambient brightness) <br  />
+</li>
+<li>Soil moisture <br  />
+</li>
+<li>Accelerometer (XYZ axes) <br  />
+</li>
+<li>Temperature and humidity (Si7021) <br  />
+</li>
+<li>Color sensor (TCS34725) <br  />
+</li>
+</ul>
+</li>
+<li>Uses a timer semaphore and a manual trigger semaphore. <br  />
+</li>
+<li>Stores readings atomically in <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code>.</li>
+</ul>
+</li>
+<li><b>GPS Thread</b> <br  />
+<ul>
+<li>Periodically reads GPS data in TEST_MODE and NORMAL_MODE. <br  />
+</li>
+<li>In ADVANCED_MODE, waits for a manual semaphore trigger. <br  />
+</li>
+<li>Parses NMEA sentences and updates <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code> with scaled integer values. <br  />
+</li>
+<li>Uses a timer semaphore and a manual trigger semaphore.</li>
+</ul>
+</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md6"></a>
-System Measurement (&lt;tt&gt;system_measurement&lt;/tt&gt;)</h2>
-<p>The <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code> structure stores the most recent readings:</p>
+Shared Structures</h2>
 <ul>
-<li><b>Brightness &amp; Moisture</b>: 0–100%</li>
-<li><b>Accelerometer</b>: X, Y, Z in g (scaled)</li>
-<li><b>Temperature</b>: °C ×100</li>
-<li><b>Humidity</b>: RH ×100</li>
-<li><b>Color</b>: Red, Green, Blue, Clear channels (raw)</li>
-<li><b>GPS</b>: Latitude/Longitude ×1e6, Altitude ×100, Satellites count, UTC time</li>
+<li>**<code><a class="el" href="structsystem__context.html" title="Shared system context between main, sensors, and GPS threads.">system_context</a></code>** <br  />
+<ul>
+<li>Contains configuration pointers for all sensors and GPS. <br  />
+</li>
+<li>Stores semaphores for thread synchronization. <br  />
+</li>
+<li>Holds the current operating mode (<code>system_mode_t</code>) as an atomic variable.</li>
+</ul>
+</li>
+<li>**<code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code>** <br  />
+<ul>
+<li>Stores the latest measurements from all sensors. <br  />
+</li>
+<li>Values are stored as atomic variables for safe access across threads. <br  />
+</li>
+<li>Includes ADC percentages, accelerometer readings, temperature &amp; humidity, color sensor values, and GPS coordinates.</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Synchronization</h2>
+<ul>
+<li><b>Timers</b> control measurement cadence depending on the current mode. <br  />
+</li>
+<li><b>Semaphores</b> allow threads to signal completion or trigger immediate measurement: <br  />
+<ul>
+<li><code>main_sensors_sem</code> and <code>main_gps_sem</code>: signal the main thread when new data is ready. <br  />
+</li>
+<li><code>sensors_sem</code> and <code>gps_sem</code>: manually trigger sensor/GPS threads. <br  />
+</li>
+</ul>
+</li>
+<li><b>Atomic variables</b> ensure safe concurrent access to shared measurements.</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Operating Modes</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -198,18 +261,18 @@ Operating Modes</h1>
 </table>
 <p>Mode is stored atomically and can be changed at runtime.</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Sensor Interfaces</h1>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 ADC Sensors</h2>
 <ul>
 <li>Phototransistor (ambient brightness)</li>
 <li>Soil moisture</li>
 <li>Values are read via <code><a class="el" href="adc_8c.html#aa389f44399fff831361e0b7d334ea333" title="Reads the ADC value and converts it to millivolts.">adc_read_voltage()</a></code> and scaled to 0–100%</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 I2C Sensors</h2>
-<h3><a class="anchor" id="autotoc_md13"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
 Accelerometer (e.g., MMA8451)</h3>
 <ul>
 <li>Registers read via I2C</li>
@@ -222,7 +285,7 @@ Accelerometer (e.g., MMA8451)</h3>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md14"></a>
+<h3><a class="anchor" id="autotoc_md15"></a>
 Temperature &amp; Humidity (Si7021)</h3>
 <ul>
 <li>Provides RH and °C</li>
@@ -233,7 +296,7 @@ Temperature &amp; Humidity (Si7021)</h3>
 </ul>
 </li>
 </ul>
-<h3><a class="anchor" id="autotoc_md15"></a>
+<h3><a class="anchor" id="autotoc_md16"></a>
 Color Sensor (TCS34725)</h3>
 <ul>
 <li>Reads raw RGB and clear channel</li>
@@ -249,7 +312,7 @@ Color Sensor (TCS34725)</h3>
 </li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md18"></a>
 GPS Interface</h1>
 <ul>
 <li>GPS data parsed from NMEA GGA sentences</li>
@@ -268,9 +331,9 @@ GPS Interface</h1>
 </li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md19"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 Thread Design</h1>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Sensors Thread</h2>
 <ul>
 <li><b>Stack size</b>: 1024 bytes <br  />
@@ -291,7 +354,7 @@ Sensors Thread</h2>
 </li>
 <li>Stores data atomically for thread-safe access</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md21"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 GPS Thread</h2>
 <ul>
 <li><b>Stack size</b>: 1024 bytes <br  />
@@ -304,7 +367,7 @@ GPS Thread</h2>
 <li>Converts GPS floating point values to scaled integers for atomic storage</li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md23"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Synchronization</h1>
 <ul>
 <li><b>Semaphores</b>:<ul>
@@ -324,7 +387,7 @@ Synchronization</h1>
 </li>
 </ul>
 <hr  />
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Usage</h1>
 <ol type="1">
 <li>Initialize sensors and GPS:</li>
@@ -351,7 +414,7 @@ Usage</h1>
 <div class="fragment"><div class="line">atomic_set(&amp;ctx.<a class="code hl_variable" href="structsystem__context.html#a497903b46418329ff77e573fe793a374">mode</a>, <a class="code hl_enumvalue" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>);</div>
 <div class="ttc" id="amain_8h_html_a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148"><div class="ttname"><a href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a></div><div class="ttdeci">@ NORMAL_MODE</div><div class="ttdoc">Normal mode – periodic measurement and alerts.</div><div class="ttdef"><b>Definition</b> main.h:44</div></div>
 <div class="ttc" id="astructsystem__context_html_a497903b46418329ff77e573fe793a374"><div class="ttname"><a href="structsystem__context.html#a497903b46418329ff77e573fe793a374">system_context::mode</a></div><div class="ttdeci">atomic_t mode</div><div class="ttdoc">Current operating mode (atomic).</div><div class="ttdef"><b>Definition</b> main.h:71</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md26"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
 Notes</h1>
 <ul>
 <li>All sensor readings are scaled appropriately to allow atomic storage.</li>
@@ -361,7 +424,7 @@ Notes</h1>
 <li>RGB LED can be used to display dominant color in TEST_MODE.</li>
 <li>ADC readings are converted to percentages ×10 for precision.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md28"></a>
 Conclusion</h1>
 <p>This Plant Monitoring System is a modular, multi-threaded system designed for embedded platforms using Zephyr. It integrates multiple sensors, synchronizes data safely between threads, and supports different operating modes with adaptive behavior. </p>
 </div></div><!-- PageDoc -->

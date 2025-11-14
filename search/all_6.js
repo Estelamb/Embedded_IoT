@@ -1,14 +1,14 @@
 var searchData=
 [
-  ['g_20mma8451_0',['Accelerometer (e.g., MMA8451)',['../index.html#autotoc_md13',1,'']]],
+  ['g_20mma8451_0',['Accelerometer (e.g., MMA8451)',['../index.html#autotoc_md14',1,'']]],
   ['gain_1',['gain',['../structadc__config.html#ace15829443009e5d02b215d7d1a020d2',1,'adc_config']]],
   ['gain_5f16x_2',['GAIN_16X',['../color_8h.html#a13b2bbbc03aedd53588b3c81ec41c518',1,'color.h']]],
   ['gain_5f1x_3',['GAIN_1X',['../color_8h.html#ab629773a35e7292544ca1a4113727e80',1,'color.h']]],
   ['gain_5f4x_4',['GAIN_4X',['../color_8h.html#af347421f25d65f25a8468dd183fbc621',1,'color.h']]],
   ['gain_5f60x_5',['GAIN_60X',['../color_8h.html#a2021aed05179188240f7e87029e1ad10',1,'color.h']]],
   ['gps_6',['gps',['../structsystem__context.html#af52f9e0f8c57a6ebe9b3fa70bb8f7edf',1,'system_context']]],
-  ['gps_20interface_7',['GPS Interface',['../index.html#autotoc_md17',1,'']]],
-  ['gps_20thread_8',['GPS Thread',['../index.html#autotoc_md21',1,'']]],
+  ['gps_20interface_7',['GPS Interface',['../index.html#autotoc_md18',1,'']]],
+  ['gps_20thread_8',['GPS Thread',['../index.html#autotoc_md22',1,'']]],
   ['gps_2ec_9',['gps.c',['../gps_8c.html',1,'']]],
   ['gps_2eh_10',['gps.h',['../gps_8h.html',1,'']]],
   ['gps_5falt_11',['gps_alt',['../structsystem__measurement.html#a89d20f762267eb24053bf632f66c0f96',1,'system_measurement']]],
