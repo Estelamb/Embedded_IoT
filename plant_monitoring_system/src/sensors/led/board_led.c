@@ -23,20 +23,22 @@
  * @retval Other Negative error code from @ref gpio_pin_configure_dt.
  */
 int led_init(struct bus_led *led) {
+    printk("[LED] - Initializing BOARD LEDs...\n");
+
     for (size_t i = 0; i < led->pin_count; i++) {
         if (!device_is_ready(led->pins[i].port)) {
-            printk("Error: GPIO device not ready for pin %d\n", i);
+            printk("[LED] - GPIO device not ready for pin %d\n", i);
             return -ENODEV;
         }
 
         int ret = gpio_pin_configure_dt(&led->pins[i], GPIO_OUTPUT_ACTIVE);
         if (ret != 0) {
-            printk("Error: Failed to configure output pin %d (code %d)\n", i, ret);
+            printk("[LED] - Failed to configure output pin %d (code %d)\n", i, ret);
             return ret;
         }
     }
 
-    printk("LED initialized successfully\n");
+    printk("[LED] - BOARD LEDs initialized successfully\n");
     return 0;
 }
 

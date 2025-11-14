@@ -28,43 +28,52 @@ This project implements a **Plant Monitoring System** using the Zephyr RTOS. It 
 
 ## Architecture
 
-The system is structured as follows:
+The system is organized as a **multi-threaded embedded application** running on Zephyr RTOS, with clear separation between data acquisition, processing, and main control.  
 
-+----------------+
-| Main Thread | <-- Manages mode, triggers sensors/GPS
-+----------------+
-|
-v
-+----------------+ +----------------+
-| Sensors Thread | | GPS Thread |
-| (ADC/I2C) | | (NMEA parsing) |
-+----------------+ +----------------+
-| |
-v v
-system_measurement system_measurement
-(atomic variables) (atomic variables)
+### Threads
 
+- **Main Thread**  
+  - Responsible for system initialization and mode management.  
+  - Triggers sensor and GPS measurements via semaphores.  
+  - Reads the latest measurements from the shared `system_measurement` structure.
 
-### System Context (`system_context`)
+- **Sensors Thread**  
+  - Periodically reads ADC and I²C sensors according to the system mode.  
+  - Sensors include:  
+    - Phototransistor (ambient brightness)  
+    - Soil moisture  
+    - Accelerometer (XYZ axes)  
+    - Temperature and humidity (Si7021)  
+    - Color sensor (TCS34725)  
+  - Uses a timer semaphore and a manual trigger semaphore.  
+  - Stores readings atomically in `system_measurement`.
 
-The `system_context` structure provides all shared pointers and synchronization objects needed by threads:
+- **GPS Thread**  
+  - Periodically reads GPS data in TEST_MODE and NORMAL_MODE.  
+  - In ADVANCED_MODE, waits for a manual semaphore trigger.  
+  - Parses NMEA sentences and updates `system_measurement` with scaled integer values.  
+  - Uses a timer semaphore and a manual trigger semaphore.
 
-- ADC configurations for phototransistor and soil moisture
-- I2C device specifications for accelerometer, temperature/humidity, and color sensor
-- GPS configuration
-- Semaphores for synchronizing with the main thread and for internal triggers
-- Atomic variable storing the current `system_mode_t`
+### Shared Structures
 
-### System Measurement (`system_measurement`)
+- **`system_context`**  
+  - Contains configuration pointers for all sensors and GPS.  
+  - Stores semaphores for thread synchronization.  
+  - Holds the current operating mode (`system_mode_t`) as an atomic variable.
 
-The `system_measurement` structure stores the most recent readings:
+- **`system_measurement`**  
+  - Stores the latest measurements from all sensors.  
+  - Values are stored as atomic variables for safe access across threads.  
+  - Includes ADC percentages, accelerometer readings, temperature & humidity, color sensor values, and GPS coordinates.
 
-- **Brightness & Moisture**: 0–100%
-- **Accelerometer**: X, Y, Z in g (scaled)
-- **Temperature**: °C ×100
-- **Humidity**: %RH ×100
-- **Color**: Red, Green, Blue, Clear channels (raw)
-- **GPS**: Latitude/Longitude ×1e6, Altitude ×100, Satellites count, UTC time
+### Synchronization
+
+- **Timers** control measurement cadence depending on the current mode.  
+- **Semaphores** allow threads to signal completion or trigger immediate measurement:  
+  - `main_sensors_sem` and `main_gps_sem`: signal the main thread when new data is ready.  
+  - `sensors_sem` and `gps_sem`: manually trigger sensor/GPS threads.  
+- **Atomic variables** ensure safe concurrent access to shared measurements.
+
 
 ---
 

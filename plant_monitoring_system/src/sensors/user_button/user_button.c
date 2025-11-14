@@ -22,29 +22,31 @@
  */
 int button_init(struct user_button *button)
 {
+    printk("[USER BUTTON] - Initializing user button...\n");
+    
     if (!button || !button->spec.port) {
-        printk("Error: Invalid button configuration\n");
+        printk("[USER BUTTON] - Invalid button configuration\n");
         return -EINVAL;
     }
 
     if (!device_is_ready(button->spec.port)) {
-        printk("Error: Button device %s not ready\n", button->spec.port->name);
+        printk("[USER BUTTON] - Button device %s not ready\n", button->spec.port->name);
         return -ENODEV;
     }
 
     int ret = gpio_pin_configure_dt(&button->spec, GPIO_INPUT | GPIO_PULL_UP);
     if (ret != 0) {
-        printk("Error: Failed to configure button pin (%d)\n", ret);
+        printk("[USER BUTTON] - Failed to configure button pin (%d)\n", ret);
         return ret;
     }
 
     ret = gpio_pin_interrupt_configure_dt(&button->spec, GPIO_INT_EDGE_BOTH);
     if (ret != 0) {
-        printk("Error: Failed to configure button interrupt (%d)\n", ret);
+        printk("[USER BUTTON] - Failed to configure button interrupt (%d)\n", ret);
         return ret;
     }
 
-    printk("User button initialized (edge-interrupt mode)\n");
+    printk("[USER BUTTON] - User button initialized successfully (edge-interrupt mode)\n");
     return 0;
 }
 

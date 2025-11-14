@@ -196,15 +196,17 @@ static void uart_isr(const struct device *dev, void *user_data)
  */
 int gps_init(const struct gps_config *cfg)
 {
+    printk("[GPS] - Initializing GPS UART...\n");
+
     if (!cfg || !cfg->dev) {
-        printk("gps_init: invalid config\n");
+        printk("[GPS] - Invalid config\n");
         return -EINVAL;
     }
 
     uart_dev = cfg->dev;
 
     if (!device_is_ready(uart_dev)) {
-        printk("GPS UART device not ready\n");
+        printk("[GPS] - GPS UART device not ready\n");
         return -ENODEV;
     }
 
@@ -212,7 +214,7 @@ int gps_init(const struct gps_config *cfg)
     uart_irq_callback_set(uart_dev, uart_isr);
     uart_irq_rx_enable(uart_dev);
 
-    printk("GPS UART initialized\n");
+    printk("[GPS] - GPS initialized successfully\n");
     return 0;
 }
 

@@ -57,8 +57,10 @@ static int color_read_regs(const struct i2c_dt_spec *dev, uint8_t reg, uint8_t *
  */
 int color_init(const struct i2c_dt_spec *dev)
 {
+    printk("[COLOR] - Initializing Color sensor...\n");
+
     if (!device_is_ready(dev->bus)) {
-        printk("[COLOR SENSOR] - I2C bus not ready\n");
+        printk("[COLOR] - I2C bus not ready\n");
         return -ENODEV;
     }
 
@@ -66,7 +68,7 @@ int color_init(const struct i2c_dt_spec *dev)
 
     /* Power on and enable ADC */
     if (color_wake_up(dev) < 0) {
-        printk("[COLOR SENSOR] - Failed to wake up sensor\n");
+        printk("[COLOR] - Failed to wake up sensor\n");
         return -EIO;
     }
 
@@ -74,7 +76,7 @@ int color_init(const struct i2c_dt_spec *dev)
     color_set_gain(dev, GAIN_4X);
     color_set_integration(dev, INTEGRATION_154MS);
 
-    printk("[COLOR] TCS34725 initialized\n");
+    printk("[COLOR] - Color sensor initialized successfully\n");
     return 0;
 }
 
@@ -118,7 +120,7 @@ int color_sleep(const struct i2c_dt_spec *dev)
  */
 int color_set_gain(const struct i2c_dt_spec *dev, uint8_t gain)
 {
-    if (gain > GAIN_60X) gain = GAIN_1X;
+    if (gain > GAIN_60X) gain = GAIN_60X;
     return color_write_reg(dev, COLOR_CONTROL, gain);
 }
 

@@ -27,12 +27,14 @@ static int16_t sample_buffer[BUFFER_SIZE];
  */
 int adc_init(const struct adc_config *cfg)
 {
+    printk("[ADC] - Initializing ADC device %s...\n", cfg->dev->name);
+
     if (!device_is_ready(cfg->dev)) {
-        printk("ADC device %s is not ready\n", cfg->dev->name);
+        printk("[ADC] - ADC device %s is not ready\n", cfg->dev->name);
         return -ENODEV;
     }
 
-    printk("ADC device %s initialized successfully\n", cfg->dev->name);
+    printk("[ADC] - ADC device %s initialized successfully\n", cfg->dev->name);
     return 0;
 }
 

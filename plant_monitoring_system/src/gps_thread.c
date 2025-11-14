@@ -129,7 +129,7 @@ static void read_gps_data(gps_data_t *data,
                           struct system_measurement *measure,
                           struct system_context *ctx) {
 
-    if (gps_wait_for_gga(data, K_MSEC(30000)) == 0) {
+    if (gps_wait_for_gga(data, K_MSEC(2000)) == 0) {
         /* Convert and store scaled GPS values */
         atomic_set(&measure->gps_lat,  (int32_t)(data->lat  * 1e6f));
         atomic_set(&measure->gps_lon,  (int32_t)(data->lon  * 1e6f));

@@ -48,11 +48,11 @@
 #define COLOR_CLEAR_MAX   5000 /**< Maximum raw clear channel value (saturation threshold). */
 
 #define RED_MIN     0    /**< Minimum raw red channel value. */
-#define RED_MAX     5000 /**< Maximum raw red channel value. */
+#define RED_MAX     65535 /**< Maximum raw red channel value. */
 #define GREEN_MIN   0    /**< Minimum raw green channel value. */
-#define GREEN_MAX   5000 /**< Maximum raw green channel value. */
+#define GREEN_MAX   65535 /**< Maximum raw green channel value. */
 #define BLUE_MIN    0    /**< Minimum raw blue channel value. */
-#define BLUE_MAX    5000 /**< Maximum raw blue channel value. */
+#define BLUE_MAX    65535 /**< Maximum raw blue channel value. */
 
 #define ACCEL_MIN  -2    /**< Minimum acceleration in g. */
 #define ACCEL_MAX   2    /**< Maximum acceleration in g. */
@@ -664,7 +664,7 @@ static void display_measurements()
     printk("ACCELEROMETER: X_axis: %.2f m/s2, Y_axis: %.2f m/s2, Z_axis: %.2f m/s2 \n",
             (double)main_data.x_axis, (double)main_data.y_axis, (double)main_data.z_axis);
                 
-    printk("TEMP/HUM: Temperature: %.1f C, Relative Humidity: %.1f%%\n\n",
+    printk("TEMP/HUM: Temperature: %.1fC, Relative Humidity: %.1f%%\n\n",
             (double)main_data.temp, (double)main_data.hum);
 }
 
@@ -686,6 +686,7 @@ int main(void)
     printk("System ON (TEST MODE)\n\n");
 
     uint32_t flags = 0;
+    system_mode_t previous_mode = INITIAL_MODE;
 
     /* Initialize peripherals */
     if (gps_init(&gps)) return -1;
@@ -714,12 +715,18 @@ int main(void)
     blue(&leds);
 
     while (1) {
-        main_data.mode = atomic_get(&ctx.mode);
-
         if (main_data.mode != ADVANCED_MODE) {
             k_sem_take(ctx.main_sensors_sem, K_FOREVER);
             k_sem_take(ctx.main_gps_sem, K_FOREVER);
+
+            if(previous_mode != main_data.mode) {
+                previous_mode = main_data.mode;
+                k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+                k_sem_take(ctx.main_gps_sem, K_FOREVER);
+            }
         }
+
+        main_data.mode = atomic_get(&ctx.mode);
 
         switch (main_data.mode) {
             case TEST_MODE:

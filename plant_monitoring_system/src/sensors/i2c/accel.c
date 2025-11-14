@@ -69,7 +69,7 @@ int accel_set_active(const struct i2c_dt_spec *dev)
  * @return 0 on success, negative errno code on failure.
  */
 int accel_init(const struct i2c_dt_spec *dev, uint8_t range) {
-    printk("Initializing ACCEL...\n");
+    printk("[ACCEL] - Initializing ACCEL...\n");
 
     int ret = i2c_dev_ready(dev);
     if (ret < 0) return ret;
@@ -77,21 +77,23 @@ int accel_init(const struct i2c_dt_spec *dev, uint8_t range) {
     uint8_t whoami;
     ret = i2c_read_regs(dev, ACCEL_REG_WHO_AM_I, &whoami, 1);
     if (ret < 0 || whoami != ACCEL_WHO_AM_I_VALUE) {
-        printk("ACCEL WHO_AM_I mismatch: 0x%02X\n", whoami);
+        printk("[ACCEL] - ACCEL WHO_AM_I mismatch: 0x%02X\n", whoami);
         return -EIO;
     }
 
     printk("ACCEL detected at 0x%02X\n", dev->addr);
 
     if (accel_set_standby(dev) < 0) {
-        printk("Failed to set ACCEL to Standby mode\n");
+        printk("[ACCEL] - Failed to set ACCEL to Standby mode\n");
         return -EIO;
     }
 
     if (accel_set_range(dev, range) < 0) {
-        printk("Failed to set range to %d\n", range);
+        printk("[ACCEL] - Failed to set range to %d\n", range);
         return -EIO;
     }
+
+    printk("[ACCEL] - Accelerometer initialized successfully with range %dG\n", range);
 
     return accel_set_active(dev);
 }

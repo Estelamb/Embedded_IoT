@@ -48,20 +48,22 @@ static int si7021_read_data(const struct i2c_dt_spec *dev, uint8_t cmd, uint8_t 
  */
 int temp_hum_init(const struct i2c_dt_spec *dev)
 {
+    printk("[TEMP_HUM] - Initializing Temp and Hum sensor...\n");
+
     if (!device_is_ready(dev->bus)) {
-        printk("[TEMP_HUM] I2C bus not ready\n");
+        printk("[TEMP_HUM] - I2C bus not ready\n");
         return -ENODEV;
     }
 
     printk("[TEMP_HUM] Initializing Si7021...\n");
     int ret = si7021_write_cmd(dev, SI7021_RESET);
     if (ret < 0) {
-        printk("[TEMP_HUM] Reset failed (%d)\n", ret);
+        printk("[TEMP_HUM] - Reset failed (%d)\n", ret);
         return ret;
     }
 
     k_msleep(50); /**< Wait 50ms for sensor to reset */
-    printk("[TEMP_HUM] Si7021 initialized successfully\n");
+    printk("[TEMP_HUM] - Temp and Hum sensor initialized successfully\n");
     return 0;
 }
 
@@ -80,7 +82,7 @@ int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
     uint8_t buf[2];
     int ret = si7021_read_data(dev, SI7021_MEAS_RH_HOLD, buf, sizeof(buf));
     if (ret < 0) {
-        printk("[TEMP_HUM] Failed to read humidity (%d)\n", ret);
+        printk("[TEMP_HUM] - Failed to read humidity (%d)\n", ret);
         return ret;
     }
 
@@ -109,7 +111,7 @@ int temp_hum_read_temperature(const struct i2c_dt_spec *dev, float *temperature)
     uint8_t buf[2];
     int ret = si7021_read_data(dev, SI7021_MEAS_TEMP_HOLD, buf, sizeof(buf));
     if (ret < 0) {
-        printk("[TEMP_HUM] Failed to read temperature (%d)\n", ret);
+        printk("[TEMP_HUM] - Failed to read temperature (%d)\n", ret);
         return ret;
     }
 
