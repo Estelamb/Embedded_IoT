@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['red_5fmax_0',['RED_MAX',['../main_8c.html#a4c82e201d70da8303a62acd73cbdc9bd',1,'main.c']]],
-  ['red_5fmin_1',['RED_MIN',['../main_8c.html#a25540112e5ab1b3a21341c5149998d57',1,'main.c']]],
-  ['rgb_5ftimer_5fperiod_5fms_2',['RGB_TIMER_PERIOD_MS',['../main_8c.html#aad694b6bc83a5a3e06ce35a56c8acdbd',1,'main.c']]]
+  ['pwm_5fperiod_0',['PWM_PERIOD',['../main_8c.html#aacaca0988244bd3a888ca5befa89f44b',1,'main.c']]],
+  ['pwm_5fstep_1',['PWM_STEP',['../main_8c.html#a83f28fd780254a0181b3d40cdaa96b67',1,'main.c']]],
+  ['pwm_5fsteps_2',['PWM_STEPS',['../main_8c.html#a10b2584fbecae8db1b26edc4cd3ec741',1,'main.c']]]
 ];

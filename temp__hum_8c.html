@@ -139,22 +139,22 @@ $(document).ready(function(){initNavTree('temp__hum_8c.html',''); initResizable(
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afa3db34ae3e574f315b5eab5888e27b8" id="r_afa3db34ae3e574f315b5eab5888e27b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8c.html#afa3db34ae3e574f315b5eab5888e27b8">temp_hum_init</a> (const struct i2c_dt_spec *dev)</td></tr>
-<tr class="memdesc:afa3db34ae3e574f315b5eab5888e27b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Si7021 temperature and humidity sensor.  <br /></td></tr>
-<tr class="separator:afa3db34ae3e574f315b5eab5888e27b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea4a394cbf1d10ba6e70212b998e5f9" id="r_a6ea4a394cbf1d10ba6e70212b998e5f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8c.html#a6ea4a394cbf1d10ba6e70212b998e5f9">temp_hum_init</a> (const struct i2c_dt_spec *dev, uint8_t resolution)</td></tr>
+<tr class="memdesc:a6ea4a394cbf1d10ba6e70212b998e5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the temp_hum temperature and humidity sensor.  <br /></td></tr>
+<tr class="separator:a6ea4a394cbf1d10ba6e70212b998e5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a484cfb38b5815a990a627a38f043da49" id="r_a484cfb38b5815a990a627a38f043da49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8c.html#a484cfb38b5815a990a627a38f043da49">temp_hum_read_humidity</a> (const struct i2c_dt_spec *dev, float *humidity)</td></tr>
-<tr class="memdesc:a484cfb38b5815a990a627a38f043da49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read relative humidity from the Si7021 sensor.  <br /></td></tr>
+<tr class="memdesc:a484cfb38b5815a990a627a38f043da49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read relative humidity from the temp_hum sensor.  <br /></td></tr>
 <tr class="separator:a484cfb38b5815a990a627a38f043da49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aceff2003bfe66de6f90b1998cf617a7e" id="r_aceff2003bfe66de6f90b1998cf617a7e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8c.html#aceff2003bfe66de6f90b1998cf617a7e">temp_hum_read_temperature</a> (const struct i2c_dt_spec *dev, float *temperature)</td></tr>
-<tr class="memdesc:aceff2003bfe66de6f90b1998cf617a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read temperature from the Si7021 sensor in degrees Celsius.  <br /></td></tr>
+<tr class="memdesc:aceff2003bfe66de6f90b1998cf617a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read temperature from the temp_hum sensor in degrees Celsius.  <br /></td></tr>
 <tr class="separator:aceff2003bfe66de6f90b1998cf617a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of Si7021 temperature and humidity sensor driver for Zephyr. </p>
 <p>This module provides initialization, relative humidity (RH), and temperature (°C) reading functions via I2C using the Zephyr I2C API. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="afa3db34ae3e574f315b5eab5888e27b8" name="afa3db34ae3e574f315b5eab5888e27b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa3db34ae3e574f315b5eab5888e27b8">&#9670;&#160;</a></span>temp_hum_init()</h2>
+<a id="a6ea4a394cbf1d10ba6e70212b998e5f9" name="a6ea4a394cbf1d10ba6e70212b998e5f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ea4a394cbf1d10ba6e70212b998e5f9">&#9670;&#160;</a></span>temp_hum_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,22 +163,33 @@ Functions</h2></td></tr>
           <td class="memname">int temp_hum_init </td>
           <td>(</td>
           <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
-          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>resolution</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialize the Si7021 temperature and humidity sensor. </p>
+<p>Initialize the temp_hum temperature and humidity sensor. </p>
+<p>Initialize the Si7021 temperature and humidity sensor.</p>
 <p>Performs a soft reset and verifies that the I2C bus is ready.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev</td><td>Pointer to a valid I2C device descriptor. </td></tr>
+    <tr><td class="paramname">resolution</td><td>Resolution setting for temperature and humidity measurements. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
-<p>&lt; Wait 50ms for sensor to reset</p>
 
 </div>
 </div>
@@ -208,7 +219,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read relative humidity from the Si7021 sensor. </p>
+<p>Read relative humidity from the temp_hum sensor. </p>
 <p>Read relative humidity in percent from the sensor.</p>
 <p>Uses the Hold Master mode to measure humidity and converts the raw value to RH using the formula from the datasheet.</p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -248,7 +259,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Read temperature from the Si7021 sensor in degrees Celsius. </p>
+<p>Read temperature from the temp_hum sensor in degrees Celsius. </p>
 <p>Read temperature in degrees Celsius from the sensor.</p>
 <p>Uses the Hold Master mode to measure temperature and converts the raw value to °C using the formula from the datasheet.</p>
 <dl class="params"><dt>Parameters</dt><dd>

@@ -290,9 +290,9 @@ Temperature &amp; Humidity (Si7021)</h3>
 <ul>
 <li>Provides RH and °C</li>
 <li>Functions:<ul>
-<li><code><a class="el" href="temp__hum_8c.html#afa3db34ae3e574f315b5eab5888e27b8" title="Initialize the Si7021 temperature and humidity sensor.">temp_hum_init()</a></code></li>
-<li><code><a class="el" href="temp__hum_8c.html#a484cfb38b5815a990a627a38f043da49" title="Read relative humidity from the Si7021 sensor.">temp_hum_read_humidity()</a></code></li>
-<li><code><a class="el" href="temp__hum_8c.html#aceff2003bfe66de6f90b1998cf617a7e" title="Read temperature from the Si7021 sensor in degrees Celsius.">temp_hum_read_temperature()</a></code></li>
+<li><code><a class="el" href="temp__hum_8c.html#a6ea4a394cbf1d10ba6e70212b998e5f9" title="Initialize the temp_hum temperature and humidity sensor.">temp_hum_init()</a></code></li>
+<li><code><a class="el" href="temp__hum_8c.html#a484cfb38b5815a990a627a38f043da49" title="Read relative humidity from the temp_hum sensor.">temp_hum_read_humidity()</a></code></li>
+<li><code><a class="el" href="temp__hum_8c.html#aceff2003bfe66de6f90b1998cf617a7e" title="Read temperature from the temp_hum sensor in degrees Celsius.">temp_hum_read_temperature()</a></code></li>
 </ul>
 </li>
 </ul>
@@ -302,11 +302,11 @@ Color Sensor (TCS34725)</h3>
 <li>Reads raw RGB and clear channel</li>
 <li>Supports gain and integration time configuration</li>
 <li>Functions:<ul>
-<li><code><a class="el" href="color_8c.html#a558daf189093bbccbc6675f1e413651f" title="Initialize the TCS34725 sensor.">color_init()</a></code></li>
+<li><code><a class="el" href="color_8c.html#aef15cc4922ba4aabd53f5735a2fec0c1" title="Initialize the TCS34725 sensor.">color_init()</a></code></li>
 <li><code><a class="el" href="color_8c.html#a806959eb09f81167a9b3b7222631cd7c" title="Wake up the sensor (power on and enable ADC).">color_wake_up()</a></code></li>
 <li><code><a class="el" href="color_8c.html#ae5e24bcb0cd6ea744d8193a45e01ff4a" title="Put the sensor into sleep mode (disable ADC and power off).">color_sleep()</a></code></li>
-<li><code><a class="el" href="color_8c.html#a9976808512ca2455105ad26af55abba2" title="Set the sensor gain.">color_set_gain()</a></code></li>
-<li><code><a class="el" href="color_8c.html#ac17cda32275201beb9894890368c4ce8" title="Set the sensor integration time (ATIME register).">color_set_integration()</a></code></li>
+<li><code>color_set_gain()</code></li>
+<li><code>color_set_integration()</code></li>
 <li><code><a class="el" href="color_8c.html#ad0b08cf29337fbe7351b05a34fd3f9f4" title="Read raw RGB and clear channel values from the sensor.">color_read_rgb()</a></code></li>
 </ul>
 </li>
@@ -397,23 +397,22 @@ Usage</h1>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a>(&amp;ctx, &amp;measure);</div>
 <div class="line"><a class="code hl_function" href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a>(&amp;ctx, &amp;measure);</div>
-<div class="ttc" id="agps__thread_8c_html_ac636fc80c6c873e0e0071029e9c922da"><div class="ttname"><a href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a></div><div class="ttdeci">void start_gps_thread(struct system_context *ctx, struct system_measurement *measure)</div><div class="ttdoc">Start the GPS measurement thread.</div><div class="ttdef"><b>Definition</b> gps_thread.c:223</div></div>
-<div class="ttc" id="asensors__thread_8c_html_a49e974fd7ad7abcc0c28fdaaaba893ea"><div class="ttname"><a href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a></div><div class="ttdeci">void start_sensors_thread(struct system_context *ctx, struct system_measurement *measure)</div><div class="ttdoc">Start the sensors measurement thread.</div><div class="ttdef"><b>Definition</b> sensors_thread.c:296</div></div>
+<div class="ttc" id="agps__thread_8c_html_ac636fc80c6c873e0e0071029e9c922da"><div class="ttname"><a href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">start_gps_thread</a></div><div class="ttdeci">void start_gps_thread(struct system_context *ctx, struct system_measurement *measure)</div><div class="ttdoc">Start the GPS measurement thread.</div><div class="ttdef"><b>Definition</b> gps_thread.c:112</div></div>
+<div class="ttc" id="asensors__thread_8c_html_a49e974fd7ad7abcc0c28fdaaaba893ea"><div class="ttname"><a href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">start_sensors_thread</a></div><div class="ttdeci">void start_sensors_thread(struct system_context *ctx, struct system_measurement *measure)</div><div class="ttdoc">Start the sensors measurement thread.</div><div class="ttdef"><b>Definition</b> sensors_thread.c:188</div></div>
 <div class="ttc" id="astructsystem__context_html"><div class="ttname"><a href="structsystem__context.html">system_context</a></div><div class="ttdoc">Shared system context between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:55</div></div>
-<div class="ttc" id="astructsystem__measurement_html"><div class="ttname"><a href="structsystem__measurement.html">system_measurement</a></div><div class="ttdoc">Shared sensor data between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:81</div></div>
+<div class="ttc" id="astructsystem__measurement_html"><div class="ttname"><a href="structsystem__measurement.html">system_measurement</a></div><div class="ttdoc">Shared sensor data between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:79</div></div>
 </div><!-- fragment --><ol type="1">
 <li>Main loop waits for semaphore events and reads shared measurements:</li>
 </ol>
 <div class="fragment"><div class="line">k_sem_take(&amp;ctx.<a class="code hl_variable" href="structsystem__context.html#a8170516a44f70146537f053bed889862">main_sensors_sem</a>, K_FOREVER);</div>
 <div class="line"><span class="keywordtype">int</span> brightness = atomic_get(&amp;measure.<a class="code hl_variable" href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">brightness</a>);</div>
 <div class="ttc" id="astructsystem__context_html_a8170516a44f70146537f053bed889862"><div class="ttname"><a href="structsystem__context.html#a8170516a44f70146537f053bed889862">system_context::main_sensors_sem</a></div><div class="ttdeci">struct k_sem * main_sensors_sem</div><div class="ttdoc">Semaphore for main-to-sensors synchronization.</div><div class="ttdef"><b>Definition</b> main.h:66</div></div>
-<div class="ttc" id="astructsystem__measurement_html_ac003d622b2be6c6b6d5c7e459fb52306"><div class="ttname"><a href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">system_measurement::brightness</a></div><div class="ttdeci">atomic_t brightness</div><div class="ttdoc">Latest ambient brightness (0–100%).</div><div class="ttdef"><b>Definition</b> main.h:82</div></div>
+<div class="ttc" id="astructsystem__measurement_html_ac003d622b2be6c6b6d5c7e459fb52306"><div class="ttname"><a href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">system_measurement::brightness</a></div><div class="ttdeci">atomic_t brightness</div><div class="ttdoc">Latest ambient brightness (0–100%).</div><div class="ttdef"><b>Definition</b> main.h:80</div></div>
 </div><!-- fragment --><ol type="1">
 <li>Switch system modes by updating ctx.mode atomically:</li>
 </ol>
-<div class="fragment"><div class="line">atomic_set(&amp;ctx.<a class="code hl_variable" href="structsystem__context.html#a497903b46418329ff77e573fe793a374">mode</a>, <a class="code hl_enumvalue" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>);</div>
+<div class="fragment"><div class="line">atomic_set(&amp;ctx.mode, <a class="code hl_enumvalue" href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a>);</div>
 <div class="ttc" id="amain_8h_html_a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148"><div class="ttname"><a href="main_8h.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148">NORMAL_MODE</a></div><div class="ttdeci">@ NORMAL_MODE</div><div class="ttdoc">Normal mode – periodic measurement and alerts.</div><div class="ttdef"><b>Definition</b> main.h:44</div></div>
-<div class="ttc" id="astructsystem__context_html_a497903b46418329ff77e573fe793a374"><div class="ttname"><a href="structsystem__context.html#a497903b46418329ff77e573fe793a374">system_context::mode</a></div><div class="ttdeci">atomic_t mode</div><div class="ttdoc">Current operating mode (atomic).</div><div class="ttdef"><b>Definition</b> main.h:71</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md27"></a>
 Notes</h1>
 <ul>

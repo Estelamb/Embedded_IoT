@@ -22,10 +22,8 @@ var color_8h =
     [ "INTEGRATION_24MS", "color_8h.html#a944a5335e22059a97309faf55667ff48", null ],
     [ "INTEGRATION_2_4MS", "color_8h.html#a729222d4fe89ed0d69ff10dd948b65b1", null ],
     [ "INTEGRATION_700MS", "color_8h.html#a258ceb4a107826146e9e059f7deac629", null ],
-    [ "color_init", "color_8h.html#a558daf189093bbccbc6675f1e413651f", null ],
+    [ "color_init", "color_8h.html#aef15cc4922ba4aabd53f5735a2fec0c1", null ],
     [ "color_read_rgb", "color_8h.html#ad0b08cf29337fbe7351b05a34fd3f9f4", null ],
-    [ "color_set_gain", "color_8h.html#a9976808512ca2455105ad26af55abba2", null ],
-    [ "color_set_integration", "color_8h.html#ac17cda32275201beb9894890368c4ce8", null ],
     [ "color_sleep", "color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a", null ],
     [ "color_wake_up", "color_8h.html#a806959eb09f81167a9b3b7222631cd7c", null ]
 ];

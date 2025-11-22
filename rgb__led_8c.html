@@ -172,6 +172,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0a119afab26d716187ed41dc5359f12d" id="r_a0a119afab26d716187ed41dc5359f12d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rgb__led_8c.html#a0a119afab26d716187ed41dc5359f12d">rgb_black</a> (struct <a class="el" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led)</td></tr>
 <tr class="memdesc:a0a119afab26d716187ed41dc5359f12d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns off all LED channels (black/off state).  <br /></td></tr>
 <tr class="separator:a0a119afab26d716187ed41dc5359f12d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63dd56a1e26ad82666a7fe0ebfdbf8a7" id="r_a63dd56a1e26ad82666a7fe0ebfdbf8a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="rgb__led_8c.html#a63dd56a1e26ad82666a7fe0ebfdbf8a7">rgb_led_pwm_step</a> (struct <a class="el" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led, int r_value, int g_value, int b_value)</td></tr>
+<tr class="memdesc:a63dd56a1e26ad82666a7fe0ebfdbf8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply one PWM step to the RGB LED.  <br /></td></tr>
+<tr class="separator:a63dd56a1e26ad82666a7fe0ebfdbf8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of RGB LED control using GPIO pins. </p>
@@ -407,6 +410,58 @@ Functions</h2></td></tr>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">0</td><td>If the operation succeeded. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a63dd56a1e26ad82666a7fe0ebfdbf8a7" name="a63dd56a1e26ad82666a7fe0ebfdbf8a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63dd56a1e26ad82666a7fe0ebfdbf8a7">&#9670;&#160;</a></span>rgb_led_pwm_step()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void rgb_led_pwm_step </td>
+          <td>(</td>
+          <td class="paramtype">struct <a class="el" href="structbus__rgb__led.html">bus_rgb_led</a> *&#160;</td>
+          <td class="paramname"><em>rgb_led</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>r_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>g_value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>b_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Apply one PWM step to the RGB LED. </p>
+<p>Each duty cycle is compared with the current time slice <code>t</code> to determine if the corresponding channel must be ON or OFF.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rgb_led</td><td>Pointer to the RGB LED structure. </td></tr>
+    <tr><td class="paramname">r_value</td><td>Value for the red channel (0 or 1). </td></tr>
+    <tr><td class="paramname">g_value</td><td>Value for the green channel (0 or 1). </td></tr>
+    <tr><td class="paramname">b_value</td><td>Value for the blue channel (0 or 1). </td></tr>
   </table>
   </dd>
 </dl>

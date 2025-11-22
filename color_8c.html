@@ -138,21 +138,15 @@ $(document).ready(function(){initNavTree('color_8c.html',''); initResizable(); }
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a558daf189093bbccbc6675f1e413651f" id="r_a558daf189093bbccbc6675f1e413651f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#a558daf189093bbccbc6675f1e413651f">color_init</a> (const struct i2c_dt_spec *dev)</td></tr>
-<tr class="memdesc:a558daf189093bbccbc6675f1e413651f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the TCS34725 sensor.  <br /></td></tr>
-<tr class="separator:a558daf189093bbccbc6675f1e413651f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef15cc4922ba4aabd53f5735a2fec0c1" id="r_aef15cc4922ba4aabd53f5735a2fec0c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#aef15cc4922ba4aabd53f5735a2fec0c1">color_init</a> (const struct i2c_dt_spec *dev, uint8_t gain, uint8_t atime)</td></tr>
+<tr class="memdesc:aef15cc4922ba4aabd53f5735a2fec0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the TCS34725 sensor.  <br /></td></tr>
+<tr class="separator:aef15cc4922ba4aabd53f5735a2fec0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a806959eb09f81167a9b3b7222631cd7c" id="r_a806959eb09f81167a9b3b7222631cd7c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#a806959eb09f81167a9b3b7222631cd7c">color_wake_up</a> (const struct i2c_dt_spec *dev)</td></tr>
 <tr class="memdesc:a806959eb09f81167a9b3b7222631cd7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wake up the sensor (power on and enable ADC).  <br /></td></tr>
 <tr class="separator:a806959eb09f81167a9b3b7222631cd7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5e24bcb0cd6ea744d8193a45e01ff4a" id="r_ae5e24bcb0cd6ea744d8193a45e01ff4a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#ae5e24bcb0cd6ea744d8193a45e01ff4a">color_sleep</a> (const struct i2c_dt_spec *dev)</td></tr>
 <tr class="memdesc:ae5e24bcb0cd6ea744d8193a45e01ff4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the sensor into sleep mode (disable ADC and power off).  <br /></td></tr>
 <tr class="separator:ae5e24bcb0cd6ea744d8193a45e01ff4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9976808512ca2455105ad26af55abba2" id="r_a9976808512ca2455105ad26af55abba2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#a9976808512ca2455105ad26af55abba2">color_set_gain</a> (const struct i2c_dt_spec *dev, uint8_t gain)</td></tr>
-<tr class="memdesc:a9976808512ca2455105ad26af55abba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the sensor gain.  <br /></td></tr>
-<tr class="separator:a9976808512ca2455105ad26af55abba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac17cda32275201beb9894890368c4ce8" id="r_ac17cda32275201beb9894890368c4ce8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#ac17cda32275201beb9894890368c4ce8">color_set_integration</a> (const struct i2c_dt_spec *dev, uint8_t atime)</td></tr>
-<tr class="memdesc:ac17cda32275201beb9894890368c4ce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the sensor integration time (ATIME register).  <br /></td></tr>
-<tr class="separator:ac17cda32275201beb9894890368c4ce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0b08cf29337fbe7351b05a34fd3f9f4" id="r_ad0b08cf29337fbe7351b05a34fd3f9f4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8c.html#ad0b08cf29337fbe7351b05a34fd3f9f4">color_read_rgb</a> (const struct i2c_dt_spec *dev, <a class="el" href="structColorSensorData.html">ColorSensorData</a> *data)</td></tr>
 <tr class="memdesc:ad0b08cf29337fbe7351b05a34fd3f9f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read raw RGB and clear channel values from the sensor.  <br /></td></tr>
 <tr class="separator:ad0b08cf29337fbe7351b05a34fd3f9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,8 +155,8 @@ Functions</h2></td></tr>
 <div class="textblock"><p>Implementation for the TCS34725 RGB color sensor driver using Zephyr I2C API. </p>
 <p>Provides initialization, configuration, and reading of raw RGB and clear channel data from the sensor. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a558daf189093bbccbc6675f1e413651f" name="a558daf189093bbccbc6675f1e413651f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a558daf189093bbccbc6675f1e413651f">&#9670;&#160;</a></span>color_init()</h2>
+<a id="aef15cc4922ba4aabd53f5735a2fec0c1" name="aef15cc4922ba4aabd53f5735a2fec0c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef15cc4922ba4aabd53f5735a2fec0c1">&#9670;&#160;</a></span>color_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,8 +165,24 @@ Functions</h2></td></tr>
           <td class="memname">int color_init </td>
           <td>(</td>
           <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
-          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>gain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>atime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -222,84 +232,6 @@ Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
     <tr><td class="paramname">data</td><td>Pointer to <a class="el" href="structColorSensorData.html" title="Structure for storing raw color sensor data.">ColorSensorData</a> struct to store values. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
-
-</div>
-</div>
-<a id="a9976808512ca2455105ad26af55abba2" name="a9976808512ca2455105ad26af55abba2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9976808512ca2455105ad26af55abba2">&#9670;&#160;</a></span>color_set_gain()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int color_set_gain </td>
-          <td>(</td>
-          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
-          <td class="paramname"><em>dev</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>gain</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the sensor gain. </p>
-<p>Set the gain of the sensor.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
-    <tr><td class="paramname">gain</td><td>Gain value: GAIN_1X, GAIN_4X, GAIN_16X, GAIN_60X. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
-
-</div>
-</div>
-<a id="ac17cda32275201beb9894890368c4ce8" name="ac17cda32275201beb9894890368c4ce8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac17cda32275201beb9894890368c4ce8">&#9670;&#160;</a></span>color_set_integration()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int color_set_integration </td>
-          <td>(</td>
-          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
-          <td class="paramname"><em>dev</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>atime</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the sensor integration time (ATIME register). </p>
-<p>Set the integration time (ATIME) of the sensor.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
-    <tr><td class="paramname">atime</td><td>Integration time register value. </td></tr>
   </table>
   </dd>
 </dl>

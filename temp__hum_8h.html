@@ -140,32 +140,56 @@ $(document).ready(function(){initNavTree('temp__hum_8h.html',''); initResizable(
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a13850647fe78d783e739e30b0df0d986" id="r_a13850647fe78d783e739e30b0df0d986"><td class="memItemLeft" align="right" valign="top"><a id="a13850647fe78d783e739e30b0df0d986" name="a13850647fe78d783e739e30b0df0d986"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>TEMP_HUM_I2C_ADDR</b>&#160;&#160;&#160;0x40</td></tr>
-<tr class="memdesc:a13850647fe78d783e739e30b0df0d986"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default I2C address of Si7021. <br /></td></tr>
-<tr class="separator:a13850647fe78d783e739e30b0df0d986"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f21e13c4b3e1f232936548f973888fa" id="r_a5f21e13c4b3e1f232936548f973888fa"><td class="memItemLeft" align="right" valign="top"><a id="a5f21e13c4b3e1f232936548f973888fa" name="a5f21e13c4b3e1f232936548f973888fa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SI7021_MEAS_RH_HOLD</b>&#160;&#160;&#160;0xE5</td></tr>
-<tr class="memdesc:a5f21e13c4b3e1f232936548f973888fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure Relative Humidity, Hold Master mode. <br /></td></tr>
-<tr class="separator:a5f21e13c4b3e1f232936548f973888fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec61c8a6fe3873b621d4b1eeb631f3b6" id="r_aec61c8a6fe3873b621d4b1eeb631f3b6"><td class="memItemLeft" align="right" valign="top"><a id="aec61c8a6fe3873b621d4b1eeb631f3b6" name="aec61c8a6fe3873b621d4b1eeb631f3b6"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SI7021_MEAS_TEMP_HOLD</b>&#160;&#160;&#160;0xE3</td></tr>
-<tr class="memdesc:aec61c8a6fe3873b621d4b1eeb631f3b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure Temperature, Hold Master mode. <br /></td></tr>
-<tr class="separator:aec61c8a6fe3873b621d4b1eeb631f3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa67f2fa32255ec7562abb04c5dee2dba" id="r_aa67f2fa32255ec7562abb04c5dee2dba"><td class="memItemLeft" align="right" valign="top"><a id="aa67f2fa32255ec7562abb04c5dee2dba" name="aa67f2fa32255ec7562abb04c5dee2dba"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SI7021_READ_TEMP_FROM_RH</b>&#160;&#160;&#160;0xE0</td></tr>
-<tr class="memdesc:aa67f2fa32255ec7562abb04c5dee2dba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Temperature from previous RH measurement. <br /></td></tr>
-<tr class="separator:aa67f2fa32255ec7562abb04c5dee2dba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a693ec8dc47178dd99eaf3820785fc10a" id="r_a693ec8dc47178dd99eaf3820785fc10a"><td class="memItemLeft" align="right" valign="top"><a id="a693ec8dc47178dd99eaf3820785fc10a" name="a693ec8dc47178dd99eaf3820785fc10a"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SI7021_RESET</b>&#160;&#160;&#160;0xFE</td></tr>
-<tr class="memdesc:a693ec8dc47178dd99eaf3820785fc10a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft reset command. <br /></td></tr>
-<tr class="separator:a693ec8dc47178dd99eaf3820785fc10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e798c842fa740b6080888ed6d780cf3" id="r_a0e798c842fa740b6080888ed6d780cf3"><td class="memItemLeft" align="right" valign="top"><a id="a0e798c842fa740b6080888ed6d780cf3" name="a0e798c842fa740b6080888ed6d780cf3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_I2C_ADDR</b>&#160;&#160;&#160;0x40</td></tr>
+<tr class="memdesc:a0e798c842fa740b6080888ed6d780cf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default I2C address of Si7021. <br /></td></tr>
+<tr class="separator:a0e798c842fa740b6080888ed6d780cf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad812200d9d2c80f29acabb4269b32be8" id="r_ad812200d9d2c80f29acabb4269b32be8"><td class="memItemLeft" align="right" valign="top"><a id="ad812200d9d2c80f29acabb4269b32be8" name="ad812200d9d2c80f29acabb4269b32be8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_WRITE_USER_REG</b>&#160;&#160;&#160;0xE6</td></tr>
+<tr class="memdesc:ad812200d9d2c80f29acabb4269b32be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write User Register 1. <br /></td></tr>
+<tr class="separator:ad812200d9d2c80f29acabb4269b32be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8120ff1f602ebb6d9f10df6ab1e5918e" id="r_a8120ff1f602ebb6d9f10df6ab1e5918e"><td class="memItemLeft" align="right" valign="top"><a id="a8120ff1f602ebb6d9f10df6ab1e5918e" name="a8120ff1f602ebb6d9f10df6ab1e5918e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_READ_USER_REG</b>&#160;&#160;&#160;0xE7</td></tr>
+<tr class="memdesc:a8120ff1f602ebb6d9f10df6ab1e5918e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read User Register 1. <br /></td></tr>
+<tr class="separator:a8120ff1f602ebb6d9f10df6ab1e5918e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a03d1c8fe0c8270b764f4ded3f9733" id="r_ae0a03d1c8fe0c8270b764f4ded3f9733"><td class="memItemLeft" align="right" valign="top"><a id="ae0a03d1c8fe0c8270b764f4ded3f9733" name="ae0a03d1c8fe0c8270b764f4ded3f9733"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_MEAS_RH_HOLD</b>&#160;&#160;&#160;0xE5</td></tr>
+<tr class="memdesc:ae0a03d1c8fe0c8270b764f4ded3f9733"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure Relative Humidity, Hold Master mode. <br /></td></tr>
+<tr class="separator:ae0a03d1c8fe0c8270b764f4ded3f9733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a6a349e215a2dae9aeb23a7975339b2" id="r_a2a6a349e215a2dae9aeb23a7975339b2"><td class="memItemLeft" align="right" valign="top"><a id="a2a6a349e215a2dae9aeb23a7975339b2" name="a2a6a349e215a2dae9aeb23a7975339b2"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_MEAS_TEMP_HOLD</b>&#160;&#160;&#160;0xE3</td></tr>
+<tr class="memdesc:a2a6a349e215a2dae9aeb23a7975339b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure Temperature, Hold Master mode. <br /></td></tr>
+<tr class="separator:a2a6a349e215a2dae9aeb23a7975339b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a092f898f4939d534d84aa91debd44ec6" id="r_a092f898f4939d534d84aa91debd44ec6"><td class="memItemLeft" align="right" valign="top"><a id="a092f898f4939d534d84aa91debd44ec6" name="a092f898f4939d534d84aa91debd44ec6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_READ_TEMP_FROM_RH</b>&#160;&#160;&#160;0xE0</td></tr>
+<tr class="memdesc:a092f898f4939d534d84aa91debd44ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Temperature from previous RH measurement. <br /></td></tr>
+<tr class="separator:a092f898f4939d534d84aa91debd44ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3288a077ce385ae13cb63a19d906aaf4" id="r_a3288a077ce385ae13cb63a19d906aaf4"><td class="memItemLeft" align="right" valign="top"><a id="a3288a077ce385ae13cb63a19d906aaf4" name="a3288a077ce385ae13cb63a19d906aaf4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_RESET</b>&#160;&#160;&#160;0xFE</td></tr>
+<tr class="memdesc:a3288a077ce385ae13cb63a19d906aaf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Soft reset command. <br /></td></tr>
+<tr class="separator:a3288a077ce385ae13cb63a19d906aaf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0510a81e4bd47ea33b9070a8edea66bf" id="r_a0510a81e4bd47ea33b9070a8edea66bf"><td class="memItemLeft" align="right" valign="top"><a id="a0510a81e4bd47ea33b9070a8edea66bf" name="a0510a81e4bd47ea33b9070a8edea66bf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_RES_RH12_TEMP14</b>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:a0510a81e4bd47ea33b9070a8edea66bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">RH:12-bit, Temp:14-bit. <br /></td></tr>
+<tr class="separator:a0510a81e4bd47ea33b9070a8edea66bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e155fcd3601a726f315797a5342d28e" id="r_a5e155fcd3601a726f315797a5342d28e"><td class="memItemLeft" align="right" valign="top"><a id="a5e155fcd3601a726f315797a5342d28e" name="a5e155fcd3601a726f315797a5342d28e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_RES_RH8_TEMP12</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a5e155fcd3601a726f315797a5342d28e"><td class="mdescLeft">&#160;</td><td class="mdescRight">RH:8-bit, Temp:12-bit. <br /></td></tr>
+<tr class="separator:a5e155fcd3601a726f315797a5342d28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6830c2194bd421f1632799d3532db0b9" id="r_a6830c2194bd421f1632799d3532db0b9"><td class="memItemLeft" align="right" valign="top"><a id="a6830c2194bd421f1632799d3532db0b9" name="a6830c2194bd421f1632799d3532db0b9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_RES_RH10_TEMP13</b>&#160;&#160;&#160;0x80</td></tr>
+<tr class="memdesc:a6830c2194bd421f1632799d3532db0b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">RH:10-bit, Temp:13-bit. <br /></td></tr>
+<tr class="separator:a6830c2194bd421f1632799d3532db0b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeec0522ecd462a094e2c2a321aa4bffa" id="r_aeec0522ecd462a094e2c2a321aa4bffa"><td class="memItemLeft" align="right" valign="top"><a id="aeec0522ecd462a094e2c2a321aa4bffa" name="aeec0522ecd462a094e2c2a321aa4bffa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>TH_RES_RH11_TEMP11</b>&#160;&#160;&#160;0x81</td></tr>
+<tr class="memdesc:aeec0522ecd462a094e2c2a321aa4bffa"><td class="mdescLeft">&#160;</td><td class="mdescRight">RH:11-bit, Temp:11-bit. <br /></td></tr>
+<tr class="separator:aeec0522ecd462a094e2c2a321aa4bffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afa3db34ae3e574f315b5eab5888e27b8" id="r_afa3db34ae3e574f315b5eab5888e27b8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8h.html#afa3db34ae3e574f315b5eab5888e27b8">temp_hum_init</a> (const struct i2c_dt_spec *dev)</td></tr>
-<tr class="memdesc:afa3db34ae3e574f315b5eab5888e27b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Si7021 temperature and humidity sensor.  <br /></td></tr>
-<tr class="separator:afa3db34ae3e574f315b5eab5888e27b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ea4a394cbf1d10ba6e70212b998e5f9" id="r_a6ea4a394cbf1d10ba6e70212b998e5f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8h.html#a6ea4a394cbf1d10ba6e70212b998e5f9">temp_hum_init</a> (const struct i2c_dt_spec *dev, uint8_t resolution)</td></tr>
+<tr class="memdesc:a6ea4a394cbf1d10ba6e70212b998e5f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the Si7021 temperature and humidity sensor.  <br /></td></tr>
+<tr class="separator:a6ea4a394cbf1d10ba6e70212b998e5f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aceff2003bfe66de6f90b1998cf617a7e" id="r_aceff2003bfe66de6f90b1998cf617a7e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="temp__hum_8h.html#aceff2003bfe66de6f90b1998cf617a7e">temp_hum_read_temperature</a> (const struct i2c_dt_spec *dev, float *temperature)</td></tr>
 <tr class="memdesc:aceff2003bfe66de6f90b1998cf617a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read temperature in degrees Celsius from the sensor.  <br /></td></tr>
 <tr class="separator:aceff2003bfe66de6f90b1998cf617a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,8 +201,8 @@ Functions</h2></td></tr>
 <div class="textblock"><p>Interface for the Si7021 temperature and humidity sensor using Zephyr I2C API. </p>
 <p>Provides functions to initialize the sensor and read temperature (°C) and relative humidity (RH) via I2C. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="afa3db34ae3e574f315b5eab5888e27b8" name="afa3db34ae3e574f315b5eab5888e27b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa3db34ae3e574f315b5eab5888e27b8">&#9670;&#160;</a></span>temp_hum_init()</h2>
+<a id="a6ea4a394cbf1d10ba6e70212b998e5f9" name="a6ea4a394cbf1d10ba6e70212b998e5f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ea4a394cbf1d10ba6e70212b998e5f9">&#9670;&#160;</a></span>temp_hum_init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -187,8 +211,18 @@ Functions</h2></td></tr>
           <td class="memname">int temp_hum_init </td>
           <td>(</td>
           <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
-          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>resolution</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -198,19 +232,21 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev</td><td>Pointer to a valid I2C device descriptor. </td></tr>
+    <tr><td class="paramname">resolution</td><td>Resolution setting for temperature and humidity measurements. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Initialize the Si7021 temperature and humidity sensor.</p>
 <p>Performs a soft reset and verifies that the I2C bus is ready.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev</td><td>Pointer to a valid I2C device descriptor. </td></tr>
+    <tr><td class="paramname">resolution</td><td>Resolution setting for temperature and humidity measurements. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
-<p>&lt; Wait 50ms for sensor to reset</p>
 
 </div>
 </div>

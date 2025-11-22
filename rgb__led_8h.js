@@ -9,6 +9,7 @@ var rgb__led_8h =
     [ "rgb_led_init", "rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848", null ],
     [ "rgb_led_off", "rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49", null ],
     [ "rgb_led_on", "rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1", null ],
+    [ "rgb_led_pwm_step", "rgb__led_8h.html#a63dd56a1e26ad82666a7fe0ebfdbf8a7", null ],
     [ "rgb_led_write", "rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749", null ],
     [ "rgb_purple", "rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2", null ],
     [ "rgb_red", "rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060", null ],
