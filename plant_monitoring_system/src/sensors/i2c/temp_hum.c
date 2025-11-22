@@ -19,13 +19,13 @@
  * @param cmd Command byte to send.
  * @return 0 on success, negative errno code on failure.
  */
-static int si7021_write_cmd(const struct i2c_dt_spec *dev, uint8_t cmd)
+static int temp_hum_write_cmd(const struct i2c_dt_spec *dev, uint8_t cmd)
 {
     return i2c_write_dt(dev, &cmd, 1);
 }
 
 /**
- * @brief Read data from Si7021 after sending a command.
+ * @brief Read data from temp_hum after sending a command.
  *
  * @param dev Pointer to a valid I2C device descriptor.
  * @param cmd Command byte to initiate the read.
@@ -33,20 +33,21 @@ static int si7021_write_cmd(const struct i2c_dt_spec *dev, uint8_t cmd)
  * @param len Number of bytes to read.
  * @return 0 on success, negative errno code on failure.
  */
-static int si7021_read_data(const struct i2c_dt_spec *dev, uint8_t cmd, uint8_t *buf, size_t len)
+static int temp_hum_read_data(const struct i2c_dt_spec *dev, uint8_t cmd, uint8_t *buf, size_t len)
 {
     return i2c_write_read_dt(dev, &cmd, 1, buf, len);
 }
 
 /**
- * @brief Initialize the Si7021 temperature and humidity sensor.
+ * @brief Initialize the temp_hum temperature and humidity sensor.
  *
  * Performs a soft reset and verifies that the I2C bus is ready.
  *
  * @param dev Pointer to a valid I2C device descriptor.
+ * @param resolution Resolution setting for temperature and humidity measurements.
  * @return 0 on success, negative errno code on failure.
  */
-int temp_hum_init(const struct i2c_dt_spec *dev)
+int temp_hum_init(const struct i2c_dt_spec *dev, uint8_t resolution)
 {
     printk("[TEMP_HUM] - Initializing Temp and Hum sensor...\n");
 
@@ -55,20 +56,30 @@ int temp_hum_init(const struct i2c_dt_spec *dev)
         return -ENODEV;
     }
 
-    printk("[TEMP_HUM] Initializing Si7021...\n");
-    int ret = si7021_write_cmd(dev, SI7021_RESET);
+    // Reset sensor
+    int ret = temp_hum_write_cmd(dev, TH_RESET);
     if (ret < 0) {
         printk("[TEMP_HUM] - Reset failed (%d)\n", ret);
         return ret;
     }
 
-    k_msleep(50); /**< Wait 50ms for sensor to reset */
-    printk("[TEMP_HUM] - Temp and Hum sensor initialized successfully\n");
+    k_msleep(50);
+
+    // Write resolution to user register
+    uint8_t write_buf[2] = { TH_WRITE_USER_REG, resolution };
+    ret = i2c_write_dt(dev, write_buf, sizeof(write_buf)); 
+    if (ret < 0) {
+        printk("[TEMP_HUM] - Failed to write user register (%d)\n", ret);
+        return ret;
+    }
+
+    printk("[TEMP_HUM] - Resolution set successfully (0x%02X)\n", resolution);
+    printk("[TEMP_HUM] - Initialization complete\n");
     return 0;
 }
 
 /**
- * @brief Read relative humidity from the Si7021 sensor.
+ * @brief Read relative humidity from the temp_hum sensor.
  *
  * Uses the Hold Master mode to measure humidity and converts the raw value
  * to %RH using the formula from the datasheet.
@@ -80,7 +91,7 @@ int temp_hum_init(const struct i2c_dt_spec *dev)
 int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
 {
     uint8_t buf[2];
-    int ret = si7021_read_data(dev, SI7021_MEAS_RH_HOLD, buf, sizeof(buf));
+    int ret = temp_hum_read_data(dev, TH_MEAS_RH_HOLD, buf, sizeof(buf));
     if (ret < 0) {
         printk("[TEMP_HUM] - Failed to read humidity (%d)\n", ret);
         return ret;
@@ -97,7 +108,7 @@ int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
 }
 
 /**
- * @brief Read temperature from the Si7021 sensor in degrees Celsius.
+ * @brief Read temperature from the temp_hum sensor in degrees Celsius.
  *
  * Uses the Hold Master mode to measure temperature and converts the raw
  * value to °C using the formula from the datasheet.
@@ -109,7 +120,7 @@ int temp_hum_read_humidity(const struct i2c_dt_spec *dev, float *humidity)
 int temp_hum_read_temperature(const struct i2c_dt_spec *dev, float *temperature)
 {
     uint8_t buf[2];
-    int ret = si7021_read_data(dev, SI7021_MEAS_TEMP_HOLD, buf, sizeof(buf));
+    int ret = temp_hum_read_data(dev, TH_MEAS_TEMP_HOLD, buf, sizeof(buf));
     if (ret < 0) {
         printk("[TEMP_HUM] - Failed to read temperature (%d)\n", ret);
         return ret;

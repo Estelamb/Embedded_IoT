@@ -14,6 +14,7 @@
 
 #include "sensors_thread.h"
 #include "sensors/adc/adc.h"
+
 #include "sensors/i2c/accel.h"
 #include "sensors/i2c/temp_hum.h"
 #include "sensors/i2c/color.h"
@@ -27,94 +28,9 @@
 K_THREAD_STACK_DEFINE(sensors_stack, SENSORS_THREAD_STACK_SIZE); /**< Thread stack for sensors task. */
 static struct k_thread sensors_thread_data;                      /**< Thread control block for sensors. */
 
-/* --- Timer and synchronization ---------------------------------------------- */
-static struct k_timer sensors_timer;     /**< Periodic timer for sensor measurements. */
-static struct k_sem sensors_timer_sem;   /**< Semaphore released when the timer expires. */
-
-/** @brief Poll events for timer expiration and manual trigger. */
-static struct k_poll_event sensors_poll_events[2];
-
 /* ---------------------------------------------------------------------------
  * Helper functions
  * ---------------------------------------------------------------------------*/
-
-/**
- * @brief Timer callback handler.
- *
- * Triggered automatically when the periodic sensor timer expires.
- * Wakes up the sensors thread by giving @ref sensors_timer_sem.
- *
- * @param timer_id Pointer to the timer instance that triggered the event.
- */
-static void sensors_timer_handler(struct k_timer *timer_id) {
-    k_sem_give(&sensors_timer_sem);
-}
-
-/**
- * @brief Initialize poll events used by the sensors thread.
- *
- * Two poll events are used:
- * - **Index 0:** Timer expiration semaphore (@ref sensors_timer_sem)
- * - **Index 1:** External trigger semaphore (@ref system_context.sensors_sem)
- *
- * @param ctx Pointer to the shared @ref system_context.
- */
-static void init_sensors_poll_events(struct system_context *ctx) {
-    sensors_poll_events[0].type  = K_POLL_TYPE_SEM_AVAILABLE;
-    sensors_poll_events[0].mode  = K_POLL_MODE_NOTIFY_ONLY;
-    sensors_poll_events[0].sem   = &sensors_timer_sem;
-    sensors_poll_events[0].state = K_POLL_STATE_NOT_READY;
-
-    sensors_poll_events[1].type  = K_POLL_TYPE_SEM_AVAILABLE;
-    sensors_poll_events[1].mode  = K_POLL_MODE_NOTIFY_ONLY;
-    sensors_poll_events[1].sem   = ctx->sensors_sem;
-    sensors_poll_events[1].state = K_POLL_STATE_NOT_READY;
-}
-
-/**
- * @brief Wait for either a timer event or a manual trigger event.
- *
- * This function blocks the sensors thread until one of the poll events
- * (timer expiration or semaphore release) becomes available.
- */
-static void wait_for_sensors_event(void) {
-    k_poll(sensors_poll_events, 2, K_FOREVER);
-
-    if (sensors_poll_events[0].state == K_POLL_STATE_SEM_AVAILABLE) {
-        k_sem_take(&sensors_timer_sem, K_NO_WAIT);
-    }
-    if (sensors_poll_events[1].state == K_POLL_STATE_SEM_AVAILABLE) {
-        k_sem_take(sensors_poll_events[1].sem, K_NO_WAIT);
-    }
-
-    sensors_poll_events[0].state = K_POLL_STATE_NOT_READY;
-    sensors_poll_events[1].state = K_POLL_STATE_NOT_READY;
-}
-
-/**
- * @brief Configure the sensors timer based on the current mode.
- *
- * - **TEST_MODE:** Short measurement cadence for quick updates.
- * - **NORMAL_MODE:** Standard interval for regular operation.
- * - **ADVANCED_MODE:** Timer remains disabled.
- *
- * @param mode Current system operating mode.
- */
-static void update_sensors_timer(system_mode_t mode) {
-    k_timer_stop(&sensors_timer);
-
-    switch (mode) {
-        case TEST_MODE:
-            k_timer_start(&sensors_timer, K_NO_WAIT, K_MSEC(TEST_MODE_CADENCE));
-            break;
-        case NORMAL_MODE:
-            k_timer_start(&sensors_timer, K_NO_WAIT, K_MSEC(NORMAL_MODE_CADENCE));
-            break;
-        default:
-            /* ADVANCED or other modes: timer disabled */
-            break;
-    }
-}
 
 /**
  * @brief Read an ADC sensor and store its value as a scaled percentage.
@@ -182,12 +98,12 @@ static void read_temperature_humidity(const struct i2c_dt_spec *dev,
 
     if (temp_hum_read_humidity(dev, &humidity) == 0) {
         uint8_t buf[2];
-        int ret = i2c_write_read_dt(dev, (uint8_t[]){ SI7021_READ_TEMP_FROM_RH }, 1, buf, 2);
+        int ret = i2c_write_read_dt(dev, (uint8_t[]){ TH_READ_TEMP_FROM_RH }, 1, buf, 2);
         if (ret == 0) {
             uint16_t raw_temp = ((uint16_t)buf[0] << 8) | buf[1];
             temperature = ((175.72f * raw_temp) / 65536.0f) - 46.85f;
         } else {
-            printk("[TEMP/HUM SENSOR] - Error reading temperature from RH (%d)\n", ret);
+            printk("[TEMP_HUM SENSOR] - Error reading temperature from RH (%d)\n", ret);
             return;
         }
 
@@ -195,7 +111,7 @@ static void read_temperature_humidity(const struct i2c_dt_spec *dev,
         atomic_set(temp, (int32_t)(temperature * 100));
 
     } else {
-        printk("[TEMP/HUM SENSOR] - Read error (humidity)\n");
+        printk("[TEMP_HUM SENSOR] - Read error (humidity)\n");
     }
 }
 
@@ -240,43 +156,19 @@ static void sensors_thread_fn(void *arg1, void *arg2, void *arg3) {
     struct system_context *ctx = (struct system_context *)arg1;
     struct system_measurement *measure = (struct system_measurement *)arg2;
 
-    system_mode_t previous_mode = atomic_get(&ctx->mode);
-    system_mode_t current_mode  = previous_mode;
-
     int32_t mv = 0;
 
-    init_sensors_poll_events(ctx);
-    update_sensors_timer(current_mode);
-
     while (1) {
-        current_mode = atomic_get(&ctx->mode);
+        k_sem_take(ctx->sensors_sem, K_FOREVER);
 
-        /* Handle mode transitions */
-        if (current_mode != previous_mode) {
-            update_sensors_timer(current_mode);
-            previous_mode = current_mode;
-        }
-
-        switch (current_mode) {
-            case TEST_MODE:
-            case NORMAL_MODE:
-                read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv);
-                read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv);
-                read_accelerometer(ctx->accelerometer, ctx->accel_range,
+        read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv);
+        read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv);
+        read_accelerometer(ctx->accelerometer, ctx->accel_range,
                                    &measure->accel_x_g, &measure->accel_y_g, &measure->accel_z_g);
-                read_temperature_humidity(ctx->temp_hum, &measure->temp, &measure->hum);
-                read_color_sensor(ctx->color, measure);
+        read_temperature_humidity(ctx->temp_hum, &measure->temp, &measure->hum);
+        read_color_sensor(ctx->color, measure);
 
-                k_sem_give(ctx->main_sensors_sem);
-                wait_for_sensors_event();
-                break;
-
-            default:
-                k_timer_stop(&sensors_timer);
-                k_sem_give(ctx->main_sensors_sem);
-                k_sem_take(ctx->sensors_sem, K_FOREVER);
-                break;
-        }
+        k_sem_give(ctx->main_sensors_sem);
     }
 }
 
@@ -294,9 +186,6 @@ static void sensors_thread_fn(void *arg1, void *arg2, void *arg3) {
  * @param measure Pointer to the shared @ref system_measurement structure.
  */
 void start_sensors_thread(struct system_context *ctx, struct system_measurement *measure) {
-    k_sem_init(&sensors_timer_sem, 0, 1);
-    k_timer_init(&sensors_timer, sensors_timer_handler, NULL);
-
     k_thread_create(&sensors_thread_data,
                     sensors_stack,
                     K_THREAD_STACK_SIZEOF(sensors_stack),

@@ -11,7 +11,7 @@
  * - **TEST_MODE:** RGB LED shows the dominant color detected.
  * - **NORMAL_MODE:** Periodic measurements; RGB LED alerts if any sensor
  *   is out of range.
- * - **ADVANCED_MODE:** Minimal feedback; system remains operational.
+ * - **ADVANCED_MODE:** Periodic measurements; RGB LED shows real color.
  *
  * ## Button Behavior:
  * - Toggles between TEST, NORMAL, and ADVANCED modes with each press.
@@ -25,11 +25,26 @@
 #include "sensors_thread.h"
 #include "gps_thread.h"
 
-/* --- Configuration -------------------------------------------------------- */
-#define INITIAL_MODE TEST_MODE /**< Initial operating mode at startup. */
+/* --- Main Configuration -------------------------------------------------------- */
+#define INITIAL_MODE TEST_MODE  /**< Initial operating mode at startup. */
+
+#define TEST_PERIOD 2000      /**< Test mode measurement period in milliseconds. */
+#define NORMAL_PERIOD 30000    /**< Normal mode measurement period in milliseconds. */
+
+#define RGB_TIMER_PERIOD 500 /**< RGB LED timer period in milliseconds. */
+#define STATS_TIMER_PERIOD 3600000 /**< Statistics reporting period (ms). */
+
+#define PWM_STEP    1              /**< PWM step in milliseconds. */
+#define PWM_PERIOD  15             /**< PWM period in milliseconds. */
+#define PWM_STEPS   (PWM_PERIOD / PWM_STEP) /**< Number of PWM steps per period. */
+
+/* --- Sensors Configuration -------------------------------------------------------- */
 #define ACCEL_RANGE ACCEL_2G    /**< Accelerometer full-scale range setting. */
-#define RGB_TIMER_PERIOD_MS 500 /**< RGB LED timer period in milliseconds. */
-#define STATS_TIMER_PERIOD_MS 3600000 /**< Statistics reporting period (ms). */
+
+#define COLOR_GAIN GAIN_4X      /**< Color sensor gain setting. */
+#define COLOR_INTEGRATION_TIME INTEGRATION_154MS /**< Color sensor integration time in milliseconds. */ 
+
+#define TEMP_HUM_RESOLUTION TH_RES_RH12_TEMP14  /**< Temperature and humidity sensor resolution setting. */
 
 /* --- Measurement Limits --------------------------------------------------- */
 #define TEMP_MIN   -10   /**< Minimum temperature in °C. */
@@ -44,15 +59,8 @@
 #define MOISTURE_MIN   0    /**< Minimum soil moisture percentage. */
 #define MOISTURE_MAX   100  /**< Maximum soil moisture percentage. */
 
-#define COLOR_CLEAR_MIN   1    /**< Minimum raw clear channel value (dark threshold). */
-#define COLOR_CLEAR_MAX   5000 /**< Maximum raw clear channel value (saturation threshold). */
-
-#define RED_MIN     0    /**< Minimum raw red channel value. */
-#define RED_MAX     65535 /**< Maximum raw red channel value. */
-#define GREEN_MIN   0    /**< Minimum raw green channel value. */
-#define GREEN_MAX   65535 /**< Maximum raw green channel value. */
-#define BLUE_MIN    0    /**< Minimum raw blue channel value. */
-#define BLUE_MAX    65535 /**< Maximum raw blue channel value. */
+#define COLOR_MIN     0    /**< Minimum raw color channel value. */
+#define COLOR_MAX     65535 /**< Maximum raw color channel value. */
 
 #define ACCEL_MIN  -2    /**< Minimum acceleration in g. */
 #define ACCEL_MAX   2    /**< Maximum acceleration in g. */
@@ -105,7 +113,7 @@ static struct i2c_dt_spec accel = {
  */
 static struct i2c_dt_spec th = {
     .bus = DEVICE_DT_GET(DT_NODELABEL(i2c2)),
-    .addr = TEMP_HUM_I2C_ADDR,
+    .addr = TH_I2C_ADDR,
 };
 
 /**
@@ -155,12 +163,21 @@ static struct user_button button = {
 };
 
 /* --- Semaphores ----------------------------------------------------------- */
+static K_SEM_DEFINE(main_sem, 0, 1);
 static K_SEM_DEFINE(main_sensors_sem, 0, 1);
 static K_SEM_DEFINE(main_gps_sem, 0, 1);
 static K_SEM_DEFINE(sensors_sem, 0, 1);
 static K_SEM_DEFINE(gps_sem, 0, 1);
 
 /* --- Data ----------------------------------------------------------------- */
+typedef enum {
+    DOM_RED,
+    DOM_GREEN,
+    DOM_BLUE
+} dom_color_t;
+
+const char* dom_color_names[] = { "RED", "GREEN", "BLUE" };
+
 /**
  * @brief Shared system context.
  *
@@ -180,7 +197,6 @@ static struct system_context ctx = {
     .main_gps_sem = &main_gps_sem,
     .sensors_sem = &sensors_sem,
     .gps_sem = &gps_sem,
-    .mode = ATOMIC_INIT(INITIAL_MODE),
 };
 
 /**
@@ -229,7 +245,7 @@ struct main_measurement {
     float c, r, g, b;
     char ns;
     char ew;
-    char dom_color[6];
+    dom_color_t dom_color;
     atomic_t rgb_flags;
 };
 
@@ -259,7 +275,7 @@ static struct main_measurement main_data = {
     .g = 0,
     .ns = '\0',
     .ew = '\0',
-    .dom_color = {0, 0, 0, 0, 0, 0},
+    .dom_color = DOM_RED,
     .rgb_flags = ATOMIC_INIT(0),
 };
 
@@ -295,30 +311,22 @@ static struct k_work button_work;
  */
 static void button_work_handler(struct k_work *work)
 {
-    system_mode_t current_mode = atomic_get(&ctx.mode);
-    system_mode_t next_mode;
-
-    switch (current_mode) {
+    switch (main_data.mode) {
         case TEST_MODE:
-            next_mode = NORMAL_MODE;
+            main_data.mode = NORMAL_MODE;
             printk("\nNORMAL MODE\n");
             break;
         case NORMAL_MODE:
-            next_mode = ADVANCED_MODE;
+            main_data.mode = ADVANCED_MODE;
             printk("\nADVANCED MODE\n");
             break;
         case ADVANCED_MODE:
-        default:
-            next_mode = TEST_MODE;
+            main_data.mode = TEST_MODE;
             printk("\nTEST MODE\n");
             break;
     }
 
-    atomic_set(&ctx.mode, next_mode);
-    k_sem_give(ctx.sensors_sem);
-    k_sem_give(ctx.gps_sem);
-    k_sem_give(ctx.main_sensors_sem);
-    k_sem_give(ctx.main_gps_sem);
+    k_sem_give(&main_sem);
 }
 
 /**
@@ -337,9 +345,23 @@ static void button_isr(const struct device *dev, struct gpio_callback *cb, uint3
     }
 }
 
+/* --- Main Timer -------------------------------------------------------- */
+static struct k_timer main_timer;
+
+/**
+ * @brief Main periodic handler.
+ *
+ * Controls the time of each mode.
+ *
+ * @param timer Pointer to the main timer structure.
+ */
+static void main_timer_handler(struct k_timer *timer)
+{
+    k_sem_give(&main_sem);
+}
+
 /* --- RGB LED Timer -------------------------------------------------------- */
 static struct k_timer rgb_timer;
-static bool rgb_timer_running = false;
 
 /**
  * @brief RGB LED periodic handler for NORMAL_MODE.
@@ -353,7 +375,7 @@ static void rgb_timer_handler(struct k_timer *timer)
     static uint8_t color_index = 0;
     uint32_t flags = atomic_get(&main_data.rgb_flags);
 
-    uint8_t colors[8], count = 0;
+    uint8_t colors[6], count = 0;
 
     if (flags & FLAG_TEMP)      colors[count++] = 0; // RED
     if (flags & FLAG_HUM)       colors[count++] = 1; // BLUE
@@ -591,10 +613,10 @@ static void check_limits(uint32_t *flags)
     check_limit(&main_data.light, LIGHT_MIN, LIGHT_MAX, flags, FLAG_LIGHT);
     check_limit(&main_data.moisture, MOISTURE_MIN, MOISTURE_MAX, flags, FLAG_MOISTURE);
 
-    check_limit(&main_data.c, COLOR_CLEAR_MIN, COLOR_CLEAR_MAX, flags, FLAG_COLOR);
-    check_limit(&main_data.r, RED_MIN, RED_MAX, flags, FLAG_COLOR);
-    check_limit(&main_data.g, GREEN_MIN, GREEN_MAX, flags, FLAG_COLOR);
-    check_limit(&main_data.b, BLUE_MIN, BLUE_MAX, flags, FLAG_COLOR);
+    check_limit(&main_data.c, COLOR_MIN, COLOR_MAX, flags, FLAG_COLOR);
+    check_limit(&main_data.r, COLOR_MIN, COLOR_MAX, flags, FLAG_COLOR);
+    check_limit(&main_data.g, COLOR_MIN, COLOR_MAX, flags, FLAG_COLOR);
+    check_limit(&main_data.b, COLOR_MIN, COLOR_MAX, flags, FLAG_COLOR);
 
     check_limit(&main_data.x_axis, ACCEL_MIN * 9.8f, ACCEL_MAX * 9.8f, flags, FLAG_ACCEL);
     check_limit(&main_data.y_axis, ACCEL_MIN * 9.8f, ACCEL_MAX * 9.8f, flags, FLAG_ACCEL);
@@ -659,7 +681,7 @@ static void display_measurements()
             main_data.ew, (double)main_data.alt, main_data.hh, main_data.mm, main_data.ss);
 
     printk("COLOR SENSOR: Clear: %.0f Red: %.0f Green: %.0f Blue: %.0f Dominant color: %s \n",
-            (double)main_data.c, (double)main_data.r, (double)main_data.g, (double)main_data.b, main_data.dom_color);
+            (double)main_data.c, (double)main_data.r, (double)main_data.g, (double)main_data.b, dom_color_names[main_data.dom_color]);
                 
     printk("ACCELEROMETER: X_axis: %.2f m/s2, Y_axis: %.2f m/s2, Z_axis: %.2f m/s2 \n",
             (double)main_data.x_axis, (double)main_data.y_axis, (double)main_data.z_axis);
@@ -687,23 +709,59 @@ int main(void)
 
     uint32_t flags = 0;
     system_mode_t previous_mode = INITIAL_MODE;
+    float r_norm = 0.0f, g_norm = 0.0f, b_norm = 0.0f;
+    int r_duty = 0, g_duty = 0, b_duty = 0, r_value = 0, g_value = 0, b_value = 0;
+    bool keep_running = true;
 
     /* Initialize peripherals */
-    if (gps_init(&gps)) return -1;
-    if (adc_init(&pt)) return -1;
-    if (adc_init(&sm)) return -1;
-    if (accel_init(&accel, ACCEL_RANGE)) return -1;
-    if (temp_hum_init(&th)) return -1;
-    if (color_init(&color)) return -1;
-    if (led_init(&leds) || led_off(&leds)) return -1;
-    if (rgb_led_init(&rgb_leds) || rgb_led_off(&rgb_leds)) return -1;
-    if (button_init(&button)) return -1;
-    if (button_set_callback(&button, button_isr)) return -1;
+    if (gps_init(&gps)) {
+        printk("GPS initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (adc_init(&pt)) {
+        printk("Phototransistor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (adc_init(&sm)) {
+        printk("Soil moisture sensor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (accel_init(&accel, ACCEL_RANGE)) {
+        printk("Accelerometer initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (temp_hum_init(&th, TEMP_HUM_RESOLUTION)) {
+        printk("Temperature/Humidity sensor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (color_init(&color, COLOR_GAIN, COLOR_INTEGRATION_TIME)) {
+        printk("Color sensor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (led_init(&leds) || led_off(&leds)) {
+        printk("LED initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (rgb_led_init(&rgb_leds) || rgb_led_off(&rgb_leds)) {
+        printk("RGB LED initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (button_init(&button))  {
+        printk("Button initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (button_set_callback(&button, button_isr)) {
+        printk("Button callback setup failed - Program stopped\n");
+        return -1;
+    }
 
     /* Initialize timers */
+    k_timer_init(&main_timer, main_timer_handler, NULL);
     k_timer_init(&rgb_timer, rgb_timer_handler, NULL);
     k_timer_init(&stats_timer, stats_timer_handler, NULL);
-    k_timer_start(&stats_timer, K_MSEC(STATS_TIMER_PERIOD_MS), K_MSEC(STATS_TIMER_PERIOD_MS));
+
+    k_timer_start(&main_timer, K_MSEC(TEST_PERIOD), K_MSEC(TEST_PERIOD));
+    k_timer_start(&stats_timer, K_MSEC(STATS_TIMER_PERIOD), K_MSEC(STATS_TIMER_PERIOD));
 
     /* Button handling */
     k_work_init(&button_work, button_work_handler);
@@ -715,43 +773,41 @@ int main(void)
     blue(&leds);
 
     while (1) {
-        if (main_data.mode != ADVANCED_MODE) {
-            k_sem_take(ctx.main_sensors_sem, K_FOREVER);
-            k_sem_take(ctx.main_gps_sem, K_FOREVER);
-
-            if(previous_mode != main_data.mode) {
-                previous_mode = main_data.mode;
-                k_sem_take(ctx.main_sensors_sem, K_FOREVER);
-                k_sem_take(ctx.main_gps_sem, K_FOREVER);
-            }
-        }
-
-        main_data.mode = atomic_get(&ctx.mode);
-
         switch (main_data.mode) {
+
             case TEST_MODE:
                 blue(&leds);
 
-                if (rgb_timer_running) {
-                    rgb_timer_running = false;
+                if(previous_mode != TEST_MODE) {
                     k_timer_stop(&rgb_timer);
                     rgb_led_off(&rgb_leds);
+                    k_timer_stop(&main_timer);
+                    k_timer_start(&main_timer, K_MSEC(TEST_PERIOD), K_MSEC(TEST_PERIOD));
+                    previous_mode = TEST_MODE;
                 }
+
+                k_sem_give(ctx.sensors_sem);
+                k_sem_give(ctx.gps_sem);
+
+                k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+                k_sem_take(ctx.main_gps_sem, K_FOREVER);
 
                 get_measurements();
 
                 if (main_data.r > main_data.g && main_data.r > main_data.b) {
                     rgb_red(&rgb_leds);
-                    strcpy(main_data.dom_color, "RED");
+                    main_data.dom_color = DOM_RED;
                 } else if (main_data.g > main_data.r && main_data.g > main_data.b) {
                     rgb_green(&rgb_leds);
-                    strcpy(main_data.dom_color, "GREEN");
+                    main_data.dom_color = DOM_GREEN;
                 } else {
                     rgb_blue(&rgb_leds);
-                    strcpy(main_data.dom_color, "BLUE");
+                    main_data.dom_color = DOM_BLUE;
                 }
 
                 display_measurements();
+
+                k_sem_take(&main_sem, K_FOREVER);
 
                 break;
 
@@ -759,10 +815,18 @@ int main(void)
                 green(&leds);
                 flags = 0;
 
-                if (!rgb_timer_running) {
-                    rgb_timer_running = true;
-                    k_timer_start(&rgb_timer, K_MSEC(RGB_TIMER_PERIOD_MS), K_MSEC(RGB_TIMER_PERIOD_MS));
+                if(previous_mode != NORMAL_MODE) {
+                    k_timer_stop(&main_timer);
+                    k_timer_start(&main_timer, K_MSEC(NORMAL_PERIOD), K_MSEC(NORMAL_PERIOD));
+                    k_timer_start(&rgb_timer, K_MSEC(RGB_TIMER_PERIOD), K_MSEC(RGB_TIMER_PERIOD));
+                    previous_mode = NORMAL_MODE;
                 }
+
+                k_sem_give(ctx.sensors_sem);
+                k_sem_give(ctx.gps_sem);
+
+                k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+                k_sem_take(ctx.main_gps_sem, K_FOREVER);
 
                 get_measurements();
 
@@ -771,19 +835,66 @@ int main(void)
                 stats_management();
                 
                 display_measurements();
+
+                k_sem_take(&main_sem, K_FOREVER);
                 
                 break;
 
             case ADVANCED_MODE:
                 red(&leds);
 
-                if (rgb_timer_running) {
-                    rgb_timer_running = false;
+                if(previous_mode != ADVANCED_MODE) {
                     k_timer_stop(&rgb_timer);
                     rgb_led_off(&rgb_leds);
+
+                    k_timer_stop(&main_timer);
+                    k_timer_start(&main_timer, K_MSEC(NORMAL_PERIOD), K_MSEC(NORMAL_PERIOD));
+                    previous_mode = ADVANCED_MODE;
                 }
 
-                k_sleep(K_MSEC(1000));
+                k_sem_give(ctx.sensors_sem);
+                k_sem_give(ctx.gps_sem);
+
+                k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+                k_sem_take(ctx.main_gps_sem, K_FOREVER);
+
+                get_measurements();
+
+                display_measurements();
+
+                if (main_data.c <= 0.0f) {
+                    printk("[WARN] - Color clear channel == 0\n");
+                    r_norm = g_norm = b_norm = 0.0f;
+                } else {
+                    r_norm = (main_data.r / main_data.c) * 100.0f;
+                    g_norm = (main_data.g / main_data.c) * 100.0f;
+                    b_norm = (main_data.b / main_data.c) * 100.0f;
+                }
+
+                printk("NORMALIZED COLOR VALUES: R: %.2f%%, G: %.2f%%, B: %.2f%%\n\n",
+                        (double)r_norm, (double)g_norm, (double)b_norm);
+
+                r_duty = (int)(r_norm * PWM_STEPS / 100);
+                g_duty = (int)(g_norm * PWM_STEPS / 100);
+                b_duty = (int)(b_norm * PWM_STEPS / 100);
+
+                keep_running = true;
+                while (keep_running) {
+                    for (int t = 0; t < PWM_PERIOD; t+= PWM_STEP) {
+                        r_value = (t < r_duty) ? 1 : 0;
+                        g_value = (t < g_duty) ? 1 : 0;
+                        b_value = (t < b_duty) ? 1 : 0;
+
+                        rgb_led_pwm_step(&rgb_leds, r_value, g_value, b_value);
+                        k_sleep(K_MSEC(PWM_STEP));                      
+
+                        if (k_sem_take(&main_sem, K_NO_WAIT) == 0) {
+                            keep_running = false;
+                            break;
+                        }
+                    }
+                }
+                
                 break;
         }
     }

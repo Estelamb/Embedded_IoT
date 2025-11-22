@@ -55,7 +55,7 @@ static int color_read_regs(const struct i2c_dt_spec *dev, uint8_t reg, uint8_t *
  * @param dev Pointer to I2C device descriptor.
  * @return 0 on success, negative errno code on failure.
  */
-int color_init(const struct i2c_dt_spec *dev)
+int color_init(const struct i2c_dt_spec *dev, uint8_t gain, uint8_t atime)
 {
     printk("[COLOR] - Initializing Color sensor...\n");
 
@@ -64,8 +64,6 @@ int color_init(const struct i2c_dt_spec *dev)
         return -ENODEV;
     }
 
-    printk("[COLOR] Initializing TCS34725...\n");
-
     /* Power on and enable ADC */
     if (color_wake_up(dev) < 0) {
         printk("[COLOR] - Failed to wake up sensor\n");
@@ -73,8 +71,8 @@ int color_init(const struct i2c_dt_spec *dev)
     }
 
     /* Apply default settings */
-    color_set_gain(dev, GAIN_4X);
-    color_set_integration(dev, INTEGRATION_154MS);
+    color_write_reg(dev, COLOR_CONTROL, gain);
+    color_write_reg(dev, COLOR_ATIME, atime);
 
     printk("[COLOR] - Color sensor initialized successfully\n");
     return 0;
@@ -109,31 +107,6 @@ int color_wake_up(const struct i2c_dt_spec *dev)
 int color_sleep(const struct i2c_dt_spec *dev)
 {
     return color_write_reg(dev, COLOR_ENABLE, 0x00);
-}
-
-/**
- * @brief Set the sensor gain.
- *
- * @param dev Pointer to I2C device descriptor.
- * @param gain Gain value: GAIN_1X, GAIN_4X, GAIN_16X, GAIN_60X.
- * @return 0 on success, negative errno code on failure.
- */
-int color_set_gain(const struct i2c_dt_spec *dev, uint8_t gain)
-{
-    if (gain > GAIN_60X) gain = GAIN_60X;
-    return color_write_reg(dev, COLOR_CONTROL, gain);
-}
-
-/**
- * @brief Set the sensor integration time (ATIME register).
- *
- * @param dev Pointer to I2C device descriptor.
- * @param atime Integration time register value.
- * @return 0 on success, negative errno code on failure.
- */
-int color_set_integration(const struct i2c_dt_spec *dev, uint8_t atime)
-{
-    return color_write_reg(dev, COLOR_ATIME, atime);
 }
 
 /**

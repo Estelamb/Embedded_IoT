@@ -100,4 +100,17 @@ int rgb_white(struct bus_rgb_led *rgb_led);
 /** @brief Turn off all channels (black/off). */
 int rgb_black(struct bus_rgb_led *rgb_led);
 
+/**
+ * @brief Apply one PWM step to the RGB LED.
+ *
+ * Each duty cycle is compared with the current time slice `t`
+ * to determine whether to turn each color channel on or off.
+ *
+ * @param rgb_led Pointer to the RGB LED descriptor structure.
+ * @param r_value Value for the red channel (0 or 1).
+ * @param g_value Value for the green channel (0 or 1).
+ * @param b_value Value for the blue channel (0 or 1).
+ */
+void rgb_led_pwm_step(struct bus_rgb_led *rgb_led, int r_value, int g_value, int b_value);
+
 #endif // RGB_LED_H

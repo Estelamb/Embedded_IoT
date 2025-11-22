@@ -67,8 +67,6 @@ struct system_context {
     struct k_sem *main_gps_sem;         /**< Semaphore for main-to-GPS synchronization. */
     struct k_sem *sensors_sem;          /**< Semaphore to trigger sensor measurement. */
     struct k_sem *gps_sem;              /**< Semaphore to trigger GPS measurement. */
-
-    atomic_t mode;                      /**< Current operating mode (atomic). */
 };
 
 /**

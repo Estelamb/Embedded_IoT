@@ -156,3 +156,21 @@ int rgb_white(struct bus_rgb_led *rgb_led) { return rgb_led_write(rgb_led, 0x7);
  * @retval 0 If the operation succeeded.
  */
 int rgb_black(struct bus_rgb_led *rgb_led) { return rgb_led_write(rgb_led, 0x0); }
+
+/**
+ * @brief Apply one PWM step to the RGB LED.
+ *
+ * Each duty cycle is compared with the current time slice `t`
+ * to determine if the corresponding channel must be ON or OFF.
+ *
+ * @param rgb_led Pointer to the RGB LED structure.
+ * @param r_value Value for the red channel (0 or 1).
+ * @param g_value Value for the green channel (0 or 1).
+ * @param b_value Value for the blue channel (0 or 1).
+ */
+void rgb_led_pwm_step(struct bus_rgb_led *rgb_led, int r_value, int g_value, int b_value)
+{
+    gpio_pin_set_dt(&rgb_led->pins[0], r_value);
+    gpio_pin_set_dt(&rgb_led->pins[1], g_value);
+    gpio_pin_set_dt(&rgb_led->pins[2], b_value);
+}

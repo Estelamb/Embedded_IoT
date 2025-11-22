@@ -63,7 +63,7 @@ typedef struct {
  * @param dev Pointer to the I2C device descriptor.
  * @return 0 on success, negative errno code on failure.
  */
-int color_init(const struct i2c_dt_spec *dev);
+int color_init(const struct i2c_dt_spec *dev, uint8_t gain, uint8_t atime);
 
 /**
  * @brief Wake up the color sensor (enable ADC and power).
@@ -80,24 +80,6 @@ int color_wake_up(const struct i2c_dt_spec *dev);
  * @return 0 on success, negative errno code on failure.
  */
 int color_sleep(const struct i2c_dt_spec *dev);
-
-/**
- * @brief Set the gain of the sensor.
- *
- * @param dev Pointer to the I2C device descriptor.
- * @param gain Gain value: GAIN_1X, GAIN_4X, GAIN_16X, GAIN_60X.
- * @return 0 on success, negative errno code on failure.
- */
-int color_set_gain(const struct i2c_dt_spec *dev, uint8_t gain);
-
-/**
- * @brief Set the integration time (ATIME) of the sensor.
- *
- * @param dev Pointer to the I2C device descriptor.
- * @param atime Integration time register value.
- * @return 0 on success, negative errno code on failure.
- */
-int color_set_integration(const struct i2c_dt_spec *dev, uint8_t atime);
 
 /**
  * @brief Read raw RGB and clear channel data from the sensor.
