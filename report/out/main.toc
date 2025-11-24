@@ -1,0 +1,17 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{List of Contents}{i}{Doc-Start}%
+\contentsline {section}{List of Figures}{ii}{section*.1}%
+\contentsline {section}{List of Tables}{ii}{section*.2}%
+\contentsline {section}{Acronyms}{iii}{section*.3}%
+\vspace {1em}
+\contentsline {section}{\numberline {1}Overview and Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Summary of the specifications implemented versus specifications required}{2}{section.2}%
+\contentsline {section}{\numberline {3}Hardware block diagram of the solution implemented}{3}{section.3}%
+\contentsline {section}{\numberline {4}Software organization}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Description of the implementation}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Code size}{4}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Problems detected. Solutions}{4}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Results}{5}{section.5}%
+\contentsline {section}{\numberline {6}Advanced Specifications Implemented}{6}{section.6}%
+\contentsline {section}{\numberline {7}Conclusions and Future Works}{7}{section.7}%
+\contentsline {section}{\numberline {8}Bibliography}{8}{section.8}%

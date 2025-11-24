@@ -1,0 +1,246 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{CursoEmbeddedPlatforms}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{title}{Curso: {{Embedded}} Platforms and Communications for Iot | {{MOODLE UPM}} - {{OFICIALES}} 25-26}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://moodle.upm.es/titulaciones/oficiales/course/view.php?id=3568
+      \endverb
+      \verb{url}
+      \verb https://moodle.upm.es/titulaciones/oficiales/course/view.php?id=3568
+      \endverb
+    \endentry
+    \entry{industriesPhotoTransistorLight}{online}{}
+      \name{author}{1}{}{%
+        {{hash=2551c95bb0ab4f1b8eccde9897f0e9b9}{%
+           family={Industries},
+           familyi={I\bibinitperiod},
+           given={Adafruit},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{fullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{bibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorbibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authornamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorfullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \field{extraname}{1}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This Photo Transistor Light Sensor\&nbsp;is a\&nbsp;simple sensor that detects ambient light. It\&\#39;s kind of the opposite of an LED - when light hits the little chip inside, it induces ...}
+      \field{langid}{american}
+      \field{title}{Photo {{Transistor Light Sensor}}}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.adafruit.com/product/2831
+      \endverb
+      \verb{url}
+      \verb https://www.adafruit.com/product/2831
+      \endverb
+    \endentry
+    \entry{SparkFunSoilMoisture}{online}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labeltitlesource}{title}
+      \field{title}{{{SparkFun Soil Moisture Sensor}} - {{SparkFun Electronics}}}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.sparkfun.com/sparkfun-soil-moisture-sensor.html
+      \endverb
+      \verb{url}
+      \verb https://www.sparkfun.com/sparkfun-soil-moisture-sensor.html
+      \endverb
+    \endentry
+    \entry{industriesRGBColorSensor}{online}{}
+      \name{author}{1}{}{%
+        {{hash=2551c95bb0ab4f1b8eccde9897f0e9b9}{%
+           family={Industries},
+           familyi={I\bibinitperiod},
+           given={Adafruit},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{fullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{bibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorbibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authornamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorfullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \field{extraname}{2}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Discontinued - you can grab Adafruit APDS9960 Proximity, Light, RGB, and Gesture Sensor - STEMMA QT / Qwiic\&nbsp;instead! Your electronics can now see in dazzling color with this lovely ...}
+      \field{langid}{american}
+      \field{title}{{{RGB Color Sensor}} with {{IR}} Filter and {{White LED}} - {{TCS34725}}}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.adafruit.com/product/1334
+      \endverb
+      \verb{url}
+      \verb https://www.adafruit.com/product/1334
+      \endverb
+    \endentry
+    \entry{industriesAdafruitUltimateGPS}{online}{}
+      \name{author}{1}{}{%
+        {{hash=2551c95bb0ab4f1b8eccde9897f0e9b9}{%
+           family={Industries},
+           familyi={I\bibinitperiod},
+           given={Adafruit},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{fullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{bibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorbibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authornamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorfullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \field{extraname}{3}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We carry a few different GPS modules here in the Adafruit shop, but none that satisfied our every desire - that\&\#39;s why we designed this little GPS breakout board. We believe this is the ...}
+      \field{langid}{american}
+      \field{title}{Adafruit {{Ultimate GPS Breakout}} - 66 Channel w/10 {{Hz}} Updates}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.adafruit.com/product/746
+      \endverb
+      \verb{url}
+      \verb https://www.adafruit.com/product/746
+      \endverb
+    \endentry
+    \entry{industriesAdafruitTripleAxisAccelerometer}{online}{}
+      \name{author}{1}{}{%
+        {{hash=2551c95bb0ab4f1b8eccde9897f0e9b9}{%
+           family={Industries},
+           familyi={I\bibinitperiod},
+           given={Adafruit},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{fullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{bibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorbibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authornamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorfullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \field{extraname}{4}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{So many accelerometers and so little time! We\&\#39;ve expanded our accelerometer selection even more with this high-precision and inexpensive MMA8451 Triple-Axis Accelerometer w/ 14-bit ADC. ...}
+      \field{langid}{american}
+      \field{title}{Adafruit {{Triple-Axis Accelerometer}} - ±2/4/8g @ 14-Bit - {{MMA8451}}}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.adafruit.com/product/2019
+      \endverb
+      \verb{url}
+      \verb https://www.adafruit.com/product/2019
+      \endverb
+    \endentry
+    \entry{industriesAdafruitSi7021Temperature}{online}{}
+      \name{author}{1}{}{%
+        {{hash=2551c95bb0ab4f1b8eccde9897f0e9b9}{%
+           family={Industries},
+           familyi={I\bibinitperiod},
+           given={Adafruit},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{fullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{bibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorbibnamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authornamehash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \strng{authorfullhash}{2551c95bb0ab4f1b8eccde9897f0e9b9}
+      \field{extraname}{5}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{It\&\#39;s summer and you\&\#39;re sweating and your hair\&\#39;s all frizzy and all you really want to know is why the weatherman said this morning that today\&\#39;s relative humidity would max ...}
+      \field{langid}{american}
+      \field{title}{Adafruit {{Si7021 Temperature}} \& {{Humidity Sensor Breakout Board}}}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.adafruit.com/product/3251
+      \endverb
+      \verb{url}
+      \verb https://www.adafruit.com/product/3251
+      \endverb
+    \endentry
+    \entry{ZephyrAPIDocumentation}{online}{}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labeltitlesource}{title}
+      \field{title}{Zephyr {{API Documentation}}: {{Introduction}}}
+      \field{urlday}{24}
+      \field{urlmonth}{11}
+      \field{urlyear}{2025}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://docs.zephyrproject.org/latest/doxygen/html/index.html
+      \endverb
+      \verb{url}
+      \verb https://docs.zephyrproject.org/latest/doxygen/html/index.html
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
