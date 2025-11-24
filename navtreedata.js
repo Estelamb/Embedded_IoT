@@ -76,7 +76,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "accel_8c.html",
-"structbus__led.html"
+"structbus__led.html#a1004c3380429c4ab2433f4929362ca5b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

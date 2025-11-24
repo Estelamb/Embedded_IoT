@@ -26,6 +26,11 @@ var main_8c =
     [ "TEMP_MAX", "main_8c.html#a9acb14595bfb9523655370c1bb477506", null ],
     [ "TEMP_MIN", "main_8c.html#ad7d20c7d1ec1729bf6892ddabbac3ab0", null ],
     [ "TEST_PERIOD", "main_8c.html#a1e77d740aa49a2e5b459ab2c6c4a807d", null ],
+    [ "system_mode_t", "main_8c.html#a6e4cea4b6246f491c526211f5405627d", [
+      [ "TEST_MODE", "main_8c.html#a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e", null ],
+      [ "NORMAL_MODE", "main_8c.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148", null ],
+      [ "ADVANCED_MODE", "main_8c.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063", null ]
+    ] ],
     [ "main", "main_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ],
     [ "stats_data", "main_8c.html#a7928635ecc8825e2fdf02b83118307a1", null ]
 ];

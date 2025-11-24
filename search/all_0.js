@@ -41,7 +41,7 @@ var searchData=
   ['adc_5fread_5fnormalized_38',['adc_read_normalized',['../adc_8c.html#a3f4a6d5e564d182bc2d7acbc3436ae27',1,'adc_read_normalized(const struct adc_config *cfg):&#160;adc.c'],['../adc_8h.html#a3f4a6d5e564d182bc2d7acbc3436ae27',1,'adc_read_normalized(const struct adc_config *cfg):&#160;adc.c']]],
   ['adc_5fread_5fraw_39',['adc_read_raw',['../adc_8c.html#a3d504a637e6f4612dfb6321abc556c71',1,'adc_read_raw(const struct adc_config *cfg, int16_t *raw_val):&#160;adc.c'],['../adc_8h.html#a3d504a637e6f4612dfb6321abc556c71',1,'adc_read_raw(const struct adc_config *cfg, int16_t *raw_val):&#160;adc.c']]],
   ['adc_5fread_5fvoltage_40',['adc_read_voltage',['../adc_8c.html#aa389f44399fff831361e0b7d334ea333',1,'adc_read_voltage(const struct adc_config *cfg, int32_t *out_mv):&#160;adc.c'],['../adc_8h.html#aa389f44399fff831361e0b7d334ea333',1,'adc_read_voltage(const struct adc_config *cfg, int32_t *out_mv):&#160;adc.c']]],
-  ['advanced_5fmode_41',['ADVANCED_MODE',['../main_8h.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063',1,'main.h']]],
+  ['advanced_5fmode_41',['ADVANCED_MODE',['../main_8c.html#a6e4cea4b6246f491c526211f5405627da2e13f66555dff1f20139afe05fb2e063',1,'main.c']]],
   ['alt_42',['alt',['../structgps__data__t.html#ab784c4431f82ecd9141862471d84c34f',1,'gps_data_t']]],
   ['architecture_43',['Architecture',['../index.html#autotoc_md4',1,'']]],
   ['auto_5fincrement_44',['AUTO_INCREMENT',['../color_8h.html#a604a69744422d2db7101f9c9dc8e27a3',1,'color.h']]]

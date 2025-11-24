@@ -24,5 +24,5 @@ var searchData=
   ['system_21',['Plant Monitoring System',['../index.html',1,'']]],
   ['system_5fcontext_22',['system_context',['../structsystem__context.html',1,'']]],
   ['system_5fmeasurement_23',['system_measurement',['../structsystem__measurement.html',1,'']]],
-  ['system_5fmode_5ft_24',['system_mode_t',['../main_8h.html#a6e4cea4b6246f491c526211f5405627d',1,'main.h']]]
+  ['system_5fmode_5ft_24',['system_mode_t',['../main_8c.html#a6e4cea4b6246f491c526211f5405627d',1,'main.c']]]
 ];
