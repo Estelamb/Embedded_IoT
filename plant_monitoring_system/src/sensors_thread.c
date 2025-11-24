@@ -14,7 +14,6 @@
 
 #include "sensors_thread.h"
 #include "sensors/adc/adc.h"
-
 #include "sensors/i2c/accel.h"
 #include "sensors/i2c/temp_hum.h"
 #include "sensors/i2c/color.h"

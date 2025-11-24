@@ -23,28 +23,6 @@
 #include "sensors/led/board_led.h"
 #include "sensors/user_button/user_button.h"
 
-/** @brief Measurement interval in TEST mode (milliseconds). */
-#define TEST_MODE_CADENCE 2000
-
-/** @brief Measurement interval in NORMAL mode (milliseconds). */
-#define NORMAL_MODE_CADENCE 30000
-
-/**
- * @enum system_mode_t
- * @brief System operating modes.
- *
- * These modes define how the system behaves:
- * - **TEST_MODE:** Shows the dominant detected color through the RGB LED.
- * - **NORMAL_MODE:** Periodically measures sensors and alerts if any reading
- *   is out of range.
- * - **ADVANCED_MODE:** Operates silently with minimal LED feedback.
- */
-typedef enum {
-    TEST_MODE = 0,    /**< Test mode – displays the dominant color. */
-    NORMAL_MODE,      /**< Normal mode – periodic measurement and alerts. */
-    ADVANCED_MODE     /**< Advanced mode – minimal visual feedback. */
-} system_mode_t;
-
 /**
  * @struct system_context
  * @brief Shared system context between main, sensors, and GPS threads.

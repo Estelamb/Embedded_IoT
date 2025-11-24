@@ -29,7 +29,7 @@
 #define INITIAL_MODE TEST_MODE  /**< Initial operating mode at startup. */
 
 #define TEST_PERIOD 2000      /**< Test mode measurement period in milliseconds. */
-#define NORMAL_PERIOD 30000    /**< Normal mode measurement period in milliseconds. */
+#define NORMAL_PERIOD 10000    /**< Normal mode measurement period in milliseconds. */
 
 #define RGB_TIMER_PERIOD 500 /**< RGB LED timer period in milliseconds. */
 #define STATS_TIMER_PERIOD 3600000 /**< Statistics reporting period (ms). */
@@ -170,6 +170,22 @@ static K_SEM_DEFINE(sensors_sem, 0, 1);
 static K_SEM_DEFINE(gps_sem, 0, 1);
 
 /* --- Data ----------------------------------------------------------------- */
+/**
+ * @enum system_mode_t
+ * @brief System operating modes.
+ *
+ * These modes define how the system behaves:
+ * - **TEST_MODE:** Shows the dominant detected color through the RGB LED.
+ * - **NORMAL_MODE:** Periodically measures sensors and alerts if any reading
+ *   is out of range.
+ * - **ADVANCED_MODE:** Operates silently with minimal LED feedback.
+ */
+typedef enum {
+    TEST_MODE = 0,    /**< Test mode – displays the dominant color. */
+    NORMAL_MODE,      /**< Normal mode – periodic measurement and alerts. */
+    ADVANCED_MODE     /**< Advanced mode – minimal visual feedback. */
+} system_mode_t;
+
 typedef enum {
     DOM_RED,
     DOM_GREEN,
