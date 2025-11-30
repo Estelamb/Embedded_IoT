@@ -15,7 +15,7 @@ var accel_8h =
     [ "ACCEL_REG_WHO_AM_I", "accel_8h.html#a6ca2fc82432e1558efb6cfcdcfad82fc", null ],
     [ "ACCEL_REG_XYZ_DATA_CFG", "accel_8h.html#ac49cf800919fbd046be81ce424b96999", null ],
     [ "ACCEL_WHO_AM_I_VALUE", "accel_8h.html#a343e34973d164fa3dda236c23cd16454", null ],
-    [ "accel_convert_to_g", "accel_8h.html#a9cb40983cf7e401df85fb0365830eb01", null ],
+    [ "accel_convert_to_g", "accel_8h.html#ab91bbd32faa8f56272715698848e753c", null ],
     [ "accel_convert_to_ms2", "accel_8h.html#acdf624b8fec684eaf85094b589938861", null ],
     [ "accel_init", "accel_8h.html#a178c0833baa1aa5d6de2e91ab60cd431", null ],
     [ "accel_read_xyz", "accel_8h.html#a406de74c8b14b9e18ba4e0e52040fc7a", null ]

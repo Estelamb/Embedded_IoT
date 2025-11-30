@@ -209,9 +209,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a406de74c8b14b9e18ba4e0e52040fc7a" id="r_a406de74c8b14b9e18ba4e0e52040fc7a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#a406de74c8b14b9e18ba4e0e52040fc7a">accel_read_xyz</a> (const struct i2c_dt_spec *dev, int16_t *x, int16_t *y, int16_t *z)</td></tr>
 <tr class="memdesc:a406de74c8b14b9e18ba4e0e52040fc7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read raw accelerometer values for X, Y, and Z axes.  <br /></td></tr>
 <tr class="separator:a406de74c8b14b9e18ba4e0e52040fc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cb40983cf7e401df85fb0365830eb01" id="r_a9cb40983cf7e401df85fb0365830eb01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#a9cb40983cf7e401df85fb0365830eb01">accel_convert_to_g</a> (int16_t raw_val, uint8_t range, float *g_out)</td></tr>
-<tr class="memdesc:a9cb40983cf7e401df85fb0365830eb01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert raw accelerometer value to g units.  <br /></td></tr>
-<tr class="separator:a9cb40983cf7e401df85fb0365830eb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91bbd32faa8f56272715698848e753c" id="r_ab91bbd32faa8f56272715698848e753c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#ab91bbd32faa8f56272715698848e753c">accel_convert_to_g</a> (int16_t raw, uint8_t range, float *g_value)</td></tr>
+<tr class="memdesc:ab91bbd32faa8f56272715698848e753c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert raw accelerometer value to g units.  <br /></td></tr>
+<tr class="separator:ab91bbd32faa8f56272715698848e753c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acdf624b8fec684eaf85094b589938861" id="r_acdf624b8fec684eaf85094b589938861"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#acdf624b8fec684eaf85094b589938861">accel_convert_to_ms2</a> (int16_t raw, uint8_t range, float *ms2_value)</td></tr>
 <tr class="memdesc:acdf624b8fec684eaf85094b589938861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert raw accelerometer value to meters per second squared (m/s²).  <br /></td></tr>
 <tr class="separator:acdf624b8fec684eaf85094b589938861"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,8 +220,8 @@ Functions</h2></td></tr>
 <div class="textblock"><p>I2C interface for a 3-axis accelerometer. </p>
 <p>This module provides initialization, raw data reading, and conversion functions for a 3-axis accelerometer over I2C. Supports setting measurement range and converting raw data to g or m/s². </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a9cb40983cf7e401df85fb0365830eb01" name="a9cb40983cf7e401df85fb0365830eb01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cb40983cf7e401df85fb0365830eb01">&#9670;&#160;</a></span>accel_convert_to_g()</h2>
+<a id="ab91bbd32faa8f56272715698848e753c" name="ab91bbd32faa8f56272715698848e753c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab91bbd32faa8f56272715698848e753c">&#9670;&#160;</a></span>accel_convert_to_g()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -255,9 +255,9 @@ Functions</h2></td></tr>
 <p>Convert raw accelerometer value to g units. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">raw_val</td><td>Raw 16-bit accelerometer reading. </td></tr>
+    <tr><td class="paramname">raw</td><td>Raw 16-bit accelerometer reading. </td></tr>
     <tr><td class="paramname">range</td><td>Measurement range used during initialization. </td></tr>
-    <tr><td class="paramname">g_out</td><td>Pointer to store converted value in g.</td></tr>
+    <tr><td class="paramname">g_value</td><td>Pointer to store converted value in g.</td></tr>
     <tr><td class="paramname">raw</td><td>Raw 14-bit accelerometer reading. </td></tr>
     <tr><td class="paramname">range</td><td>Measurement range used during initialization. </td></tr>
     <tr><td class="paramname">g_value</td><td>Pointer to store converted value in g. </td></tr>

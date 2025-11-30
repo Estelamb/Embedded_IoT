@@ -5,7 +5,7 @@ var searchData=
   ['accel_5f2g_2',['ACCEL_2G',['../accel_8h.html#adce3bf2dea7bd001b53e2ca18575f1c0',1,'accel.h']]],
   ['accel_5f4g_3',['ACCEL_4G',['../accel_8h.html#a2c6c4a65860359014d500411dddb09c3',1,'accel.h']]],
   ['accel_5f8g_4',['ACCEL_8G',['../accel_8h.html#a594a91a787a0bfe016d50f16bfca43e1',1,'accel.h']]],
-  ['accel_5fconvert_5fto_5fg_5',['accel_convert_to_g',['../accel_8h.html#a9cb40983cf7e401df85fb0365830eb01',1,'accel_convert_to_g(int16_t raw_val, uint8_t range, float *g_out):&#160;accel.c'],['../accel_8c.html#ab91bbd32faa8f56272715698848e753c',1,'accel_convert_to_g(int16_t raw, uint8_t range, float *g_value):&#160;accel.c']]],
+  ['accel_5fconvert_5fto_5fg_5',['accel_convert_to_g',['../accel_8h.html#ab91bbd32faa8f56272715698848e753c',1,'accel_convert_to_g(int16_t raw, uint8_t range, float *g_value):&#160;accel.c'],['../accel_8c.html#ab91bbd32faa8f56272715698848e753c',1,'accel_convert_to_g(int16_t raw, uint8_t range, float *g_value):&#160;accel.c']]],
   ['accel_5fconvert_5fto_5fms2_6',['accel_convert_to_ms2',['../accel_8h.html#acdf624b8fec684eaf85094b589938861',1,'accel_convert_to_ms2(int16_t raw, uint8_t range, float *ms2_value):&#160;accel.c'],['../accel_8c.html#acdf624b8fec684eaf85094b589938861',1,'accel_convert_to_ms2(int16_t raw, uint8_t range, float *ms2_value):&#160;accel.c']]],
   ['accel_5fi2c_5faddr_7',['ACCEL_I2C_ADDR',['../accel_8h.html#a043bf32fd368d922c7964c639bddba70',1,'accel.h']]],
   ['accel_5finit_8',['accel_init',['../accel_8h.html#a178c0833baa1aa5d6de2e91ab60cd431',1,'accel_init(const struct i2c_dt_spec *dev, uint8_t range):&#160;accel.c'],['../accel_8c.html#a178c0833baa1aa5d6de2e91ab60cd431',1,'accel_init(const struct i2c_dt_spec *dev, uint8_t range):&#160;accel.c']]],

@@ -1,5 +1,9 @@
 var NAVTREEINDEX1 =
 {
+"structadc__config.html#ace15829443009e5d02b215d7d1a020d2":[10,0,0,3],
+"structadc__config.html#afc43c6ed07214f3167ed6223ba3f7cba":[10,0,0,4],
+"structbus__led.html":[10,0,1],
+"structbus__led.html#a0bf9867fba5f5afb351da45127c684af":[10,0,1,1],
 "structbus__led.html#a1004c3380429c4ab2433f4929362ca5b":[10,0,1,0],
 "structbus__rgb__led.html":[10,0,2],
 "structbus__rgb__led.html#a593a5e47d358dc162b147e804768f0f3":[10,0,2,1],

@@ -26,6 +26,11 @@ var main_8c =
     [ "TEMP_MAX", "main_8c.html#a9acb14595bfb9523655370c1bb477506", null ],
     [ "TEMP_MIN", "main_8c.html#ad7d20c7d1ec1729bf6892ddabbac3ab0", null ],
     [ "TEST_PERIOD", "main_8c.html#a1e77d740aa49a2e5b459ab2c6c4a807d", null ],
+    [ "dom_color_t", "main_8c.html#a1386150075bace292db8b761c2c915e5", [
+      [ "DOM_RED", "main_8c.html#a1386150075bace292db8b761c2c915e5a213dffece6681aa0d625f70b00696028", null ],
+      [ "DOM_GREEN", "main_8c.html#a1386150075bace292db8b761c2c915e5a9aa1dd74b078d9c07fde3803bb95dad9", null ],
+      [ "DOM_BLUE", "main_8c.html#a1386150075bace292db8b761c2c915e5addffb99c52aebdf2e22ed548317b10ba", null ]
+    ] ],
     [ "system_mode_t", "main_8c.html#a6e4cea4b6246f491c526211f5405627d", [
       [ "TEST_MODE", "main_8c.html#a6e4cea4b6246f491c526211f5405627da69d4862d3169a2953c50e9636649112e", null ],
       [ "NORMAL_MODE", "main_8c.html#a6e4cea4b6246f491c526211f5405627da83feb61d42f8db9f494019fcea2c0148", null ],
