@@ -20,7 +20,7 @@ This project implements a **Plant Monitoring System** using the Zephyr RTOS. It 
 - Mode-dependent behavior:
   - **TEST_MODE**: fast sampling, RGB LED shows dominant color
   - **NORMAL_MODE**: standard periodic sampling with alerts
-  - **ADVANCED_MODE**: minimal visual feedback, threads idle until triggered
+  - **ADVANCED_MODE**: emulated PWM for RGB LED, depending on color measurements
 - Synchronization using semaphores and timers
 - Scaled integer representation of sensor values for atomic storage
 
@@ -38,21 +38,18 @@ The system is organized as a **multi-threaded embedded application** running on 
   - Reads the latest measurements from the shared `system_measurement` structure.
 
 - **Sensors Thread**  
-  - Periodically reads ADC and I²C sensors according to the system mode.  
+  - Reads ADC and I²C sensors.  
   - Sensors include:  
     - Phototransistor (ambient brightness)  
     - Soil moisture  
     - Accelerometer (XYZ axes)  
     - Temperature and humidity (Si7021)  
     - Color sensor (TCS34725)  
-  - Uses a timer semaphore and a manual trigger semaphore.  
   - Stores readings atomically in `system_measurement`.
 
 - **GPS Thread**  
-  - Periodically reads GPS data in TEST_MODE and NORMAL_MODE.  
-  - In ADVANCED_MODE, waits for a manual semaphore trigger.  
+  - Reads GPS data.  
   - Parses NMEA sentences and updates `system_measurement` with scaled integer values.  
-  - Uses a timer semaphore and a manual trigger semaphore.
 
 ### Shared Structures
 
@@ -71,7 +68,7 @@ The system is organized as a **multi-threaded embedded application** running on 
 - **Timers** control measurement cadence depending on the current mode.  
 - **Semaphores** allow threads to signal completion or trigger immediate measurement:  
   - `main_sensors_sem` and `main_gps_sem`: signal the main thread when new data is ready.  
-  - `sensors_sem` and `gps_sem`: manually trigger sensor/GPS threads.  
+  - `sensors_sem` and `gps_sem`: trigger sensor/GPS threads.  
 - **Atomic variables** ensure safe concurrent access to shared measurements.
 
 
@@ -83,7 +80,7 @@ The system is organized as a **multi-threaded embedded application** running on 
 |----------------|-----------------------------------------------------------------------------|
 | **TEST_MODE**   | Fast sensor updates, RGB LED shows dominant color                            |
 | **NORMAL_MODE** | Periodic measurement, alerts on out-of-range values                          |
-| **ADVANCED_MODE** | Minimal visual feedback, threads idle until re-triggered                  |
+| **ADVANCED_MODE** | Emulated PWM for RGB LED, depending on color measurements                  |
 
 Mode is stored atomically and can be changed at runtime.
 
@@ -152,23 +149,20 @@ Mode is stored atomically and can be changed at runtime.
 
 - **Stack size**: 1024 bytes  
 - **Priority**: 5  
-- Periodically reads:
+- Reads:
   - ADC sensors (brightness & moisture)
   - Accelerometer (XYZ)
   - Temperature & humidity
   - Color sensor (RGB + clear)
 - Synchronization:
-  - Uses a timer semaphore
-  - Polls for timer expiration or manual trigger
+  - Uses a semaphore
 - Stores data atomically for thread-safe access
 
 ### GPS Thread
 
 - **Stack size**: 1024 bytes  
 - **Priority**: 5  
-- Periodically reads GPS data in TEST/NORMAL modes
-- In ADVANCED mode, waits for external trigger semaphore
-- Uses a timer for periodic updates
+- Reads GPS data
 - Converts GPS floating point values to scaled integers for atomic storage
 
 ---
@@ -178,8 +172,8 @@ Mode is stored atomically and can be changed at runtime.
 - **Semaphores**:
   - `main_sensors_sem`: main thread waits for sensor update
   - `main_gps_sem`: main thread waits for GPS update
-  - `sensors_sem`: manual trigger for sensor thread
-  - `gps_sem`: manual trigger for GPS thread
+  - `sensors_sem`: trigger for sensor thread
+  - `gps_sem`: trigger for GPS thread
 - **Timers**:
   - Control measurement cadence depending on operating mode
 - **Atomic variables**:
