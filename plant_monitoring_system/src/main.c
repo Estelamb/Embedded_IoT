@@ -178,7 +178,7 @@ static K_SEM_DEFINE(gps_sem, 0, 1);
  * - **TEST_MODE:** Shows the dominant detected color through the RGB LED.
  * - **NORMAL_MODE:** Periodically measures sensors and alerts if any reading
  *   is out of range.
- * - **ADVANCED_MODE:** Operates silently with minimal LED feedback.
+ * - **ADVANCED_MODE:** Emulates PWM for RGB LED control.
  */
 typedef enum {
     TEST_MODE = 0,    /**< Test mode – displays the dominant color. */
@@ -186,6 +186,10 @@ typedef enum {
     ADVANCED_MODE     /**< Advanced mode – minimal visual feedback. */
 } system_mode_t;
 
+/**
+ * @enum dom_color_t
+ * @brief Dominant color types. 
+ */
 typedef enum {
     DOM_RED,
     DOM_GREEN,
@@ -391,7 +395,8 @@ static void rgb_timer_handler(struct k_timer *timer)
     static uint8_t color_index = 0;
     uint32_t flags = atomic_get(&main_data.rgb_flags);
 
-    uint8_t colors[6], count = 0;
+    uint8_t colors[6]; 
+    uint8_t count = 0;
 
     if (flags & FLAG_TEMP)      colors[count++] = 0; // RED
     if (flags & FLAG_HUM)       colors[count++] = 1; // BLUE
@@ -419,6 +424,7 @@ static void rgb_timer_handler(struct k_timer *timer)
         default: rgb_led_off(&rgb_leds); break;
     }
 }
+
 
 /* --- Stats Timer -------------------------------------------------------- */
 static struct k_timer stats_timer;

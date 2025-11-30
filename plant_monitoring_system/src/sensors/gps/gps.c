@@ -69,7 +69,7 @@ static float nmea_to_degrees(const char *nmea, char dir)
 
     value += decimal;
 
-    int deg_len = (dir == 'N' || dir == 'S') ? 2 : 3; /* Latitude: 2 digits; longitude: 3 */
+    //int deg_len = (dir == 'N' || dir == 'S') ? 2 : 3; /* Latitude: 2 digits; longitude: 3 */
     int degrees = (int)(value / 100.0f);
     float minutes = value - (degrees * 100.0f);
     float result = degrees + (minutes / 60.0f);

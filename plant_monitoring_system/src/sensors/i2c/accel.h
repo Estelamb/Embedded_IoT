@@ -65,11 +65,11 @@ int accel_read_xyz(const struct i2c_dt_spec *dev, int16_t *x, int16_t *y, int16_
 /**
  * @brief Convert raw accelerometer value to g units.
  *
- * @param raw_val Raw 16-bit accelerometer reading.
+ * @param raw Raw 16-bit accelerometer reading.
  * @param range Measurement range used during initialization.
- * @param g_out Pointer to store converted value in g.
+ * @param g_value Pointer to store converted value in g.
  */
-void accel_convert_to_g(int16_t raw_val, uint8_t range, float *g_out);
+void accel_convert_to_g(int16_t raw, uint8_t range, float *g_value);
 
 /**
  * @brief Convert raw accelerometer value to meters per second squared (m/s²).

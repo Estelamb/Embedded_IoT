@@ -93,9 +93,12 @@ static void read_accelerometer(const struct i2c_dt_spec *dev, uint8_t range,
  */
 static void read_temperature_humidity(const struct i2c_dt_spec *dev,
                                       atomic_t *temp, atomic_t *hum) {
-    float temperature, humidity;
+
+    float humidity;
 
     if (temp_hum_read_humidity(dev, &humidity) == 0) {
+        float temperature;  // ahora solo existe dentro del bloque if
+
         uint8_t buf[2];
         int ret = i2c_write_read_dt(dev, (uint8_t[]){ TH_READ_TEMP_FROM_RH }, 1, buf, 2);
         if (ret == 0) {
@@ -113,6 +116,7 @@ static void read_temperature_humidity(const struct i2c_dt_spec *dev,
         printk("[TEMP_HUM SENSOR] - Read error (humidity)\n");
     }
 }
+
 
 /**
  * @brief Read RGB color sensor and update measurement structure.
