@@ -151,7 +151,7 @@ Key Features</h2>
 <li>Mode-dependent behavior:<ul>
 <li><b>TEST_MODE</b>: fast sampling, RGB LED shows dominant color</li>
 <li><b>NORMAL_MODE</b>: standard periodic sampling with alerts</li>
-<li><b>ADVANCED_MODE</b>: minimal visual feedback, threads idle until triggered</li>
+<li><b>ADVANCED_MODE</b>: emulated PWM for RGB LED, depending on color measurements</li>
 </ul>
 </li>
 <li>Synchronization using semaphores and timers</li>
@@ -176,7 +176,7 @@ Threads</h2>
 </li>
 <li><b>Sensors Thread</b> <br  />
 <ul>
-<li>Periodically reads ADC and I²C sensors according to the system mode. <br  />
+<li>Reads ADC and I²C sensors. <br  />
 </li>
 <li>Sensors include: <br  />
 <ul>
@@ -192,20 +192,15 @@ Threads</h2>
 </li>
 </ul>
 </li>
-<li>Uses a timer semaphore and a manual trigger semaphore. <br  />
-</li>
 <li>Stores readings atomically in <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code>.</li>
 </ul>
 </li>
 <li><b>GPS Thread</b> <br  />
 <ul>
-<li>Periodically reads GPS data in TEST_MODE and NORMAL_MODE. <br  />
-</li>
-<li>In ADVANCED_MODE, waits for a manual semaphore trigger. <br  />
+<li>Reads GPS data. <br  />
 </li>
 <li>Parses NMEA sentences and updates <code><a class="el" href="structsystem__measurement.html" title="Shared sensor data between main, sensors, and GPS threads.">system_measurement</a></code> with scaled integer values. <br  />
 </li>
-<li>Uses a timer semaphore and a manual trigger semaphore.</li>
 </ul>
 </li>
 </ul>
@@ -240,7 +235,7 @@ Synchronization</h2>
 <ul>
 <li><code>main_sensors_sem</code> and <code>main_gps_sem</code>: signal the main thread when new data is ready. <br  />
 </li>
-<li><code>sensors_sem</code> and <code>gps_sem</code>: manually trigger sensor/GPS threads. <br  />
+<li><code>sensors_sem</code> and <code>gps_sem</code>: trigger sensor/GPS threads. <br  />
 </li>
 </ul>
 </li>
@@ -257,7 +252,7 @@ Operating Modes</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><b>NORMAL_MODE</b>   </td><td class="markdownTableBodyNone">Periodic measurement, alerts on out-of-range values    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><b>ADVANCED_MODE</b>   </td><td class="markdownTableBodyNone">Minimal visual feedback, threads idle until re-triggered   </td></tr>
+<td class="markdownTableBodyNone"><b>ADVANCED_MODE</b>   </td><td class="markdownTableBodyNone">Emulated PWM for RGB LED, depending on color measurements   </td></tr>
 </table>
 <p>Mode is stored atomically and can be changed at runtime.</p>
 <hr  />
@@ -340,7 +335,7 @@ Sensors Thread</h2>
 </li>
 <li><b>Priority</b>: 5 <br  />
 </li>
-<li>Periodically reads:<ul>
+<li>Reads:<ul>
 <li>ADC sensors (brightness &amp; moisture)</li>
 <li>Accelerometer (XYZ)</li>
 <li>Temperature &amp; humidity</li>
@@ -348,8 +343,7 @@ Sensors Thread</h2>
 </ul>
 </li>
 <li>Synchronization:<ul>
-<li>Uses a timer semaphore</li>
-<li>Polls for timer expiration or manual trigger</li>
+<li>Uses a semaphore</li>
 </ul>
 </li>
 <li>Stores data atomically for thread-safe access</li>
@@ -361,9 +355,7 @@ GPS Thread</h2>
 </li>
 <li><b>Priority</b>: 5 <br  />
 </li>
-<li>Periodically reads GPS data in TEST/NORMAL modes</li>
-<li>In ADVANCED mode, waits for external trigger semaphore</li>
-<li>Uses a timer for periodic updates</li>
+<li>Reads GPS data</li>
 <li>Converts GPS floating point values to scaled integers for atomic storage</li>
 </ul>
 <hr  />
@@ -373,8 +365,8 @@ Synchronization</h1>
 <li><b>Semaphores</b>:<ul>
 <li><code>main_sensors_sem</code>: main thread waits for sensor update</li>
 <li><code>main_gps_sem</code>: main thread waits for GPS update</li>
-<li><code>sensors_sem</code>: manual trigger for sensor thread</li>
-<li><code>gps_sem</code>: manual trigger for GPS thread</li>
+<li><code>sensors_sem</code>: trigger for sensor thread</li>
+<li><code>gps_sem</code>: trigger for GPS thread</li>
 </ul>
 </li>
 <li><b>Timers</b>:<ul>
