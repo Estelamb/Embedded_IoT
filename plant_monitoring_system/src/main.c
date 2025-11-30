@@ -411,10 +411,10 @@ static void rgb_timer_handler(struct k_timer *timer)
         return;
     }
 
-    uint8_t color = colors[color_index % count];
+    uint8_t color_status = colors[color_index % count];
     color_index++;
 
-    switch (color) {
+    switch (color_status) {
         case 0: rgb_red(&rgb_leds); break;
         case 1: rgb_blue(&rgb_leds); break;
         case 2: rgb_green(&rgb_leds); break;
