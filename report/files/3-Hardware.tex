@@ -1,3 +1,111 @@
-\section{Hardware block diagram of the solution implemented}
+\section{Hardware Analysis}
 
-\todo{Description of the HW interfaces used. Explain the meaning of the different hardware resources used in the sensors. }
+\subsection{Block diagram}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{images/block_diagram.png}
+    \caption{Block Diagram of the Hardware System}
+    \label{fig:block_diagram_hardware}
+\end{figure}
+
+\subsection{Interfaces of the system}
+\todo{comparar con las diapos y acronimos}
+\begin{table}[H]
+    \centering
+    \caption{System Connections}
+    \label{tab:system_connections}
+
+    \footnotesize
+    
+    \rotatebox{90}{
+
+    \begin{tabular}{p{0.15\textwidth}p{0.2\textwidth}p{0.2\textwidth}p{0.1\textwidth}p{0.15\textwidth}p{0.15\textwidth}p{0.15\textwidth}}
+        \toprule
+        \textbf{Parameter} & \textbf{Sensor} & \textbf{Pin Description} & \textbf{Sensor PIN name} & \textbf{STM32WL55JC Connector} & \textbf{STM32WL55JC PIN name} & \textbf{STM32WL55JC Function}  \\
+        \midrule
+
+        % RGB LED
+        \multirow{4}{*}{LED RGB}
+            & \multirow{4}{*}{\makecell[l]{RGB LED \\ + Resistors (470 Ohm)}}
+                & Common (Anode) & C & CN6 3V3 & 3V3 & 3.3V \\
+                &  & Red + 470 Ohm & R & CN5 PA\_6 & D12 & R \\
+                &  & Green + 470 Ohm & G & CN5 PA\_7 & D11 & G \\
+                &  & Blue + 470 Ohm & B & CN5 PA\_9 & D9 & B \\
+        \midrule
+        
+        % Ambient Light
+        \multirow{3}{*}{Ambient Light}
+            & \multirow{3}{*}{\makecell[l]{HW5P-1 Phototransistor \\ + Resistor (1k Ohm)}}
+                & VCC 3.3V & VCC & CN6 3V3 & 3V3 & 3.3V \\
+                &  & Vout & Vout & CN8 PB\_1 & ADC 1/5 & Analog input \\
+                &  & Ground & GND & CN6 GND & GND & Ground \\
+        \midrule
+        
+        % Soil Moisture
+        \multirow{3}{*}{Soil Moisture}
+            & \multirow{3}{*}{SEN-13322}
+                & VCC 3.3V & VCC & CN6 3V3 & 3V3 & 3.3V \\
+                &  & Vout & SIG & CN8 PB\_13 & ADC 1/0 & Analog input \\
+                &  & Ground & GND & CN6 GND & GND & Ground \\
+        \midrule
+
+        % Temperature / Humidity
+        \multirow{5}{*}{\makecell[l]{Temperature \\ and Humidity}} 
+            & \multirow{5}{*}{Si7021}
+                & VCC 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & GND & CN6 GND & GND & Ground \\
+                &  & I2C SCL & SCL & CN5 PA\_12 & I2C2\_SCL & I2C SCL \\
+                &  & I2C SDA & SDA & CN5 PA\_11 & I2C2\_SDA & I2C SDA \\
+                &  & Output 3.3V & 3Vo & -- & -- & -- \\
+        \midrule
+        
+        % Leaf Colour
+        \multirow{7}{*}{Leaf Colour}
+            & \multirow{7}{*}{TCS34725}
+                & VIN 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & GND & CN6 GND & GND & Ground \\
+                &  & I2C SCL & SCL & CN5 PA\_12 & I2C2\_SCL & I2C SCL \\
+                &  & I2C SDA & SDA & CN5 PA\_11 & I2C2\_SDA & I2C SDA \\
+                &  & Output 3.3V & 3V3 & -- & -- & -- \\
+                &  & Interrupt out & INT & -- & -- & -- \\
+                &  & LED on/off & LED & -- & -- & -- \\
+        \midrule
+        
+        % Accelerometer
+        \multirow{8}{*}{Accelerometer}
+            & \multirow{8}{*}{MMA8451Q}
+                & VIN 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & GND & CN6 GND & GND & Ground \\
+                &  & I2C SCL & SCL & CN5 PA\_12 & I2C2\_SCL & I2C SCL \\
+                &  & I2C SDA & SDA & CN5 PA\_11 & I2C2\_SDA & I2C SDA \\
+                &  & Output 3.3V reg & 3Vo & -- & -- & -- \\
+                &  & Inertial Interrupt 1, Output pin & I1 & -- & -- & -- \\
+                &  & Inertial Interrupt 2, Output pin & I2 & -- & -- & -- \\
+                &  & I2C least significant bit of the device I2C address & A & -- & -- & -- \\
+        \midrule
+
+        % GPS
+        \multirow{9}{*}{GPS}
+            & \multirow{9}{*}{\makecell[l]{Adafruit Ultimate GPS \\ Breakout v3}}
+                & VIN 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & GND & CN6 GND & GND & Ground \\
+                &  & Serial TX & TX & CN9 PB\_7 & UART1\_RX & UART RX \\
+                &  & Serial RX & RX & CN9 PB\_6 & UART1\_TX & UART TX \\
+                &  & Output 3.3V reg & 3.3V & -- & -- & -- \\
+                &  & Enable & EN & -- & -- & -- \\
+                &  & Fix output & FIX & -- & -- & -- \\
+                &  & Vbackup (battery) & VBAT & -- & -- & -- \\
+                &  & Pulse Per Second output & PPS & -- & -- & -- \\
+
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+
+\subsection{Hardware devices}
+
+\subsubsection{STM}
+
+\subsubsection{}

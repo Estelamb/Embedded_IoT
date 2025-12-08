@@ -4,17 +4,15 @@
 
 This document defines the technical specifications, development requirements, hardware architecture, software components, and operational modes of the \gls{IoT}-based Plant Monitoring System to be implemented during the course \textit{Embedded Platforms and Communications for IoT}. The objective of this specification is to establish a clear and comprehensive reference for the design, implementation, verification, and assessment of the final embedded system.
 
-The document outlines the hardware elements provided to each student group, including the STM32WL55JC microcontroller platform and the environmental and inertial sensors required for data acquisition. It also describes the software tools, \gls{RTOS} configuration, and development workflow that must be used throughout the project. Furthermore, it details the functional requirements, sensing capabilities, operational modes, and performance constraints that the final \gls{IoT} system must fulfill.
-
-Finally, additional sections define the expected project tasks, development methodology, evaluation criteria, and the tentative schedule for completion of the assignment. These specifications serve as the baseline for ensuring design consistency, functional correctness, and reproducibility across all student projects.
-
 \subsection{Project Introduction}
 
 The purpose of the final project is to design and implement a fully functional \gls{IoT} platform capable of monitoring the environmental conditions and physiological state of a plant throughout its lifecycle. Such monitoring is essential for applications such as greenhouse automation, precision agriculture, plant health diagnostics, and traceability in plant transportation and storage.
 
 The system must continuously acquire, process, and report multiple physical variables, including temperature, relative humidity, ambient light intensity, soil moisture, and colour characteristics of a plant leaf. Additional inertial data are collected through an accelerometer to detect events such as impacts, falls, tilting, or abnormal movements. The global position of the plant is obtained via a \gls{GPS} module, ensuring timestamped logging of all monitored parameters.
 
-This project integrates both hardware and software development activities. Students must interface several digital and analog sensors, configure low-level peripherals (\gls{I2C}, \gls{UART}, \gls{ADC}, \gls{GPIO}, \gls{PWM}), and implement multitasking using Zephyr \gls{OS}. The final embedded application must operate in distinct modes, manage periodic measurements, compute statistical parameters, handle event-based notifications, and provide visual feedback via a \gls{RGB} \gls{LED}.
+This project integrates both hardware and software development activities. Students must interface several digital and analog sensors, configure low-level peripherals (\gls{I2C}, \gls{UART}, \gls{ADC}, \gls{GPIO}, \gls{PWM}), and implement multitasking using Zephyr \gls{OS}. 
+
+The final embedded application must operate in distinct modes, manage periodic measurements, compute statistical parameters, handle event-based notifications, and provide visual feedback via a \gls{RGB} \gls{LED}.
 
 \subsection{Summary of the Work Done}
 
@@ -22,23 +20,22 @@ This section provides a consolidated overview of the work completed throughout t
 
 \subsubsection{Requirements Analysis}
 
-The project began with an in-depth study of the provided technical specifications and sensor documentation. All functional, hardware, and timing requirements were reviewed to establish a clear design baseline. This included understanding the sensing ranges, communication interfaces, and operating constraints imposed by the STM32WL55JC microcontroller and Zephyr OS.
+The project began with an in-depth study of the provided technical specifications and sensor documentation. All functional, hardware, and timing requirements were reviewed to establish a clear design baseline. This included understanding the sensing ranges, communication interfaces, and operating constraints imposed by the STM32WL55JC microcontroller and Zephyr \gls{OS}.
 
 \subsubsection{Hardware Integration}
 
 The hardware development stage consisted of identifying, wiring, and validating all sensor interfaces:
 
 \begin{itemize}
+    \item STM32WL55JC microcontroller as the central processing unit.
     \item Integration of the Si7021 temperature and humidity sensor using the \gls{I2C} bus.
     \item Connection and calibration of the HW5P-1 phototransistor for ambient light measurement.
     \item Analog acquisition and scaling of the SEN-13322 soil moisture probe.
     \item Digital configuration of the TCS34725 colour sensor over \gls{I2C}.
-    \item Setup of the MMA8451Q accelerometer for multi-axis inertial measurements.
-    \item Interfacing and configuring the FGPMMOPA6H \gls{GPS} module via \gls{UART}.
-    \item Implementation of an \gls{RGB} \gls{LED} driver using \gls{PWM} emulation for status indication.
+    \item Setup of the MMA8451Q accelerometer for multi-axis measurements.
+    \item Interfacing and configuring the Adafruit \gls{GPS} module via \gls{UART}.
+    \item Implementation of a \gls{RGB} \gls{LED} driver using \gls{PWM} emulation for status indication.
 \end{itemize}
-
-A breadboard-based prototype was assembled to confirm electrical correctness, noise stability, and peripheral compatibility.
 
 \subsubsection{Software Development}
 
