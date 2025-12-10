@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.18)  24 NOV 2025 19:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.18)  10 DEC 2025 12:48
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -9,8 +9,8 @@ LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
 (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
-(C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/base\size12.clo
-File: size12.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+(C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
 )
 \c@part=\count187
 \c@section=\count188
@@ -1020,7 +1020,22 @@ Package: glossary-tree 2025/08/11 v4.8 (NLCT)
 \l__glossaries_tree_namesymbolwidth_padding_dim=\dimen335
 \l__glossaries_tree_level_int=\count507
 \glstreeindent=\skip112
-)) (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
+)) (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/makecell\makecell.sty
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+ (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/tools\array.sty
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
+\col@sep=\dimen336
+\ar@mcellbox=\box79
+\extrarowheight=\dimen337
+\NC@list=\toks57
+\extratabsurround=\skip113
+\backup@length=\skip114
+\ar@cellbox=\box80
+)
+\rotheadsize=\dimen338
+\c@nlinenum=\count508
+\TeXr@lab=\toks58
+) (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstlang1.sty
 File: lstlang1.sty 2023/02/27 1.9 listings language file
 ) (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/listings\lstmisc.sty
 File: lstmisc.sty 2023/02/27 1.9 (Carsten Heinz)
@@ -1029,7 +1044,9 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
- (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux))
+ (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux)
+\g__glossaries_gls_ref_acronym_int=\count509
+ (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/A-GitHub.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -1052,17 +1069,17 @@ LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
  (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count508
-\scratchdimen=\dimen336
-\scratchbox=\box79
-\nofMPsegments=\count509
-\nofMParguments=\count510
-\everyMPshowfont=\toks57
-\MPscratchCnt=\count511
-\MPscratchDim=\dimen337
-\MPnumerator=\count512
-\makeMPintoPDFobject=\count513
-\everyMPtoPDFconversion=\toks58
+\scratchcounter=\count510
+\scratchdimen=\dimen339
+\scratchbox=\box81
+\nofMPsegments=\count511
+\nofMParguments=\count512
+\everyMPshowfont=\toks59
+\MPscratchCnt=\count513
+\MPscratchDim=\dimen340
+\MPnumerator=\count514
+\makeMPintoPDFobject=\count515
+\everyMPtoPDFconversion=\toks60
 ) (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -1088,12 +1105,12 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * \topmargin=-37.0pt
 * \headheight=12.0pt
 * \headsep=25.0pt
-* \topskip=12.0pt
+* \topskip=10.0pt
 * \footskip=30.0pt
-* \marginparwidth=35.0pt
-* \marginparsep=10.0pt
+* \marginparwidth=57.0pt
+* \marginparsep=11.0pt
 * \columnsep=10.0pt
-* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
 * \hoffset=0.0pt
 * \voffset=0.0pt
 * \mag=1000
@@ -1132,17 +1149,13 @@ Package biblatex Info: ... file 'main.bbl' found.
  (c:\Users\Estela\Embedded_IoT\report\out\main.bbl)
 Package biblatex Info: Reference section=0 on input line 9.
 Package biblatex Info: Reference segment=0 on input line 9.
-\c@lstlisting=\count514
+\c@lstlisting=\count516
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: supertabular package is loaded.
 Package caption Info: End \AtBeginDocument code.
-
-
-Package todonotes Warning: The length marginparwidth is less than 2cm and will most likely cause issues with the appearance of inserted todonotes. The issue can be solved by adding a line like \setlength {\marginparwidth }{2cm} prior to loading the todonotes package. on input line 9.
-
 \openout2 = `cover.aux'.
 
-(cover.tex
+ (cover.tex
 Underfull \hbox (badness 10000) in paragraph at lines 16--16
 
  []
@@ -1151,19 +1164,19 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--16
 
 
 
-{C:/Users/Estela/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]) (c:\Users\Estela\Embedded_IoT\report\out\main.toc)
-\tf@toc=\write6
-\openout6 = `main.toc'.
-
-
+{C:/Users/Estela/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]) (c:\Users\Estela\Embedded_IoT\report\out\main.toc
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.15 \clearpage
-                [1
+l.53 ....8}Code Documentation}{16}{subsection.4.8}
+                                                  % [1
 
 
-] (c:\Users\Estela\Embedded_IoT\report\out\main.lof)
+])
+\tf@toc=\write6
+\openout6 = `main.toc'.
+
+ [2] (c:\Users\Estela\Embedded_IoT\report\out\main.lof)
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
@@ -1171,413 +1184,308 @@ l.15 \clearpage
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
- [2
+ (c:\Users\Estela\Embedded_IoT\report\out\main.lol)
+\tf@lol=\write9
+\openout9 = `main.lol'.
+
+ [3
 
 ]
 \openout2 = `files/Glossary.aux'.
 
  (files/Glossary.tex
 
-Package glossaries Warning: Empty glossary for \printnoidxglossary[type={acronym}]. Rerun may be required (or you may have forgotten to use commands like \gls) on input line 1.
+Package glossaries Info: Preparing to sort glossary `acronym' (total number of
+(glossaries)             referenced entries: 31)
 
-) [3
+) [4
 
 ] (c:\Users\Estela\Embedded_IoT\report\out\main.tdo)
-\tf@tdo=\write9
-\openout9 = `main.tdo'.
+\tf@tdo=\write10
+\openout10 = `main.tdo'.
 
- [4
+ [5
 
 
 ]
 \openout2 = `files/1-Introduction.aux'.
 
  (files/1-Introduction.tex
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 3.
-
-Overfull \hbox (23.5509pt too wide) in paragraph at lines 3--3
-[][][]\OT1/cmr/m/n/12 Summary 
+Overfull \hbox (6.00511pt too wide) in paragraph at lines 27--28
+\OT1/cmr/m/n/10 The hard-ware de-vel-op-ment stage con-sisted of iden-ti-fy-ing, wiring, and val-i-dat-ing all sen-sor in-ter-faces: 
  []
-
-
-Overfull \hbox (23.5509pt too wide) in paragraph at lines 3--3
-[][][]\OT1/cmr/m/n/12 Summary 
- []
-
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
 [1
 
 
-]
+]) [2]
 \openout2 = `files/2-Specifications.aux'.
 
- (files/2-Specifications.tex)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[2
+ (files/2-Specifications.tex
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 53.
+ [3
 
 
 
 ]
+Underfull \hbox (badness 10000) in paragraph at lines 125--125
+[]|\OT1/cmr/bx/n/10 Sensor re-con-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--126
+[]|\OT1/cmr/bx/n/10 Alarm se-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+[]|\OT1/cmr/bx/n/10 Advanced
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--127
+\OT1/cmr/bx/n/10 Mode be-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 128--128
+[]|\OT1/cmr/bx/n/10 Stack us-age
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--129
+[]|\OT1/cmr/bx/n/10 Verification
+ []
+
+
+Overfull \hbox (22.4115pt too wide) in paragraph at lines 119--133
+ [][] 
+ []
+
+) [4]
 \openout2 = `files/3-Hardware.aux'.
 
  (files/3-Hardware.tex
-Overfull \hbox (48.22983pt too wide) in paragraph at lines 1--1
-[]\OT1/cmr/bx/n/17.28 Hardware block di-a-gram of the so-lu-tion im-ple-mented 
+<images/block_diagram.png, id=574, 3038.35126pt x 1885.0425pt>
+File: images/block_diagram.png Graphic file (type png)
+<use images/block_diagram.png>
+Package pdftex.def Info: images/block_diagram.png  used on input line 11.
+(pdftex.def)             Requested size: 448.4407pt x 278.19955pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+[]|\OT1/cmr/bx/n/8 Sensor
  []
 
 
-Overfull \hbox (32.91609pt too wide) in paragraph at lines 3--3
-[][][]\OT1/cmr/m/n/12 Description 
+Overfull \hbox (1.297pt too wide) in paragraph at lines 115--115
+[]|\OT1/cmr/bx/n/8 STM32WL55JC
  []
 
 
-Overfull \hbox (5.5997pt too wide) in paragraph at lines 3--3
-\OT1/cmr/m/n/12 mean- 
+Overfull \hbox (1.297pt too wide) in paragraph at lines 115--115
+[]|\OT1/cmr/bx/n/8 STM32WL55JC
  []
 
 
-Overfull \hbox (1.68307pt too wide) in paragraph at lines 3--3
-\OT1/cmr/m/n/12 hard- 
+Overfull \hbox (1.297pt too wide) in paragraph at lines 115--115
+[]|\OT1/cmr/bx/n/8 STM32WL55JC
  []
 
 
-Overfull \hbox (10.95242pt too wide) in paragraph at lines 3--3
-\OT1/cmr/m/n/12 sources 
+Overfull \hbox (2.28416pt too wide) in paragraph at lines 115--115
+[]|[]| 
  []
 
 
-Overfull \hbox (32.91609pt too wide) in paragraph at lines 3--3
-[][][]\OT1/cmr/m/n/12 Description 
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+[]|[][]\OT1/cmr/m/n/8 Ground
  []
 
 
-Overfull \hbox (5.5997pt too wide) in paragraph at lines 3--3
-\OT1/cmr/m/n/12 mean- 
+Underfull \hbox (badness 1584) in paragraph at lines 115--115
+[]|[][]\OT1/cmr/m/n/8 I2C[] [][]Se-rial Clock Line
  []
 
 
-Overfull \hbox (1.68307pt too wide) in paragraph at lines 3--3
-\OT1/cmr/m/n/12 hard- 
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+[]|\OT1/cmr/m/n/8 Inertial In-ter-rupt 1,
  []
 
 
-Overfull \hbox (10.95242pt too wide) in paragraph at lines 3--3
-\OT1/cmr/m/n/12 sources 
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+[]|\OT1/cmr/m/n/8 Inertial In-ter-rupt 2,
  []
 
-)
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[3
+Underfull \hbox (badness 10000) in paragraph at lines 115--115
+[]|\OT1/cmr/m/n/8 Serial [][]Trans-mis-sion
+ []
 
 
+Overfull \hbox (0.73245pt too wide) in paragraph at lines 115--115
+[]|[][]\OT1/cmr/m/n/8 UART[]1[][][]Reception
+ []
+
+
+Overfull \hbox (34.79776pt too wide) in paragraph at lines 33--116
+ [][] 
+ []
+
+[5
+
+
+
+ <./images/block_diagram.png>] [6]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 124.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 136.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 155.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 167.
+
+[7
 
 ]
+<images/rgb_circuit.png, id=739, 496.85625pt x 620.3175pt>
+File: images/rgb_circuit.png Graphic file (type png)
+<use images/rgb_circuit.png>
+Package pdftex.def Info: images/rgb_circuit.png  used on input line 209.
+(pdftex.def)             Requested size: 135.89174pt x 169.6555pt.
+ [8 <./images/rgb_circuit.png>]
+<images/photo_circuit.png, id=753, 322.20375pt x 238.64156pt>
+File: images/photo_circuit.png Graphic file (type png)
+<use images/photo_circuit.png>
+Package pdftex.def Info: images/photo_circuit.png  used on input line 222.
+(pdftex.def)             Requested size: 181.18439pt x 134.19911pt.
+<images/soil_circuit.png, id=758, 152.82094pt x 131.74219pt>
+File: images/soil_circuit.png Graphic file (type png)
+<use images/soil_circuit.png>
+Package pdftex.def Info: images/soil_circuit.png  used on input line 252.
+(pdftex.def)             Requested size: 181.18439pt x 156.20021pt.
+ [9 <./images/photo_circuit.png>] [10 <./images/soil_circuit.png>]
+Overfull \hbox (6.50009pt too wide) in paragraph at lines 303--303
+\OT1/cmr/m/n/10 acelerometro[]  
+ []
+
+
+Overfull \hbox (6.50009pt too wide) in paragraph at lines 303--303
+\OT1/cmr/m/n/10 acelerometro[]  
+ []
+
+[11]) [12]
 \openout2 = `files/4-Software.aux'.
 
  (files/4-Software.tex
-Overfull \hbox (17.34541pt too wide) in paragraph at lines 4--4
-[][][]\OT1/cmr/m/n/12 (Module 
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 20.
+
+<images/stack.png, id=824, 402.00188pt x 210.7875pt>
+File: images/stack.png Graphic file (type png)
+<use images/stack.png>
+Package pdftex.def Info: images/stack.png  used on input line 36.
+(pdftex.def)             Requested size: 362.37569pt x 190.00934pt.
+[13
+
+
+
+ <./images/stack.png>]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 88.
+<images/build.png, id=835, 300.3722pt x 67.0003pt>
+File: images/build.png Graphic file (type png)
+<use images/build.png>
+Package pdftex.def Info: images/build.png  used on input line 119.
+(pdftex.def)             Requested size: 362.37569pt x 80.8375pt.
+ [14]
+Overfull \hbox (12.53273pt too wide) in paragraph at lines 136--137
+[]\OT1/cmr/m/n/10 After load-ing the gen-er-ated \OT1/cmtt/m/n/10 zephyr.hex \OT1/cmr/m/n/10 file (57.64KB), the pro-gram-mer per-forms the fol-low-ing steps: 
  []
 
-
-Overfull \hbox (16.10931pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 Threads 
- []
-
-
-Overfull \hbox (15.06488pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 mented. 
- []
-
-
-Overfull \hbox (3.14973pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 Func- 
- []
-
-
-Overfull \hbox (0.69975pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 Main 
- []
-
-
-Overfull \hbox (7.75385pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 classes 
- []
-
-
-Overfull \hbox (4.29416pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 meth- 
- []
-
-
-Overfull \hbox (5.0122pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 used.)[]  
- []
-
-
-Overfull \hbox (17.34541pt too wide) in paragraph at lines 4--4
-[][][]\OT1/cmr/m/n/12 (Module 
- []
-
-
-Overfull \hbox (16.10931pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 Threads 
- []
-
-
-Overfull \hbox (15.06488pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 mented. 
- []
-
-
-Overfull \hbox (3.14973pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 Func- 
- []
-
-
-Overfull \hbox (0.69975pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 Main 
- []
-
-
-Overfull \hbox (7.75385pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 classes 
- []
-
-
-Overfull \hbox (4.29416pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 meth- 
- []
-
-
-Overfull \hbox (5.0122pt too wide) in paragraph at lines 4--4
-\OT1/cmr/m/n/12 used.)[]  
- []
-
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[4
-
-
-
-]
+<images/flash.png, id=849, 432.86719pt x 536.75531pt>
+File: images/flash.png Graphic file (type png)
+<use images/flash.png>
+Package pdftex.def Info: images/flash.png  used on input line 150.
+(pdftex.def)             Requested size: 362.37569pt x 449.36438pt.
+[15 <./images/build.png>]) [16 <./images/flash.png>]
 \openout2 = `files/5-Results.aux'.
 
- (files/5-Results.tex
-Overfull \hbox (11.80103pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 mented 
- []
-
-
-Overfull \hbox (12.12741pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 demon- 
- []
-
-
-Overfull \hbox (3.70667pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 strate 
- []
-
-
-Overfull \hbox (0.70392pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 Code 
- []
-
-
-Overfull \hbox (15.06488pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 (github, 
- []
-
-
-Overfull \hbox (14.151pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 gested), 
- []
-
-
-Overfull \hbox (7.55801pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 Screen 
- []
-
-
-Overfull \hbox (3.0539pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 tures. 
- []
-
-
-Overfull \hbox (2.23586pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 Links 
- []
-
-
-Overfull \hbox (5.99136pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 videos 
- []
-
-
-Overfull \hbox (3.38028pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 show- 
- []
-
-
-Overfull \hbox (11.80103pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 mented 
- []
-
-
-Overfull \hbox (12.12741pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 demon- 
- []
-
-
-Overfull \hbox (3.70667pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 strate 
- []
-
-
-Overfull \hbox (0.70392pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 Code 
- []
-
-
-Overfull \hbox (15.06488pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 (github, 
- []
-
-
-Overfull \hbox (14.151pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 gested), 
- []
-
-
-Overfull \hbox (7.55801pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 Screen 
- []
-
-
-Overfull \hbox (3.0539pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 tures. 
- []
-
-
-Overfull \hbox (2.23586pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 Links 
- []
-
-
-Overfull \hbox (5.99136pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 videos 
- []
-
-
-Overfull \hbox (3.38028pt too wide) in paragraph at lines 6--6
-\OT1/cmr/m/n/12 show- 
- []
-
-)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[5
+ (files/5-Results.tex) [17
 
 
 
 ]
 \openout2 = `files/6-Advanced.aux'.
 
- (files/6-Advanced.tex)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[6
+ (files/6-Advanced.tex [18
 
 
 
-]
-\openout2 = `files/7-Conclusions.aux'.
-
- (files/7-Conclusions.tex)
-
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[7
-
-
-
-]
-Overfull \hbox (1.81454pt too wide) in paragraph at lines 41--41
-[]\OT1/cmr/m/n/12 \  Zephyr API Doc-u-men-ta-tion: In-tro-duc-tion," Ac-cessed: Nov. 24, 2025. [On-line]. Avail-
+] [19] [20]
+Overfull \hbox (13.73553pt too wide) in paragraph at lines 153--154
+[]\OT1/cmr/m/n/10 After sleep-ing, the loop checks \OT1/cmtt/m/n/10 k[]sem[]take(&main[]sem, K[]NO[]WAIT) \OT1/cmr/m/n/10 to de-ter-mine whether a semaphore
  []
 
+) [21]
+\openout2 = `files/7-Conclusions.aux'.
 
-Package fancyhdr Warning: \headheight is too small (12.0pt): 
-(fancyhdr)                Make it at least 14.49998pt, for example:
-(fancyhdr)                \setlength{\headheight}{14.49998pt}.
-(fancyhdr)                You might also make \topmargin smaller:
-(fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
-
-[8
+ (files/7-Conclusions.tex) [22
 
 
-] (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux))
+
+]
+Overfull \hbox (3.62962pt too wide) in paragraph at lines 45--45
+[]\OT1/cmr/m/n/10 A. In-dus-tries. \  Adafruit Si7021 Tem-per-a-ture & Hu-mid-ity Sen-sor Break-out Board," Ac-cessed: Nov. 24,
+ []
+
+[23
+
+
+]
+\openout2 = `files/A-GitHub.aux'.
+
+ (files/A-GitHub.tex
+LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 22.
+ (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmtt.fd
+File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+) [24
+
+]
+Overfull \hbox (30.07632pt too wide) in paragraph at lines 65--67
+[][][][][][][][][][][][][][][][][][][][][][][]  
+ []
+
+[25]) [26] (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/A-GitHub.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 638A8973DA8C92C33DE6D943414A7217;2660.
+(rerunfilecheck)             Checksum: 28BE1F8E9BE4B9094F7ADAEBC21E2C0D;11647.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 41833 strings out of 474486
- 835512 string characters out of 5743283
- 1948542 words of memory out of 5000000
- 63418 multiletter control sequences out of 15000+600000
- 564456 words of font info for 58 fonts, out of 8000000 for 9000
+ 44300 strings out of 474486
+ 870888 string characters out of 5743283
+ 2048542 words of memory out of 5000000
+ 65509 multiletter control sequences out of 15000+600000
+ 565188 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,11n,90p,2527b,1876s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on c:\Users\Estela\Embedded_IoT\report\out\main.pdf (13 pages, 108263 bytes).
+ 89i,19n,90p,2548b,2307s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt0900.pk> <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on c:\Users\Estela\Embedded_IoT\report\out\main.pdf (32 pages, 730673 bytes).
 PDF statistics:
- 224 PDF objects out of 1000 (max. 8388607)
- 41 named destinations out of 1000 (max. 500000)
- 133 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1323 PDF objects out of 1440 (max. 8388607)
+ 393 named destinations out of 1000 (max. 500000)
+ 584 words of extra memory for PDF output out of 10000 (max. 10000000)
 

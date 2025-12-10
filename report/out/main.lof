@@ -1,1 +1,8 @@
 \babel@toc {english}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Block Diagram of the Hardware System}}{5}{figure.caption.15}%
+\contentsline {figure}{\numberline {2}{\ignorespaces RGB LED circuit diagram}}{8}{figure.caption.18}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Phototransistor circuit diagram}}{9}{figure.caption.19}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Soil moisture sensor circuit diagram}}{10}{figure.caption.21}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Thread stack and \gls {CPU} usage}}{13}{figure.caption.24}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Compilation memory usage report}}{15}{figure.caption.25}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Flashing process using STM32CubeProgrammer}}{16}{figure.caption.26}%

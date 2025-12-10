@@ -1,14 +1,31 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Software organization}{4}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Description of the implementation}{4}{subsection.4.1}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{(Module division. Threads implemented. Functionality. Main classes and methods used.) }{4}{section*.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Code size}{4}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Problems detected. Solutions}{4}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Software Organization}{13}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Description of the Implementation}{13}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Modules}{13}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}}{13}{subsubsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Threads}{13}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Main Thread}{13}{subsubsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Sensors Thread}{13}{subsubsection.4.3.2}\protected@file@percent }
+\@gls@reference{acronym}{GPS}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}\acrshort {GPS} Thread}{13}{subsubsection.4.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Global Behaviour}{13}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Thread Stack and CPU Usage Analysis}{13}{subsection.4.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Thread stack and \gls {CPU} usage}}{13}{figure.caption.24}\protected@file@percent }
+\@gls@reference{acronym}{CPU}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{13}}
+\newlabel{fig:stack}{{5}{13}{Thread stack and \gls {CPU} usage}{figure.caption.24}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Thread stack and CPU usage report - prj\_nucleo\_wl55jc.conf}}{14}{lstlisting.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Compilation and Flashing Output Analysis}{14}{subsection.4.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Compilation memory usage report}}{15}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:build}{{6}{15}{Compilation memory usage report}{figure.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Flashing the Firmware onto the STM32WL55}{15}{subsection.4.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Flashing process using STM32CubeProgrammer}}{16}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:flash}{{7}{16}{Flashing process using STM32CubeProgrammer}{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Code Documentation}{16}{subsection.4.8}\protected@file@percent }
 \@setckpt{files/4-Software}{
-\setcounter{page}{5}
+\setcounter{page}{17}
 \setcounter{equation}{0}
-\setcounter{enumi}{0}
+\setcounter{enumi}{4}
 \setcounter{enumii}{0}
 \setcounter{enumiii}{0}
 \setcounter{enumiv}{0}
@@ -16,16 +33,16 @@
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{section}{4}
-\setcounter{subsection}{3}
+\setcounter{subsection}{8}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{0}
-\setcounter{table}{0}
+\setcounter{figure}{7}
+\setcounter{table}{6}
 \setcounter{section@level}{2}
-\setcounter{Item}{0}
+\setcounter{Item}{4}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{11}
+\setcounter{bookmark@seq@number}{51}
 \setcounter{AM@survey}{0}
 \setcounter{tabx@nest}{0}
 \setcounter{listtotal}{0}
@@ -36,7 +53,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{0}
+\setcounter{instcount}{7}
 \setcounter{maxnames}{2}
 \setcounter{minnames}{1}
 \setcounter{maxitems}{3}
@@ -148,11 +165,12 @@
 \setcounter{@pps}{0}
 \setcounter{@ppsavesec}{0}
 \setcounter{@ppsaveapp}{0}
-\setcounter{lstnumber}{1}
-\setcounter{caption@flags}{0}
+\setcounter{lstnumber}{6}
+\setcounter{caption@flags}{2}
 \setcounter{continuedfloat}{0}
 \setcounter{subfigure}{0}
 \setcounter{subtable}{0}
-\setcounter{@todonotes@numberoftodonotes}{3}
-\setcounter{lstlisting}{0}
+\setcounter{@todonotes@numberoftodonotes}{6}
+\setcounter{nlinenum}{0}
+\setcounter{lstlisting}{1}
 }

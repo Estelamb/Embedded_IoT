@@ -15,13 +15,13 @@ The \gls{IoT} system is based on the STM32WL55JC microcontroller. Several sensor
         \textbf{Parameter} & \textbf{Sensor / Module} & \textbf{Interface}  \\ 
         \midrule
         \gls{MCU} Board & STM32WL55JC & --  \\ 
-        Temperature / Humidity & Si7021 & \gls{I2C}  \\ 
+        Status Indicator & \gls{RGB} \gls{LED} & Digital  \\ 
         Ambient Light & HW5P-1 Phototransistor & Analog  \\ 
         Soil Moisture & SEN-13322 & Analog  \\ 
-        Leaf Colour & TCS34725 & \gls{I2C} / Digital  \\ 
-        Accelerometer & MMA8451Q & \gls{I2C} / Digital  \\ 
-        Global Location & Adafruit \gls{GPS} & \gls{UART} / Digital  \\ 
-        Status Indicator & \gls{RGB} \gls{LED} & Digital  \\ 
+        Temperature / Humidity & Si7021 & \gls{I2C}  \\ 
+        Leaf Colour & TCS34725 & \gls{I2C}  \\ 
+        Accelerometer & MMA8451Q & \gls{I2C}  \\ 
+        Global Location & Adafruit \gls{GPS} & \gls{UART}  \\ 
         \bottomrule
     \end{tabular}
 \end{table}
@@ -50,7 +50,7 @@ The software stack required for the development of the IoT system is summarized 
 \subsubsection{System Requirements}
 
 The \gls{IoT} system must measure environmental and physical parameters and operate in three modes: Test, Normal, and Advanced (optional). \autoref{tab:sensing_reqs}–\autoref{tab:mode_requirements} present the system requirements. 
-\todo{acronyms y resolution}
+\todo{check resolutions}
 \begin{table}[H]
     \centering
     \caption{Sensing Requirements}

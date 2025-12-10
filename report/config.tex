@@ -85,8 +85,8 @@
    }
 \makeatother
 
-\renewcommand\lstlistingname{Fragmento}
-\renewcommand\lstlistlistingname{Índice de fragmentos}
+\renewcommand\lstlistingname{Listing}
+\renewcommand\lstlistlistingname{List of Listings}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -121,5 +121,15 @@
 }
 
 \renewcommand{\lstlistlistingname}{List of Listings} % Rename the list title (optional)
+
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null},
+  keywordstyle=\color{blue}\bfseries,
+  basicstyle=\ttfamily\small,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  moredelim=[l]{:},
+}
+
 
 \input{acronyms.tex}
