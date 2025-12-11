@@ -3,6 +3,10 @@
 \contentsline {figure}{\numberline {2}{\ignorespaces RGB LED circuit diagram}}{8}{figure.caption.18}%
 \contentsline {figure}{\numberline {3}{\ignorespaces Phototransistor circuit diagram}}{9}{figure.caption.19}%
 \contentsline {figure}{\numberline {4}{\ignorespaces Soil moisture sensor circuit diagram}}{10}{figure.caption.21}%
-\contentsline {figure}{\numberline {5}{\ignorespaces Thread stack and \gls {CPU} usage}}{13}{figure.caption.24}%
-\contentsline {figure}{\numberline {6}{\ignorespaces Compilation memory usage report}}{15}{figure.caption.25}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Flashing process using STM32CubeProgrammer}}{16}{figure.caption.26}%
+\contentsline {figure}{\numberline {5}{\ignorespaces System behaviour}}{13}{figure.caption.24}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Test mode behaviour}}{14}{figure.caption.25}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Normal mode behaviour}}{15}{figure.caption.26}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Advanced mode behaviour}}{15}{figure.caption.27}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Thread stack and \gls {CPU} usage}}{20}{figure.caption.33}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Compilation memory usage report}}{21}{figure.caption.34}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Flashing process using STM32CubeProgrammer}}{22}{figure.caption.35}%

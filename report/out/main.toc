@@ -39,31 +39,48 @@
 \contentsline {subsubsection}{\numberline {3.4.7}MMA8451Q Accelerometer}{11}{subsubsection.3.4.7}%
 \contentsline {subsubsection}{\numberline {3.4.8}Adafruit Ultimate GPS Breakout v3}{11}{subsubsection.3.4.8}%
 \contentsline {section}{\numberline {4}Software Organization}{13}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Description of the Implementation}{13}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Modules}{13}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}}{13}{subsubsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.3}Threads}{13}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Main Thread}{13}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Sensors Thread}{13}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}\acrshort {GPS} Thread}{13}{subsubsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.4}Global Behaviour}{13}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Thread Stack and CPU Usage Analysis}{13}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Compilation and Flashing Output Analysis}{14}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Flashing the Firmware onto the STM32WL55}{15}{subsection.4.7}%
-\contentsline {subsection}{\numberline {4.8}Code Documentation}{16}{subsection.4.8}%
-\contentsline {section}{\numberline {5}Results}{17}{section.5}%
-\contentsline {section}{\numberline {6}Advanced Specifications Implemented}{18}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Problem Statement}{18}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Implementation}{18}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Macro definitions and timing parameters}{19}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}Sensor clear-channel safety check and normalisation}{19}{subsubsection.6.2.2}%
-\contentsline {subsubsection}{\numberline {6.2.3}Diagnostic logging}{19}{subsubsection.6.2.3}%
-\contentsline {subsubsection}{\numberline {6.2.4}Duty-cycle computation}{20}{subsubsection.6.2.4}%
-\contentsline {subsubsection}{\numberline {6.2.5}Main PWM loop and per-step evaluation}{20}{subsubsection.6.2.5}%
-\contentsline {subsection}{\numberline {6.3}Result}{21}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Conclusions and Future Works}{22}{section.7}%
-\contentsline {section}{\numberline {8}Bibliography}{23}{section.8}%
-\contentsline {section}{Appendix \numberline {A}- GitHub}{24}{appendix.1.A}%
-\contentsline {subsection}{\numberline {A.1}GitHub Repository - Source Code}{24}{subsection.1.A.1}%
-\contentsline {subsection}{\numberline {A.2}GitHub Pages - Documentation}{24}{subsection.1.A.2}%
-\contentsline {subsection}{\numberline {A.3}GitHub Action - Workflow}{24}{subsection.1.A.3}%
+\contentsline {subsection}{\numberline {4.1}Description of the Global Software Architecture}{13}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Detailed System Behaviour per Operating Mode}{13}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Mode Transition Mechanism}{15}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}Semaphore Synchronisation and Thread Interactions}{16}{subsubsection.4.1.3}%
+\contentsline {subsubsection}{\numberline {4.1.4}Atomic Shared Measurement Structure}{16}{subsubsection.4.1.4}%
+\contentsline {subsubsection}{\numberline {4.1.5}Peripheral Configuration Structure}{17}{subsubsection.4.1.5}%
+\contentsline {subsubsection}{\numberline {4.1.6}Secure Initialization}{17}{subsubsection.4.1.6}%
+\contentsline {subsubsection}{\numberline {4.1.7}Device Disconnected}{18}{subsubsection.4.1.7}%
+\contentsline {subsection}{\numberline {4.2}Modules}{18}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}adc.c and adc.h}{18}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}gps.c and gps.h}{18}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}i2c.c and i2c.h}{18}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}accel.c and accel.h}{18}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}color.c and color.h}{18}{subsubsection.4.2.5}%
+\contentsline {subsubsection}{\numberline {4.2.6}temp\_hum.c and temp\_hum.h}{18}{subsubsection.4.2.6}%
+\contentsline {subsubsection}{\numberline {4.2.7}board\_led.c and board\_led.h}{18}{subsubsection.4.2.7}%
+\contentsline {subsubsection}{\numberline {4.2.8}rgb\_led.c and rgb\_led.h}{18}{subsubsection.4.2.8}%
+\contentsline {subsubsection}{\numberline {4.2.9}user\_button.c and user\_button.h}{18}{subsubsection.4.2.9}%
+\contentsline {subsection}{\numberline {4.3}Threads}{18}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Main Thread}{18}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Sensors Thread}{18}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}\acrshort {GPS} Thread}{18}{subsubsection.4.3.3}%
+\contentsline {subsection}{\numberline {4.4}Zephyr \acrshort {RTOS}}{18}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}prj\_nucleo\_wl55jc.conf}{18}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}nucleo\_wl55jc.overlay}{19}{subsubsection.4.4.2}%
+\contentsline {subsection}{\numberline {4.5}Thread Stack and CPU Usage Analysis}{19}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Compilation and Flashing Output Analysis}{21}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Flashing the Firmware onto the STM32WL55}{21}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Code Documentation}{22}{subsection.4.8}%
+\contentsline {section}{\numberline {5}Results}{24}{section.5}%
+\contentsline {section}{\numberline {6}Advanced Specifications Implemented}{25}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Problem Statement}{25}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Implementation}{25}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Macro definitions and timing parameters}{26}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Sensor clear-channel safety check and normalisation}{26}{subsubsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.3}Diagnostic logging}{26}{subsubsection.6.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.4}Duty-cycle computation}{27}{subsubsection.6.2.4}%
+\contentsline {subsubsection}{\numberline {6.2.5}Main PWM loop and per-step evaluation}{27}{subsubsection.6.2.5}%
+\contentsline {subsection}{\numberline {6.3}Result}{28}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Conclusions and Future Works}{29}{section.7}%
+\contentsline {section}{\numberline {8}Bibliography}{30}{section.8}%
+\contentsline {section}{Appendix \numberline {A}- GitHub}{31}{appendix.1.A}%
+\contentsline {subsection}{\numberline {A.1}GitHub Repository - Source Code}{31}{subsection.1.A.1}%
+\contentsline {subsection}{\numberline {A.2}GitHub Pages - Documentation}{31}{subsection.1.A.2}%
+\contentsline {subsection}{\numberline {A.3}GitHub Action - Workflow}{31}{subsection.1.A.3}%

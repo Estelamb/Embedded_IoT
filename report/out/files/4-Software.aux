@@ -1,29 +1,63 @@
 \relax 
 \providecommand\hyper@newdestlabel[2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Software Organization}{13}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Description of the Implementation}{13}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Modules}{13}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}}{13}{subsubsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Threads}{13}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Main Thread}{13}{subsubsection.4.3.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Sensors Thread}{13}{subsubsection.4.3.2}\protected@file@percent }
-\@gls@reference{acronym}{GPS}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{13}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}\acrshort {GPS} Thread}{13}{subsubsection.4.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Global Behaviour}{13}{subsection.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Thread Stack and CPU Usage Analysis}{13}{subsection.4.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Thread stack and \gls {CPU} usage}}{13}{figure.caption.24}\protected@file@percent }
-\@gls@reference{acronym}{CPU}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{13}}
-\newlabel{fig:stack}{{5}{13}{Thread stack and \gls {CPU} usage}{figure.caption.24}{}}
-\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Thread stack and CPU usage report - prj\_nucleo\_wl55jc.conf}}{14}{lstlisting.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Compilation and Flashing Output Analysis}{14}{subsection.4.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Compilation memory usage report}}{15}{figure.caption.25}\protected@file@percent }
-\newlabel{fig:build}{{6}{15}{Compilation memory usage report}{figure.caption.25}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Flashing the Firmware onto the STM32WL55}{15}{subsection.4.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Flashing process using STM32CubeProgrammer}}{16}{figure.caption.26}\protected@file@percent }
-\newlabel{fig:flash}{{7}{16}{Flashing process using STM32CubeProgrammer}{figure.caption.26}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Code Documentation}{16}{subsection.4.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Description of the Global Software Architecture}{13}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Detailed System Behaviour per Operating Mode}{13}{subsubsection.4.1.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces System behaviour}}{13}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:state_machine}{{5}{13}{System behaviour}{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Test mode behaviour}}{14}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:test_mode}{{6}{14}{Test mode behaviour}{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Normal mode behaviour}}{15}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:normal_mode}{{7}{15}{Normal mode behaviour}{figure.caption.26}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Advanced mode behaviour}}{15}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:advanced_mode}{{8}{15}{Advanced mode behaviour}{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Mode Transition Mechanism}{15}{subsubsection.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}Semaphore Synchronisation and Thread Interactions}{16}{subsubsection.4.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.4}Atomic Shared Measurement Structure}{16}{subsubsection.4.1.4}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}{\ignorespaces Sensor data structure with atomic fields}}{16}{lstlisting.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.5}Peripheral Configuration Structure}{17}{subsubsection.4.1.5}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}{\ignorespaces Peripheral configuration and synchronization structure}}{17}{lstlisting.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.6}Secure Initialization}{17}{subsubsection.4.1.6}\protected@file@percent }
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}{\ignorespaces Secure initialization code}}{17}{lstlisting.3}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{Añadir captura}{18}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.7}Device Disconnected}{18}{subsubsection.4.1.7}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{Añadir captura}{18}{section*.29}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{Añadir captura}{18}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Modules}{18}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}adc.c and adc.h}{18}{subsubsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}gps.c and gps.h}{18}{subsubsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}i2c.c and i2c.h}{18}{subsubsection.4.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.4}accel.c and accel.h}{18}{subsubsection.4.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.5}color.c and color.h}{18}{subsubsection.4.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.6}temp\_hum.c and temp\_hum.h}{18}{subsubsection.4.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.7}board\_led.c and board\_led.h}{18}{subsubsection.4.2.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.8}rgb\_led.c and rgb\_led.h}{18}{subsubsection.4.2.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.9}user\_button.c and user\_button.h}{18}{subsubsection.4.2.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Threads}{18}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Main Thread}{18}{subsubsection.4.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Sensors Thread}{18}{subsubsection.4.3.2}\protected@file@percent }
+\@gls@reference{acronym}{GPS}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}\acrshort {GPS} Thread}{18}{subsubsection.4.3.3}\protected@file@percent }
+\@gls@reference{acronym}{RTOS}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Zephyr \acrshort {RTOS}}{18}{subsection.4.4}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{chequear en todo el docuemnto si zephyr es os o rtos}{18}{section*.31}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{añadir texto}{18}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}prj\_nucleo\_wl55jc.conf}{18}{subsubsection.4.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}nucleo\_wl55jc.overlay}{19}{subsubsection.4.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Thread Stack and CPU Usage Analysis}{19}{subsection.4.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Thread stack and \gls {CPU} usage}}{20}{figure.caption.33}\protected@file@percent }
+\@gls@reference{acronym}{CPU}{\glsnoidxdisplayloc{}{page}{glsnumberformat}{20}}
+\newlabel{fig:stack}{{9}{20}{Thread stack and \gls {CPU} usage}{figure.caption.33}{}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}{\ignorespaces Thread stack and CPU usage report - prj\_nucleo\_wl55jc.conf}}{21}{lstlisting.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Compilation and Flashing Output Analysis}{21}{subsection.4.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Compilation memory usage report}}{21}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:build}{{10}{21}{Compilation memory usage report}{figure.caption.34}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Flashing the Firmware onto the STM32WL55}{21}{subsection.4.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Flashing process using STM32CubeProgrammer}}{22}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:flash}{{11}{22}{Flashing process using STM32CubeProgrammer}{figure.caption.35}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.8}Code Documentation}{22}{subsection.4.8}\protected@file@percent }
 \@setckpt{files/4-Software}{
-\setcounter{page}{17}
+\setcounter{page}{24}
 \setcounter{equation}{0}
 \setcounter{enumi}{4}
 \setcounter{enumii}{0}
@@ -37,12 +71,12 @@
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
-\setcounter{figure}{7}
+\setcounter{figure}{11}
 \setcounter{table}{6}
 \setcounter{section@level}{2}
-\setcounter{Item}{4}
+\setcounter{Item}{27}
 \setcounter{Hfootnote}{0}
-\setcounter{bookmark@seq@number}{51}
+\setcounter{bookmark@seq@number}{68}
 \setcounter{AM@survey}{0}
 \setcounter{tabx@nest}{0}
 \setcounter{listtotal}{0}
@@ -170,7 +204,7 @@
 \setcounter{continuedfloat}{0}
 \setcounter{subfigure}{0}
 \setcounter{subtable}{0}
-\setcounter{@todonotes@numberoftodonotes}{6}
+\setcounter{@todonotes@numberoftodonotes}{11}
 \setcounter{nlinenum}{0}
-\setcounter{lstlisting}{1}
+\setcounter{lstlisting}{4}
 }
