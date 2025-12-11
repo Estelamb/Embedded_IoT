@@ -7,6 +7,6 @@
 \contentsline {figure}{\numberline {6}{\ignorespaces Test mode behaviour}}{14}{figure.caption.25}%
 \contentsline {figure}{\numberline {7}{\ignorespaces Normal mode behaviour}}{15}{figure.caption.26}%
 \contentsline {figure}{\numberline {8}{\ignorespaces Advanced mode behaviour}}{15}{figure.caption.27}%
-\contentsline {figure}{\numberline {9}{\ignorespaces Thread stack and \gls {CPU} usage}}{20}{figure.caption.33}%
-\contentsline {figure}{\numberline {10}{\ignorespaces Compilation memory usage report}}{21}{figure.caption.34}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Flashing process using STM32CubeProgrammer}}{22}{figure.caption.35}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Thread stack and \gls {CPU} usage}}{22}{figure.caption.34}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Compilation memory usage report}}{24}{figure.caption.35}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Flashing process using STM32CubeProgrammer}}{25}{figure.caption.36}%

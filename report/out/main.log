@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.18)  11 DEC 2025 16:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.18)  11 DEC 2025 19:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1168,7 +1168,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--16
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.53 ...}i2c.c and i2c.h}{18}{subsubsection.4.2.3}
+l.53 ...}i2c.c and i2c.h}{19}{subsubsection.4.2.3}
                                                   % [1
 
 
@@ -1196,7 +1196,7 @@ l.53 ...}i2c.c and i2c.h}{18}{subsubsection.4.2.3}
  (files/Glossary.tex
 
 Package glossaries Info: Preparing to sort glossary `acronym' (total number of
-(glossaries)             referenced entries: 31)
+(glossaries)             referenced entries: 38)
 
 ) [4
 
@@ -1266,7 +1266,7 @@ Overfull \hbox (22.4115pt too wide) in paragraph at lines 119--133
 \openout2 = `files/3-Hardware.aux'.
 
  (files/3-Hardware.tex
-<images/block_diagram.png, id=684, 3038.35126pt x 1885.0425pt>
+<images/block_diagram.png, id=694, 3038.35126pt x 1885.0425pt>
 File: images/block_diagram.png Graphic file (type png)
 <use images/block_diagram.png>
 Package pdftex.def Info: images/block_diagram.png  used on input line 11.
@@ -1355,18 +1355,18 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [7
 
 ]
-<images/rgb_circuit.png, id=849, 496.85625pt x 620.3175pt>
+<images/rgb_circuit.png, id=859, 496.85625pt x 620.3175pt>
 File: images/rgb_circuit.png Graphic file (type png)
 <use images/rgb_circuit.png>
 Package pdftex.def Info: images/rgb_circuit.png  used on input line 209.
 (pdftex.def)             Requested size: 135.89174pt x 169.6555pt.
  [8 <./images/rgb_circuit.png>]
-<images/photo_circuit.png, id=863, 322.20375pt x 238.64156pt>
+<images/photo_circuit.png, id=873, 322.20375pt x 238.64156pt>
 File: images/photo_circuit.png Graphic file (type png)
 <use images/photo_circuit.png>
 Package pdftex.def Info: images/photo_circuit.png  used on input line 222.
 (pdftex.def)             Requested size: 181.18439pt x 134.19911pt.
-<images/soil_circuit.png, id=868, 152.82094pt x 131.74219pt>
+<images/soil_circuit.png, id=878, 152.82094pt x 131.74219pt>
 File: images/soil_circuit.png Graphic file (type png)
 <use images/soil_circuit.png>
 Package pdftex.def Info: images/soil_circuit.png  used on input line 252.
@@ -1385,12 +1385,12 @@ Overfull \hbox (6.50009pt too wide) in paragraph at lines 303--303
 \openout2 = `files/4-Software.aux'.
 
  (files/4-Software.tex
-<images/state_machine.png, id=933, 602.25pt x 347.79938pt>
+<images/state_machine.png, id=944, 602.25pt x 347.79938pt>
 File: images/state_machine.png Graphic file (type png)
 <use images/state_machine.png>
 Package pdftex.def Info: images/state_machine.png  used on input line 15.
 (pdftex.def)             Requested size: 448.4407pt x 258.98613pt.
-<images/test_mode.png, id=934, 549.55313pt x 720.44156pt>
+<images/test_mode.png, id=950, 549.55313pt x 720.44156pt>
 File: images/test_mode.png Graphic file (type png)
 <use images/test_mode.png>
 Package pdftex.def Info: images/test_mode.png  used on input line 41.
@@ -1408,63 +1408,77 @@ Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on in
 
 LaTeX Warning: Marginpar on page 18 moved.
 
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\acrshort' on input line 300.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\acrshort' on input line 305.
-
-
-LaTeX Warning: Marginpar on page 18 moved.
-
 [18] [19]
-<images/stack.png, id=1144, 402.00188pt x 210.7875pt>
+Overfull \hbox (6.50009pt too wide) in paragraph at lines 364--364
+\OT1/cmr/m/n/10 acelerometro[]  
+ []
+
+
+Overfull \hbox (6.50009pt too wide) in paragraph at lines 364--364
+\OT1/cmr/m/n/10 acelerometro[]  
+ []
+
+[20]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 396.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 401.
+
+
+LaTeX Warning: Marginpar on page 21 moved.
+
+[21]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 477.
+
+<images/stack.png, id=1216, 402.00188pt x 210.7875pt>
 File: images/stack.png Graphic file (type png)
 <use images/stack.png>
-Package pdftex.def Info: images/stack.png  used on input line 387.
+Package pdftex.def Info: images/stack.png  used on input line 483.
 (pdftex.def)             Requested size: 362.37569pt x 190.00934pt.
- [20 <./images/stack.png>]
-<images/build.png, id=1154, 300.3722pt x 67.0003pt>
+[22 <./images/stack.png>] [23]
+<images/build.png, id=1276, 300.3722pt x 67.0003pt>
 File: images/build.png Graphic file (type png)
 <use images/build.png>
-Package pdftex.def Info: images/build.png  used on input line 468.
+Package pdftex.def Info: images/build.png  used on input line 561.
 (pdftex.def)             Requested size: 362.37569pt x 80.8375pt.
 
-Overfull \hbox (12.53273pt too wide) in paragraph at lines 485--486
+Overfull \hbox (10.8657pt too wide) in paragraph at lines 578--579
 []\OT1/cmr/m/n/10 After load-ing the gen-er-ated \OT1/cmtt/m/n/10 zephyr.hex \OT1/cmr/m/n/10 file (57.64KB), the pro-gram-mer per-forms the fol-low-ing steps: 
  []
 
-[21 <./images/build.png>]
-<images/flash.png, id=1167, 432.86719pt x 536.75531pt>
+<images/flash.png, id=1279, 432.86719pt x 536.75531pt>
 File: images/flash.png Graphic file (type png)
 <use images/flash.png>
-Package pdftex.def Info: images/flash.png  used on input line 499.
+Package pdftex.def Info: images/flash.png  used on input line 592.
 (pdftex.def)             Requested size: 362.37569pt x 449.36438pt.
- [22 <./images/flash.png>]) [23]
+[24 <./images/build.png>]) [25 <./images/flash.png>]
 \openout2 = `files/5-Results.aux'.
 
- (files/5-Results.tex) [24
+ (files/5-Results.tex) [26
 
 
 
 ]
 \openout2 = `files/6-Advanced.aux'.
 
- (files/6-Advanced.tex [25
+ (files/6-Advanced.tex [27
 
 
 
-] [26] [27]
+] [28] [29]
 Overfull \hbox (13.73553pt too wide) in paragraph at lines 153--154
 []\OT1/cmr/m/n/10 After sleep-ing, the loop checks \OT1/cmtt/m/n/10 k[]sem[]take(&main[]sem, K[]NO[]WAIT) \OT1/cmr/m/n/10 to de-ter-mine whether a semaphore
  []
 
-) [28]
+) [30]
 \openout2 = `files/7-Conclusions.aux'.
 
- (files/7-Conclusions.tex) [29
+ (files/7-Conclusions.tex) [31
 
 
 
@@ -1473,7 +1487,7 @@ Overfull \hbox (3.62962pt too wide) in paragraph at lines 45--45
 []\OT1/cmr/m/n/10 A. In-dus-tries. \  Adafruit Si7021 Tem-per-a-ture & Hu-mid-ity Sen-sor Break-out Board," Ac-cessed: Nov. 24,
  []
 
-[30
+[32
 
 
 ]
@@ -1483,14 +1497,14 @@ Overfull \hbox (3.62962pt too wide) in paragraph at lines 45--45
 LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 22.
  (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmtt.fd
 File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) [31
+) [33
 
 ]
 Overfull \hbox (30.07632pt too wide) in paragraph at lines 65--67
 [][][][][][][][][][][][][][][][][][][][][][][]  
  []
 
-[32]) [33] (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/A-GitHub.aux))
+[34]) [35] (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/A-GitHub.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
@@ -1502,17 +1516,17 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 44801 strings out of 474486
- 878625 string characters out of 5743283
- 2053542 words of memory out of 5000000
- 65807 multiletter control sequences out of 15000+600000
- 565524 words of font info for 63 fonts, out of 8000000 for 9000
+ 45023 strings out of 474486
+ 882134 string characters out of 5743283
+ 2054542 words of memory out of 5000000
+ 66018 multiletter control sequences out of 15000+600000
+ 565864 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,19n,90p,2548b,2307s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt0900.pk> <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on c:\Users\Estela\Embedded_IoT\report\out\main.pdf (39 pages, 859529 bytes).
+ <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt0900.pk> <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcbx1000.pk> <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on c:\Users\Estela\Embedded_IoT\report\out\main.pdf (41 pages, 891718 bytes).
 PDF statistics:
- 1683 PDF objects out of 1728 (max. 8388607)
- 595 named destinations out of 1000 (max. 500000)
+ 1802 PDF objects out of 2073 (max. 8388607)
+ 605 named destinations out of 1000 (max. 500000)
  730 words of extra memory for PDF output out of 10000 (max. 10000000)
 

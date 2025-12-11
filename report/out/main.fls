@@ -575,6 +575,7 @@ INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt8.tf
 INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt8.tfm
 INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmr9.tfm
 INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\public\cm\cmtt9.tfm
+INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcbx1000.tfm
 INPUT .\images\stack.png
 INPUT .\images\stack.png
 INPUT .\images\stack.png
@@ -661,6 +662,8 @@ INPUT c:\Users\Estela\Embedded_IoT\report\out\main.run.xml
 OUTPUT c:\Users\Estela\Embedded_IoT\report\out\main.run.xml
 INPUT C:\Users\Estela\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tctt0900.pk
 INPUT C:\Users\Estela\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tctt0900.pk
+INPUT C:\Users\Estela\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcbx1000.pk
+INPUT C:\Users\Estela\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcbx1000.pk
 INPUT C:\Users\Estela\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT C:\Users\Estela\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb

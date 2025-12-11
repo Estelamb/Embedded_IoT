@@ -2,7 +2,7 @@
 
 \subsection{Description of the Global Software Architecture}
 
-The Plant Monitoring System is a multi-threaded embedded application developed using the Zephyr RTOS. It integrates multiple sensors and peripherals, manages several execution threads, uses atomic shared structures for inter-thread communication, and supports three distinct operating modes that govern its behaviour.
+The Plant Monitoring System is a multi-threaded embedded application developed using the Zephyr \gls{RTOS}. It integrates multiple sensors and peripherals, manages several execution threads, uses atomic shared structures for inter-thread communication, and supports three distinct operating modes that govern its behaviour.
 
 This section provides a unified description of system operation, the behaviour of each mode, the internal synchronization mechanisms, and the shared peripheral configuration structures.
 
@@ -21,14 +21,14 @@ In \textbf{TEST\_MODE}, the system performs simple acquisition and visualisation
 
 \begin{enumerate}
     \item The periodic measurement timer (\texttt{main\_timer}) is started with the test-mode rate (2 seconds).
-    \item The sensor and GPS threads are triggered to acquire new samples.
+    \item The sensor and \gls{GPS} threads are triggered to acquire new samples.
     \item The main thread waits for:
     \begin{itemize}
-        \item \texttt{main\_sensors\_sem} --- signals completion of environmental sensor acquisition,
-        \item \texttt{main\_gps\_sem} --- signals completion of GPS sampling.
+        \item \texttt{main\_sensors\_sem}: Signals completion of environmental sensor acquisition,
+        \item \texttt{main\_gps\_sem}: Signals completion of \gls{GPS} sampling.
     \end{itemize}
-    \item The main thread reads the shared atomic measurement structure and determines the dominant colour measured by the RGB sensor.
-    \item The RGB LED is set to the dominant raw channel (red, green, or blue).
+    \item The main thread reads the shared atomic measurement structure and determines the dominant colour measured by the \gls{RGB} sensor.
+    \item The \gls{RGB} \gls{LED} is set to the dominant raw channel (red, green, or blue).
     \item The measurements are displayed via the serial console.
     \item At each timer expiration, the \texttt{main\_sem} semaphore is released to repeat the mode.
     \item No limit checking, no statistics, and no warning indicators are active.
@@ -47,11 +47,11 @@ In \textbf{NORMAL\_MODE}, the system executes the full environmental monitoring 
 
 \begin{enumerate}
     \item The measurement timer is started with the normal-mode sampling rate (30 seconds).
-    \item Sensor and GPS threads acquire data and raise their semaphores.
+    \item Sensor and \gls{GPS} threads acquire data and raise their semaphores.
     \item The main thread retrieves all sensor values from the atomic shared structure.
     \item Limit checking is performed for temperature, humidity, moisture, brightness, and acceleration parameters.
     \item Violations raise bits of the atomic \texttt{rgb\_flags} field, allowing multiple alarms simultaneously.
-    \item A dedicated RGB warning timer is active: at each tick it reads the \texttt{rgb\_flags} and updates the RGB LED with colour-coded warnings.
+    \item A dedicated \gls{RGB} warning timer is active: at each tick it reads the \texttt{rgb\_flags} and updates the \gls{RGB} \gls{LED} with colour-coded warnings.
     \item The system maintains statistical data, which is shown every hour:
     \begin{itemize}
         \item running minimum and maximum,
@@ -74,10 +74,10 @@ In \textbf{ADVANCED\_MODE}, the system focuses on reproducing the sensed colour 
 
 \begin{enumerate}
     \item The measurement timer is started with the advanced-mode sampling rate (30 seconds).
-    \item Sensor and GPS threads acquire data and raise their semaphores.
+    \item Sensor and \gls{GPS} threads acquire data and raise their semaphores.
     \item The main thread retrieves all sensor values from the atomic shared structure.
     \item Colour normalization is performed using the clear channel of the colour sensor, and shown.
-    \item The RGB LED is set to the normalized colour values for accurate reproduction (emulated PWM).
+    \item The \gls{RGB} \gls{LED} is set to the normalized colour values for accurate reproduction (emulated PWM).
     \item At each timer expiration, the \texttt{main\_sem} semaphore is released to repeat the mode.
     \item No limit checking, no statistics, and no warning indicators are active.
 \end{enumerate}
@@ -104,8 +104,8 @@ During a mode change:
 
 \begin{itemize}
     \item timers associated with the previous mode are stopped,
-    \item mode-specific timers are started (measurement, RGB warning, statistics),
-    \item LEDs are updated to reflect the new mode,
+    \item mode-specific timers are started (measurement, \gls{RGB} warning, statistics),
+    \item \glspl{LED} are updated to reflect the new mode,
     \item \texttt{main\_sem} is released to unblock the main loop.
 \end{itemize}
 
@@ -119,8 +119,8 @@ Inter-thread coordination relies on multiple named semaphores.
     Released by \texttt{main\_timer} to:
 
     \begin{itemize}
-        \item wake the main thread at the configured sampling frequency to repeat the mode.
-        \item wake the main thread when a mode transition occurs (button pressed).
+        \item Wake the main thread at the configured sampling frequency to repeat the mode.
+        \item Wake the main thread when a mode transition occurs (button pressed).
     \end{itemize}
 
     \item \textbf{Trigger Semaphores (\texttt{sensors\_sem} and \texttt{gps\_sem})}
@@ -132,18 +132,18 @@ Inter-thread coordination relies on multiple named semaphores.
     Raised by the sensor acquisition thread after reading:
 
     \begin{itemize}
-        \item temperature and humidity,
-        \item RGB colour channels,
-        \item brightness,
-        \item soil moisture,
-        \item accelerometer values.
+        \item Temperature and humidity.
+        \item \gls{RGB} colour channels.
+        \item Brightness.
+        \item Soil moisture.
+        \item Accelerometer values.
     \end{itemize}
 
     The main thread blocks until this semaphore is obtained, ensuring consistent data.
 
-    \item \textbf{GPS Data Semaphore (\texttt{main\_gps\_sem})}
+    \item \textbf{\gls{GPS} Data Semaphore (\texttt{main\_gps\_sem})}
 
-    Raised by the GPS thread when new GPS information (latitude, longitude, altitude, satellites, timestamp) is available.
+    Raised by the \gls{GPS} thread when new \gls{GPS} information (latitude, longitude, altitude, satellites, timestamp) is available.
 
     The main thread blocks until this semaphore is obtained, ensuring consistent data.
 \end{itemize}
@@ -182,8 +182,8 @@ struct system_measurement {
 Properties:
 
 \begin{itemize}
-    \item \textbf{lock-free thread-safe communication},
-    \item \textbf{each measurement updated independently},
+    \item Lock-free thread-safe communication.
+    \item Each measurement updated independently.
     \item the main thread reads all values without risk of torn writes.
 \end{itemize}
 
@@ -210,9 +210,11 @@ struct system_context {
 };
 \end{lstlisting}
 
+In this way, the peripherals are configured once at startup and passed to all threads and modules that require access.
+
 \subsubsection{Secure Initialization}
 
-In case of initialization failures (e.g., I2C device not found), the system doesn't execute the program:
+In case of initialization failures (e.g., \gls{I2C} device not found), the system doesn't execute the program:
 
 \begin{lstlisting}[language=C, caption={Secure initialization code}]
     /* Initialize peripherals */
@@ -274,13 +276,107 @@ If the device is reconnected, normal operation resumes.
 
 \subsubsection{adc.c and adc.h}
 
+The \texttt{adc.c} and \texttt{adc.h} modules provide a hardware abstraction layer for reading analogue values from the phototransistor and soil-moisture sensors using the Zephyr \gls{ADC} \gls{API}. Their purpose is to encapsulate \gls{ADC} initialisation, configuration, and acquisition into a self-contained interface that the sensors thread can use without exposing low-level driver details.
+
+This library is responsible for preparing the \gls{ADC} peripheral, configuring its channels, and performing synchronous conversions on demand. It ensures that all \gls{ADC} reads comply with a consistent configuration (resolution, reference, acquisition time, and oversampling) and that raw sample values are returned in a unified format to the rest of the system.
+
+\begin{itemize}
+    \item \textbf{Peripheral Initialisation}: Loads the \gls{ADC} device from the device tree and configures the hardware according to project requirements. This includes selecting resolution, reference voltage, acquisition time, and optional oversampling.
+
+    \item \textbf{Channel Setup}: Each analogue sensor has an associated \gls{ADC} channel configured through a dedicated structure. The module ensures correct pin routing and channel mapping according to the board overlay.
+
+    \item \textbf{Synchronous ADC Sampling}: Provides a blocking \gls{API} that triggers a single conversion and returns the measured sample. This prevents concurrency issues by guaranteeing that read operations finish before returning control.
+
+    \item \textbf{Unified Abstraction for Higher-Level Modules}: The sensors thread and the system context only interact with a clean, high-level interface without needing to manage \gls{ADC} device handles, channels, or Zephyr-specific configuration fields.
+
+    \item \textbf{Validation and Error Handling}: Detects device-not-found conditions, invalid configurations, or read failures, forwarding errors to the main system so that appropriate recovery or safe behaviour can occur.
+
+    \item \textbf{Scalability for Additional Channels}: The design allows new analogue sensors to be added by defining a new channel configuration and calling the same acquisition \gls{API}, without modifying existing code.
+    
+    \item \textbf{Separation of Configuration from Logic}: The module centralises all \gls{ADC} configuration parameters in one place, ensuring future modifications (e.g., resolution, gain, sampling frequency) do not propagate across the project.
+\end{itemize}
+
+This \gls{ADC} library is intended to be reused by any component that requires analogue-to-digital conversions while maintaining a clean separation between hardware-specific details and system-level functionality.
+
 \subsubsection{gps.c and gps.h}
+
+The \texttt{gps.c} and \texttt{gps.h} modules implement a GPS interface based on \gls{UART}-driven reception of \gls{NMEA} sentences. Their purpose is to offer a simple, self-contained parser for \gls{GGA} (or \gls{GNGGA}) frames and provide the rest of the system with clean, validated geographic data without exposing \gls{UART} or interrupt logic.
+
+The library configures the \gls{UART} peripheral, enables interrupt-driven reception, reconstructs \gls{NMEA} lines in the background, and parses the relevant fields when a complete \gls{GGA} sentence is detected. Once valid GPS information is available, the module updates an internal \texttt{gps\_data\_t} structure and releases a semaphore so that higher-level threads can safely retrieve the most recent fix.
+
+\begin{itemize}
+    \item \textbf{\gls{UART}-Based \gls{GPS} Initialisation}: The module validates the configuration, checks device readiness, attaches the \gls{ISR}, and enables \gls{RX} interrupts. This ensures autonomous background reception of \gls{NMEA} data.
+
+    \item \textbf{Interrupt-Driven \gls{NMEA} Line Reconstruction}: Bytes received from the \gls{UART} \gls{FIFO} are accumulated into an internal buffer until a newline character is found.
+
+    \item \textbf{\gls{GGA} Sentence Parsing}: Extracts latitude, longitude, altitude, \gls{HDOP}, satellite count, and \gls{UTC} time from a standard \gls{GGA} frame. The parser handles missing or malformed fields gracefully and only accepts complete, coherent entries.
+
+    \item \textbf{\gls{NMEA}-to-Degrees Conversion}: Converts coordinates from \gls{NMEA} format (DDMM.MMMM or DDDMM.MMMM) to decimal degrees, applying hemisphere correction. This provides the system with immediately usable geographic values.
+
+    \item \textbf{Thread Synchronisation via Semaphore}: When new valid data is parsed, a semaphore is released so that the \gls{GPS} thread or main thread can block until a fresh fix is available. This avoids polling and reduces \gls{CPU} usage.
+
+    \item \textbf{Internal Data Buffering}: The module maintains an internal instance of \texttt{gps\_data\_t} storing the last valid parsed frame. Consumers obtain a copy, ensuring thread safety without exposing shared mutable structures.
+
+    \item \textbf{Timeout-Aware Data Retrieval}: The high-level \gls{API} allows callers to wait indefinitely, for a fixed period, or return immediately if no new \gls{GGA} sentence has been received.
+\end{itemize}
+
+This \gls{GPS} interface provides a robust and maintainable foundation for acquiring geographic data in real time, isolating UART management and parsing details from the rest of the application.
 
 \subsubsection{i2c.c and i2c.h}
 
+The \texttt{i2c.c} and \texttt{i2c.h} modules implement a small set of helper functions designed to simplify register-level communication with \gls{I2C} devices in Zephyr. Their purpose is to provide a clean, reusable interface for reading and writing device registers using only a devicetree \texttt{i2c\_dt\_spec}, avoiding repetitive low-level code in sensor drivers.
+
+The library encapsulates common \gls{I2C} access patterns into concise functions. These utilities internally rely on Zephyr's \texttt{i2c\_write\_read\_dt}, \texttt{i2c\_write\_dt}, and \texttt{i2c\_is\_ready\_dt} \glspl{API}, ensuring compatibility with any \gls{I2C} peripheral described in the system devicetree.
+
+Because many sensors require register-based configuration and multi-byte reads, this module centralises these operations and presents a uniform interface that higher-level modules can reuse safely.
+
+\begin{itemize}
+    \item \textbf{Multi-Register Read Helper}: Reads an arbitrary number of consecutive registers starting at a given address, abstracting the common write-then-read transaction pattern.
+
+    \item \textbf{Single-Register Write Helper}: Writes one byte to a specified register, a frequent requirement for sensor configuration and control registers.
+
+    \item \textbf{Device Readiness Check}: Verifies that the \gls{I2C} device is present, powered, and ready before attempting communication. Provides clear error reporting if the device is not reachable.
+
+    \item \textbf{Consistent Devicetree-Based Access}: All functions operate on \texttt{i2c\_dt\_spec} descriptors, ensuring that pin routing, bus selection, addressing and timing come directly from the devicetree.
+
+    \item \textbf{Reusability for Multiple Sensor Drivers}: Higher-level modules (accelerometer, colour sensor, temperature/humidity sensor, etc.) use these helpers to avoid code duplication and maintain consistency across all \gls{I2C} devices.
+    
+    \item \textbf{Error Propagation}: Returns standard negative errno codes, allowing calling modules to handle failures predictably and implement fallback or retry mechanisms.
+\end{itemize}
+
+This \gls{I2C} helper library provides a clean and robust foundation for register-based communication with any \gls{I2C} sensor or peripheral in the system.
+
 \subsubsection{accel.c and accel.h}
 
+The \texttt{accel.c} and \texttt{accel.h} modules implement a 3-axis accelerometer driver over \gls{I2C}, providing initialization, configuration, raw data acquisition, and unit conversion utilities. The module abstracts all register-level interaction and exposes a clean interface for obtaining acceleration data in either raw counts, g units, or m/s².
+
+During initialization, the library verifies device identity via the \texttt{WHO\_AM\_I} register, transitions the sensor into standby mode, configures its measurement range, and finally activates continuous measurement mode. The project uses the ±2g range, which maximizes sensitivity for environmental and motion-tracking applications.
+
+Raw acceleration values for X, Y, and Z axes are obtained through a single burst read of six consecutive registers. This ensures atomic acquisition of all three axes and prevents axis desynchronization. Each pair of bytes contains a 14-bit left-aligned signed measurement, which the library re-aligns before returning to higher-level modules.
+
+All \gls{I2C} communication relies on the generic register helpers defined in the \gls{I2C} module, keeping the driver compact and uniform with the rest of the system.
+
+\begin{itemize}
+    \item \textbf{Device Initialization and Identity Check}: Reads the \texttt{WHO\_AM\_I} register to validate the sensor's presence before configuration or data acquisition.
+
+    \item \textbf{Standby and Active Mode Control}: Ensures that configuration registers are only modified while the device is in standby mode, as required by the hardware design. The module automatically returns the device to active mode after configuration.
+
+    \item \textbf{Measurement Range Configuration}: Supports ±2g, ±4g, and ±8g ranges via the \texttt{XYZ\_DATA\_CFG} register. The system uses ±2g for improved resolution and noise performance. \todo{chequear gs del acelerometro}
+
+    \item \textbf{Burst Read of 6 Output Registers}: Performs a single multi-register transaction to retrieve X, Y, and Z values consistently, minimizing communication overhead and avoiding partial updates.
+
+    \item \textbf{Raw Data Alignment and Extraction}: Converts the sensor's 14-bit left-aligned format into signed 14-bit integers usable by higher-level modules.
+
+    \item \textbf{Conversion to g Units}: Applies sensitivity scaling based on the configured range, providing a convenient floating-point representation.
+
+    \item \textbf{Conversion to m/s²}: Converts from g units to SI units using standard gravity, enabling direct use in physical calculations or movement detection algorithms.
+\end{itemize}
+
+This accelerometer module provides a robust basis for motion sensing, offering clean abstractions for configuration, raw acquisition, and physical-unit conversion while preserving full compatibility with the system's \gls{I2C} infrastructure.
+
 \subsubsection{color.c and color.h}
+
+
 
 \subsubsection{temp\_hum.c and temp\_hum.h}
 
@@ -378,9 +474,9 @@ If the device is reconnected, normal operation resumes.
 \end{lstlisting}
 
 
-\subsection{Thread Stack and CPU Usage Analysis}
+\subsection{Thread Stack and \acrshort{CPU} Usage Analysis}
 
-Zephyr provides runtime diagnostics that allow monitoring of the stack usage and CPU load of each thread in the system. The output shown in the image presents detailed information for all active threads, including their stack consumption, remaining free stack space, and the total number of CPU cycles executed since startup.
+Zephyr provides runtime diagnostics that allow monitoring of the stack usage and \gls{CPU} load of each thread in the system. The output shown in the image presents detailed information for all active threads, including their stack consumption, remaining free stack space, and the total number of \gls{CPU} cycles executed since startup.
 
 \begin{figure}[H]
     \centering
@@ -392,21 +488,21 @@ Zephyr provides runtime diagnostics that allow monitoring of the stack usage and
 It is important to understand the purpose of each thread displayed:
 
 \begin{itemize}
-    \item \textbf{gps\_thread:} Thread responsible for configuring, reading and parsing GPS data.
+    \item \textbf{gps\_thread:} Thread responsible for configuring, reading and parsing \gls{GPS} data.
 
     \item \textbf{sensors\_thread:} Thread responsible for sensor readings (accelerometer, colour sensor, etc.).
 
-    \item \textbf{thread\_analyzer:} Internal diagnostic thread used to collect and report thread metrics such as stack usage. It runs periodically and only consumes CPU during short analysis windows.
+    \item \textbf{thread\_analyzer:} Internal diagnostic thread used to collect and report thread metrics such as stack usage. It runs periodically and only consumes \gls{CPU} during short analysis windows.
 
     \item \textbf{sysworkq:} The global Zephyr system workqueue. It is used to run small background tasks that do not need their own dedicated thread. Typical examples include executing callbacks.  
 
     \item \textbf{logging:} Internal Zephyr thread in charge of processing log messages.
 
-    \item \textbf{idle:} Lowest-priority thread that runs whenever no other thread is ready. It accounts for the majority of CPU cycles, which is expected and desirable in a low-power sensor system.
+    \item \textbf{idle:} Lowest-priority thread that runs whenever no other thread is ready. It accounts for the majority of \gls{CPU} cycles, which is expected and desirable in a low-power sensor system.
 
     \item \textbf{main:} The initial thread created at system startup.
 
-    \item \textbf{ISR0 (ISR stack):} Not a regular thread, but the shared stack region used by all interrupt service routines.
+    \item \textbf{\gls{ISR}0 (\gls{ISR} stack):} Not a regular thread, but the shared stack region used by all interrupt service routines.
 \end{itemize}
 
 For each thread, the following metrics are displayed:
@@ -421,18 +517,15 @@ For each thread, the following metrics are displayed:
 
     As a general guideline, \textbf{stack usage below 60\% is considered safe} in Zephyr, as it leaves enough headroom for context switching, interrupts, and occasional peak loads.
 
-    \item \textbf{CPU:} Shows the percentage of CPU time consumed by each thread.  
-    Most application threads such as \texttt{gps\_thread} or \texttt{sensors\_thread} show 0\% CPU usage because they predominantly sleep while waiting for periodic timers or I/O events.
+    \item \textbf{\gls{CPU}:} Shows the percentage of \gls{CPU} time consumed by each thread.  
+    Most application threads such as \texttt{gps\_thread} or \texttt{sensors\_thread} show 0\% \gls{CPU} usage because they predominantly sleep while waiting for periodic timers or I/O events.
 
-    \item \textbf{Total CPU cycles used:} Indicates the cumulative processor cycles consumed by each thread since boot.  
+    \item \textbf{Total \gls{CPU} cycles used:} Indicates the cumulative processor cycles consumed by each thread since boot.  
     
     Threads like \texttt{idle} present extremely large values, which is expected since the idle thread runs whenever no other thread is ready to execute. A high idle count is a positive indicator of energy efficiency.
 \end{itemize}
 
-This is obtained thanks to the following configuration options enabled in
-\texttt{prj\_nucleo\_wl55jc.conf}, which allow Zephyr to track stack usage,
-assign human-readable thread names, and automatically generate periodic
-thread analysis reports:
+This is obtained thanks to the following configuration options enabled in \texttt{prj\_nucleo\_wl55jc.conf}, which allow Zephyr to track stack usage, assign human-readable thread names, and automatically generate periodic thread analysis reports:
 
 \begin{lstlisting}[caption={Thread stack and CPU usage report - prj\_nucleo\_wl55jc.conf}]
     CONFIG_INIT_STACKS=y
@@ -446,19 +539,19 @@ Overall, the reported values confirm that:
 
 \begin{itemize}
     \item All thread stacks remain within safe usage ranges, with most below the recommended 60\% threshold.
-    \item CPU usage distribution behaves as expected for a sensor-driven, event-based embedded application.
-    \item The idle thread dominates CPU cycles, indicating efficient low-power execution and minimal background processing overhead.
+    \item \gls{CPU} usage distribution behaves as expected for a sensor-driven, event-based embedded application.
+    \item The idle thread dominates \gls{CPU} cycles, indicating efficient low-power execution and minimal background processing overhead.
 \end{itemize}
 
 
 
 \subsection{Compilation and Flashing Output Analysis}
 
-During the compilation process, Zephyr generates a memory usage summary that indicates how much Flash and RAM the final application occupies. As shown in \autoref{fig:build}, after linking the executable \texttt{zephyr.elf}, the memory report provides the following information:
+During the compilation process, Zephyr generates a memory usage summary that indicates how much Flash and \gls{RAM} the final application occupies. As shown in \autoref{fig:build}, after linking the executable \texttt{zephyr.elf}, the memory report provides the following information:
 
 \begin{itemize}
     \item \textbf{FLASH:} 59.024B used out of 256KB (approximately 22.5\%).
-    \item \textbf{RAM:} 13.504B used out of 64KB (approximately 20.6\%).
+    \item \textbf{\gls{RAM}:} 13.504B used out of 64KB (approximately 20.6\%).
 \end{itemize}
 
 This confirms that the firmware comfortably fits within the memory limits of the STM32WL55 microcontroller, leaving sufficient headroom for future improvements or additional functionality.
@@ -476,13 +569,13 @@ The \autoref{fig:flash} corresponds to the flashing process performed using \tex
 
 \begin{itemize}
     \item \textbf{Device:} STM32WLxx.
-    \item \textbf{Flash Size:} 256\,KB.
-    \item \textbf{Core:} ARM Cortex-M4.
-    \item \textbf{Supply Voltage:} 3.28\,V.
+    \item \textbf{Flash Size:} 256KB.
+    \item \textbf{Core:} \gls{ARM} Cortex-M4.
+    \item \textbf{Supply Voltage:} 3.28V.
     \item \textbf{Connection Mode:} Under Reset.
 \end{itemize}
 
-After loading the generated \texttt{zephyr.hex} file (57.64\,KB), the programmer performs the following steps:
+After loading the generated \texttt{zephyr.hex} file (57.64KB), the programmer performs the following steps:
 
 \begin{enumerate}
     \item Erases the internal Flash sectors (0 to 28).
