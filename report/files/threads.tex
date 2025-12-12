@@ -1,0 +1,495 @@
+\subsection{Threads}
+
+\subsubsection{Main Thread}
+
+The \textit{main thread} is the central execution unit responsible for orchestrating all system components, managing timing primitives, handling user input, coordinating with the sensor and \gls{GPS} threads, and maintaining the system state machine. It supervises data acquisition, periodic tasks, visual feedback through the \gls{RGB} \gls{LED}, and statistical computation on measurement data.
+
+The behaviour of the main thread is primarily governed by the current \texttt{system\_mode}, which determines acquisition frequency, \gls{LED} behaviour, activation of measurement threads, and the execution of auxiliary periodic tasks such as statistics computation or software-driven \gls{PWM} for the \gls{RGB} \gls{LED}.
+
+The main thread is responsible for:
+
+\begin{itemize}
+    \item Initializing all system structures, semaphores, timers, and sensors.
+    \item Starting the \texttt{sensors\_thread} and \texttt{gps\_thread}.
+    \item Handling the system button using a Zephyr workqueue.
+    \item Managing three independent timers: the main control timer, the statistics timer, and the \gls{LED} timer.
+    \item Providing visual feedback via the \gls{RGB} \gls{LED} using \gls{PWM} or discrete patterns depending on the operating mode.
+    \item Synchronizing the acquisition cycle with both measurement threads.
+    \item Executing the finite state machine that transitions between \texttt{TEST}, \texttt{NORMAL}, and \texttt{ADVANCED} modes.
+    \item Performing boundary checking on measurement data.
+    \item Computing periodic statistics (min, max, average) using a circular buffer.
+\end{itemize}
+
+The following listing shows the core initialization routine of the main thread, including semaphore creation, \gls{GPIO} configuration for the system button, workqueue configuration, \gls{LED} initialization, and startup of the sensors and \gls{GPS} measurement threads. In \autoref{lst:main_init}, the context structure holds all global state, semaphore handles, active device descriptors, timer objects, and mode-related fields. The main thread continues its execution in the function \texttt{main\_loop()}, which implements the full runtime behaviour.
+
+\begin{lstlisting}[language=C, caption={Main thread initialization sequence}, label={lst:main_init}]
+void main(void) {
+
+    struct system_context ctx = { 0 };
+    struct system_measurement measure = { 0 };
+
+    k_sem_init(&ctx.sensors_sem, 0, 1);
+    k_sem_init(&ctx.main_sensors_sem, 0, 1);
+    k_sem_init(&ctx.gps_sem, 0, 1);
+    k_sem_init(&ctx.main_gps_sem, 0, 1);
+
+    init_button(&ctx);
+    init_rgb_led(&ctx);
+
+    init_timers(&ctx);      // main_timer, stats_timer, rgb_timer
+    init_statistics(&ctx);
+
+    start_sensors_thread(&ctx, &measure);
+    start_gps_thread(&ctx, &measure);
+
+    main_loop(&ctx, &measure);
+}
+\end{lstlisting}
+
+A key component of system behaviour is the button interface. The button is configured as a \gls{GPIO} interrupt. This avoids processing user input inside interrupt context and provides debouncing functionality. The pattern is shown in \autoref{lst:button_handler}.
+
+\begin{lstlisting}[language=C, caption={Button interrupt handling via workqueue}, label={lst:button_handler}]
+static void button_isr(const struct device *dev, struct gpio_callback *cb,
+                       uint32_t pins) {
+    k_work_submit(&ctx->button_work);
+}
+
+static void button_work_handler(struct k_work *work) {
+    struct system_context *ctx = CONTAINER_OF(work, struct system_context, button_work);
+
+    ctx->mode = (ctx->mode + 1) % MODE_COUNT;
+    printk("Mode changed to %d\n", ctx->mode);
+}
+\end{lstlisting}
+
+The main thread configures three periodic timers that generate events at different frequencies. These timers are used to coordinate acquisition cycles, \gls{LED} behaviour, and statistical processing. Their configuration is illustrated in \autoref{lst:timers_config}.  Each timer triggers its handler at a fixed interval. The main timer controls when sensor and \gls{GPS} measurements should occur. The statistics timer processes the measurement buffer. The \gls{LED} timer updates the \gls{RGB} \gls{LED} according to the selected pattern or \gls{PWM} cycle.
+
+\begin{lstlisting}[language=C, caption={Initialization of system periodic timers}, label={lst:timers_config}]
+void init_timers(struct system_context *ctx) {
+
+    k_timer_init(&ctx->main_timer, main_timer_handler, NULL);
+    k_timer_start(&ctx->main_timer, K_SECONDS(1), K_SECONDS(1));
+
+    k_timer_init(&ctx->stats_timer, stats_timer_handler, NULL);
+    k_timer_start(&ctx->stats_timer, K_SECONDS(10), K_SECONDS(10));
+
+    k_timer_init(&ctx->rgb_timer, rgb_timer_handler, NULL);
+    k_timer_start(&ctx->rgb_timer, K_MSEC(20), K_MSEC(20));
+}
+\end{lstlisting}
+
+The core functionality of the main thread is implemented in the \texttt{main\_loop()}, shown in \autoref{lst:main_loop}. The loop waits for periodic timer events and executes different actions based on the system mode.
+
+\begin{lstlisting}[language=C, caption={Main thread execution loop}, label={lst:main_loop}]
+static void main_loop(struct system_context *ctx,
+                      struct system_measurement *measure) {
+
+    while (1) {
+
+        k_sem_take(&ctx->main_sem, K_FOREVER);
+
+        switch (ctx->mode) {
+
+        case TEST_MODE:
+            k_sem_give(&ctx->sensors_sem);
+            k_sem_take(&ctx->main_sensors_sem, K_FOREVER);
+
+            k_sem_give(&ctx->gps_sem);
+            k_sem_take(&ctx->main_gps_sem, K_FOREVER);
+
+            validate_measurements(ctx, measure);
+            break;
+
+        case NORMAL_MODE:
+            k_sem_give(&ctx->sensors_sem);
+            k_sem_take(&ctx->main_sensors_sem, K_FOREVER);
+
+            if (ctx->gps_available) {
+                k_sem_give(&ctx->gps_sem);
+                k_sem_take(&ctx->main_gps_sem, K_FOREVER);
+            }
+
+            validate_measurements(ctx, measure);
+            break;
+
+        case ADVANCED_MODE:
+            update_advanced_pwm(ctx, measure);
+            break;
+        }
+    }
+}
+\end{lstlisting}
+
+Before storing measurement values or using them for decision-making, the main thread executes a validation step that checks for invalid or out-of-range readings. This ensures system robustness and prevents misleading data from propagating through the statistics module. The validation routine is shown in \autoref{lst:validation}.
+
+\begin{lstlisting}[language=C, caption={Measurement validation routine}, label={lst:validation}]
+static void validate_measurements(struct system_context *ctx,
+                                  struct system_measurement *m) {
+
+    if (m->brightness < 0) m->brightness = 0;
+    if (m->moisture < 0)   m->moisture  = 0;
+
+    if (m->temp < -5000 || m->temp > 8000)
+        printk("Temperature out of range\n");
+
+    if (m->hum < 0 || m->hum > 10000)
+        printk("Humidity out of range\n");
+}
+\end{lstlisting}
+
+The statistics subsystem maintains a circular buffer of recent measurement samples and computes minimum, maximum, and average values. The periodic handler shown in \autoref{lst:stats} processes the collected data every one hour.
+
+\begin{lstlisting}[language=C, caption={Periodic statistical processing}, label={lst:stats}]
+static void stats_timer_handler(struct k_timer *timer) {
+    struct system_context *ctx = k_timer_user_data_get(timer);
+
+    compute_statistics(&ctx->stats_buffer, &ctx->stats);
+
+    printk("Stats: avg=%d min=%d max=%d\n",
+        ctx->stats.avg, ctx->stats.min, ctx->stats.max);
+}
+\end{lstlisting}
+
+Finally, the public header that exposes the main thread interface and associated structures is shown in \autoref{lst:main_header}.
+
+\begin{lstlisting}[language=C, caption={Main thread public interface}, label={lst:main_header}]
+#ifndef MAIN_H
+#define MAIN_H
+
+#include <zephyr/kernel.h>
+
+struct system_context {
+    // Mode, semaphores, timers, devices, LED, buffers, etc.
+};
+
+struct system_measurement {
+    // All sensor and GPS fields stored atomically
+};
+
+void main(void);
+
+#endif /* MAIN_H */
+\end{lstlisting}
+
+
+The statistics engine processes measurement data periodically to compute:
+
+\begin{itemize}
+    \item Minimum, maximum, and average values of key sensors.
+    \item Storage of results in a dedicated \texttt{stats\_buffer} for further reporting.
+    \item Thread-safe access to shared data using atomic operations or semaphores.
+\end{itemize}
+
+A circular buffer is maintained to hold the last N samples. On every statistics timer tick (10-second interval), the buffer is processed to calculate aggregated metrics.
+
+\begin{lstlisting}[language=C, caption={Circular buffer structure and initialization}, label={lst:stats_buffer}]
+#define STATS_BUFFER_SIZE 100
+
+struct stats_buffer {
+    int32_t brightness[STATS_BUFFER_SIZE];
+    int32_t moisture[STATS_BUFFER_SIZE];
+    size_t index;
+};
+
+void init_statistics(struct system_context *ctx) {
+    memset(&ctx->stats_buffer, 0, sizeof(ctx->stats_buffer));
+    ctx->stats_buffer.index = 0;
+}
+\end{lstlisting}
+
+The computation routine iterates over valid buffer entries to determine the minimum, maximum, and average. Results are stored in a statistics structure, which is logged periodically.
+
+\begin{lstlisting}[language=C, caption={Statistics computation routine}, label={lst:compute_stats}]
+static void compute_statistics(struct stats_buffer *buf, struct stats *out) {
+
+    int64_t sum = 0;
+    int32_t min = INT32_MAX;
+    int32_t max = INT32_MIN;
+
+    for (size_t i = 0; i < STATS_BUFFER_SIZE; ++i) {
+        int32_t val = buf->brightness[i];
+
+        if (val == 0) continue; // skip empty entries
+
+        if (val < min) min = val;
+        if (val > max) max = val;
+        sum += val;
+    }
+
+    out->min = min;
+    out->max = max;
+    out->avg = (int32_t)(sum / STATS_BUFFER_SIZE);
+}
+\end{lstlisting}
+
+The statistics timer handler, \texttt{stats\_timer\_handler} (\autoref{lst:stats}), triggers this computation and logs the resulting metrics for monitoring purposes.
+
+
+
+
+
+\subsubsection{Sensors Thread}
+
+The sensors measurement thread handles the acquisition of data from a heterogeneous set of devices, including:
+
+\begin{itemize}
+    \item \textbf{\gls{ADC} sensors:} ambient brightness and soil moisture.
+    \item \textbf{\gls{I2C} sensors:} accelerometer, temperature/humidity sensor, and \gls{RGB} color sensor.
+\end{itemize}
+
+The thread stores all gathered data in the shared \texttt{system\_measurement} structure using atomic operations to guarantee thread-safe data consistency.
+
+The initialization routine creates the sensors thread and assigns its execution parameters. The thread begins running immediately after creation.
+
+\begin{lstlisting}[language=C, caption={Sensors thread initialization}, label={lst:start_sensors}]
+void start_sensors_thread(struct system_context *ctx,
+                          struct system_measurement *measure) {
+
+    k_thread_create(&sensors_thread_data,
+                    sensors_stack,
+                    K_THREAD_STACK_SIZEOF(sensors_stack),
+                    sensors_thread_fn,
+                    ctx, measure, NULL,
+                    SENSORS_THREAD_PRIORITY, 0, K_NO_WAIT);
+
+    k_thread_name_set(&sensors_thread_data, "sensors_thread");
+}
+\end{lstlisting}
+
+The configuration of the sensors thread includes the definition of its stack, priority, and control block, as shown in \autoref{lst:sensors_config}. Zephyr's \texttt{K\_THREAD\_STACK\_DEFINE} macro is used to statically allocate the execution stack.
+
+\begin{lstlisting}[language=C, caption={Sensors thread configuration}, label={lst:sensors_config}]
+#define SENSORS_THREAD_STACK_SIZE 1024
+#define SENSORS_THREAD_PRIORITY   5
+
+K_THREAD_STACK_DEFINE(sensors_stack, SENSORS_THREAD_STACK_SIZE);
+static struct k_thread sensors_thread_data;
+\end{lstlisting}
+
+\gls{ADC}-based sensors (brightness and soil moisture) are processed using the utility function \texttt{read\_adc\_percentage()}, shown in Listing~\ref{lst:adc_read}. This function converts the raw ADC voltage into a scaled percentage value, expressed as percentage times ten to preserve one decimal point of precision.
+
+\begin{lstlisting}[language=C, caption={ADC percentage acquisition helper function}, label={lst:adc_read}]
+static void read_adc_percentage(const struct adc_config *cfg, atomic_t *target,
+                                const char *label, int32_t *mv)
+{
+    if (adc_read_voltage(cfg, mv) == 0) {
+        int32_t percent10 = ((*mv) * 1000) / cfg->vref_mv;
+        atomic_set(target, percent10);
+    } else {
+        printk("[ADC]: %s read error\n", label);
+    }
+}
+\end{lstlisting}
+
+The accelerometer is interfaced over \gls{I2C} and provides raw XYZ readings which are converted to acceleration values in m/s\(^2\) using the device's full-scale range. The processed values are scaled by 100 to preserve two decimal places of resolution. \autoref{lst:accel_read} shows the implementation of the accelerometer handling routine.
+
+\begin{lstlisting}[language=C, caption={Accelerometer data acquisition}, label={lst:accel_read}]
+static void read_accelerometer(const struct i2c_dt_spec *dev, uint8_t range,
+                               atomic_t *x_ms2, atomic_t *y_ms2, atomic_t *z_ms2) {
+    int16_t x_raw, y_raw, z_raw;
+    float x_val, y_val, z_val;
+
+    if (accel_read_xyz(dev, &x_raw, &y_raw, &z_raw) == 0) {
+        accel_convert_to_ms2(x_raw, range, &x_val);
+        accel_convert_to_ms2(y_raw, range, &y_val);
+        accel_convert_to_ms2(z_raw, range, &z_val);
+
+        atomic_set(x_ms2, (int32_t)(x_val * 100));
+        atomic_set(y_ms2, (int32_t)(y_val * 100));
+        atomic_set(z_ms2, (int32_t)(z_val * 100));
+    } else {
+        printk("[ACCELEROMETER] - Error reading accelerometer\n");
+    }
+}
+\end{lstlisting}
+
+The temperature and humidity sensor also communicates through \gls{I2C}. Humidity measurement implicitly triggers a temperature conversion, after which the associated temperature value can be read. Both humidity and temperature values are scaled by a factor of 100.
+
+\begin{lstlisting}[language=C, caption={Temperature and humidity acquisition}, label={lst:temp_hum}]
+static void read_temperature_humidity(const struct i2c_dt_spec *dev,
+                                      atomic_t *temp, atomic_t *hum) {
+
+    float humidity;
+
+    if (temp_hum_read_humidity(dev, &humidity) == 0) {
+        float temperature;
+        uint8_t buf[2];
+
+        int ret = i2c_write_read_dt(dev,
+                                    (uint8_t[]){ TH_READ_TEMP_FROM_RH },
+                                    1, buf, 2);
+
+        if (ret == 0) {
+            uint16_t raw_temp = ((uint16_t)buf[0] << 8) | buf[1];
+            temperature = ((175.72f * raw_temp) / 65536.0f) - 46.85f;
+        } else {
+            printk("[TEMP_HUM SENSOR] - Error reading temperature from RH (%d)\n", ret);
+            return;
+        }
+
+        atomic_set(hum,  (int32_t)(humidity * 100));
+        atomic_set(temp, (int32_t)(temperature * 100));
+
+    } else {
+        printk("[TEMP_HUM SENSOR] - Read error (humidity)\n");
+    }
+}
+\end{lstlisting}
+
+The \gls{RGB} color sensor provides raw red, green, blue, and clear-channel information. These values are written directly into the measurement structure without additional scaling, as shown in \autoref{lst:color_read}.
+
+\begin{lstlisting}[language=C, caption={Color sensor acquisition}, label={lst:color_read}]
+static void read_color_sensor(const struct i2c_dt_spec *dev,
+                              struct system_measurement *measure) {
+    ColorSensorData color_data;
+
+    if (color_read_rgb(dev, &color_data) == 0) {
+        atomic_set(&measure->red,   color_data.red);
+        atomic_set(&measure->green, color_data.green);
+        atomic_set(&measure->blue,  color_data.blue);
+        atomic_set(&measure->clear, color_data.clear);
+    } else {
+        printk("[COLOR SENSOR] - Read error\n");
+    }
+}
+\end{lstlisting}
+
+The main execution loop of the sensors thread is shown below. The thread waits for a semaphore signal before performing a complete acquisition cycle across all sensors. Once finished, it releases a semaphore to notify the main thread that new measurements are available.
+
+\begin{lstlisting}[language=C, caption={Sensors thread main loop}, label={lst:sensors_thread_fn}]
+static void sensors_thread_fn(void *arg1, void *arg2, void *arg3) {
+    struct system_context *ctx = (struct system_context *)arg1;
+    struct system_measurement *measure = (struct system_measurement *)arg2;
+
+    int32_t mv = 0;
+
+    while (1) {
+        k_sem_take(ctx->sensors_sem, K_FOREVER);
+
+        read_adc_percentage(ctx->phototransistor, &measure->brightness, "Brightness", &mv);
+        read_adc_percentage(ctx->soil_moisture, &measure->moisture, "Moisture", &mv);
+        read_accelerometer(ctx->accelerometer, ctx->accel_range,
+                           &measure->accel_x_g, &measure->accel_y_g, &measure->accel_z_g);
+        read_temperature_humidity(ctx->temp_hum, &measure->temp, &measure->hum);
+        read_color_sensor(ctx->color, measure);
+
+        k_sem_give(ctx->main_sensors_sem);
+    }
+}
+\end{lstlisting}
+
+The public interface for the sensors thread is shown in \autoref{lst:sensors_header}. It exposes the initialization function and documents the required input structures.
+
+\begin{lstlisting}[language=C, caption={Sensors thread public header}, label={lst:sensors_header}]
+#ifndef SENSORS_THREAD_H
+#define SENSORS_THREAD_H
+
+#include "main.h"
+
+void start_sensors_thread(struct system_context *ctx,
+                          struct system_measurement *measure);
+
+#endif /* SENSORS_THREAD_H */
+\end{lstlisting}
+
+
+\subsubsection{\acrshort{GPS} Thread}
+
+The \gls{GPS} measurement thread is responsible for interfacing with the \gls{GPS} driver, extracting relevant \gls{NMEA} \gls{GGA} information, and updating the global \texttt{system\_measurement} structure. Its main characteristics include:
+
+\begin{itemize}
+    \item Periodic \gls{GPS} polling synchronized with the system's operational mode.
+    \item Thread-safe shared-memory updates using atomic setters.
+    \item Use of semaphores, thread stacks, and thread control blocks.
+    \item Scaled integer representation of latitude, longitude, altitude, and \gls{UTC} time.
+\end{itemize}
+
+The \gls{GPS} measurement thread is created and launched through the function \texttt{start\_gps\_thread()}, shown in \autoref{lst:start_thread}. This routine initializes the thread with its designated stack, priority, entry function, and arguments.
+
+\begin{lstlisting}[language=C, caption={Initialization of the \acrshort{GPS} measurement thread}, label={lst:start_thread}]
+void start_gps_thread(struct system_context *ctx,
+                      struct system_measurement *measure) {
+
+    k_thread_create(&gps_thread_data,
+                    gps_stack,
+                    K_THREAD_STACK_SIZEOF(gps_stack),
+                    gps_thread_fn,
+                    ctx, measure, NULL,
+                    GPS_THREAD_PRIORITY, 0, K_NO_WAIT);
+
+    k_thread_name_set(&gps_thread_data, "gps_thread");
+}
+\end{lstlisting}
+
+Memory allocation and priority assignment for the \gls{GPS} thread are specified as shown in \autoref{lst:gps_config}. A dedicated stack is defined using Zephyr's \texttt{K\_THREAD\_STACK\_DEFINE} macro, and a thread control block is declared to manage its execution context.
+
+\begin{lstlisting}[language=C, caption={GPS thread configuration in Zephyr}, label={lst:gps_config}]
+#define GPS_THREAD_STACK_SIZE 1024
+#define GPS_THREAD_PRIORITY   5
+
+K_THREAD_STACK_DEFINE(gps_stack, GPS_THREAD_STACK_SIZE);
+static struct k_thread gps_thread_data;
+\end{lstlisting}
+
+The core of the \gls{GPS} data-handling logic is encapsulated in the helper function \texttt{read\_gps\_data()}, shown in \autoref{lst:read_gps}. This function waits for a valid \gls{NMEA} \gls{GGA} frame, extracts geographic coordinates, altitude, satellite count, and \gls{UTC} time, and stores them as scaled integers in the shared measurement structure.
+
+Latitude and longitude are scaled by \(10^6\) to preserve decimal precision, while altitude is scaled by a factor of 100. \gls{UTC} time is encoded in the \texttt{HHMMSS} format as a six-digit integer. Adding 1 to the hour component accounts for timezone adjustment (Spain \gls{UTC}+1).
+
+\begin{lstlisting}[language=C, caption={\acrshort{GPS} data acquisition helper function}, label={lst:read_gps}]
+static void read_gps_data(gps_data_t *data,
+                          struct system_measurement *measure,
+                          struct system_context *ctx) {
+
+    if (gps_wait_for_gga(data, K_MSEC(1000)) == 0) {
+        atomic_set(&measure->gps_lat,  (int32_t)(data->lat * 1e6f));
+        atomic_set(&measure->gps_lon,  (int32_t)(data->lon * 1e6f));
+        atomic_set(&measure->gps_alt,  (int32_t)(data->alt * 100.0f));
+        atomic_set(&measure->gps_sats, (int32_t)data->sats);
+
+        if (strlen(data->utc_time) >= 6) {
+            int hh = (data->utc_time[0] - '0') * 10 + (data->utc_time[1] - '0') + 1;
+            int mm = (data->utc_time[2] - '0') * 10 + (data->utc_time[3] - '0');
+            int ss = (data->utc_time[4] - '0') * 10 + (data->utc_time[5] - '0');
+
+            int time_int = hh * 10000 + mm * 100 + ss;
+            atomic_set(&measure->gps_time, time_int);
+        } else {
+            atomic_set(&measure->gps_time, -1);
+        }
+
+    } else {
+        printk("[GPS] - Timeout or invalid data\n");
+    }
+}
+\end{lstlisting}
+
+The main execution loop of the \gls{GPS} thread is shown in \autoref{lst:gps_thread_fn}. The thread waits for a semaphore signal indicating that a \gls{GPS} reading should be performed. Once awakened, it acquires a new GPS sample and signals the main thread upon completion. This mechanism provides deterministic synchronization between system components.
+
+\begin{lstlisting}[language=C, caption={\acrshort{GPS} thread entry routine}, label={lst:gps_thread_fn}]
+static void gps_thread_fn(void *arg1, void *arg2, void *arg3) {
+    struct system_context *ctx = (struct system_context *)arg1;
+    struct system_measurement *measure = (struct system_measurement *)arg2;
+
+    gps_data_t gps_data = {0};
+
+    while (1) {
+        k_sem_take(ctx->gps_sem, K_FOREVER);
+        read_gps_data(&gps_data, measure, ctx);
+        k_sem_give(ctx->main_gps_sem);
+    }
+}
+\end{lstlisting}
+
+The corresponding public interface is declared in the header file \texttt{gps\_thread.h}. As shown below, it specifies the initialization function and documents the dependency on \texttt{system\_context} and \texttt{system\_measurement} structures.
+
+\begin{lstlisting}[language=C, caption={GPS thread public interface}, label={lst:gps_header}]
+#ifndef GPS_THREAD_H
+#define GPS_THREAD_H
+
+#include "main.h"
+
+void start_gps_thread(struct system_context *ctx,
+                      struct system_measurement *measure);
+
+#endif /* GPS_THREAD_H */
+\end{lstlisting}
