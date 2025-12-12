@@ -610,6 +610,9 @@ INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcbx10
 INPUT .\files\threads.tex
 INPUT .\files\threads.tex
 INPUT files\threads.tex
+INPUT .\files\main.tex
+INPUT .\files\main.tex
+INPUT files\main.tex
 INPUT .\images\stack.png
 INPUT .\images\stack.png
 INPUT .\images\stack.png

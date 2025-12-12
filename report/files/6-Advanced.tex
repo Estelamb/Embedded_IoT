@@ -153,6 +153,6 @@ Step-by-step explanation:
     \item After sleeping, the loop checks \texttt{k\_sem\_take(\&main\_sem, K\_NO\_WAIT)} to determine whether a semaphore has been signalled. If the semaphore is available, the loop exits gracefully. The semaphore is triggered either when the user presses the button or when the 30-second timeout associated with each \textit{ADVANCED} mode cycle elapses.
 \end{enumerate}
 
-\subsection{Result}
+\subsection{Result}\label{adv_results}
 \todo{capturas}
 The software-based \gls{PWM} strategy successfully reproduces the colour detected by the \gls{RGB} sensor. The \gls{LED} output maintains the same chromatic proportions observed in the ambient light, while ensuring smooth transitions and stable operation. The system preserves full compatibility with the existing hardware configuration and maintains identical behaviour to the \textit{NORMAL} mode regarding synchronisation, timing, and user interaction.

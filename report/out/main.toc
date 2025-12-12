@@ -3,7 +3,7 @@
 \contentsline {section}{List of Figures}{iii}{section*.1}%
 \contentsline {section}{List of Tables}{iii}{section*.2}%
 \contentsline {section}{List of Listings}{iii}{section*.3}%
-\contentsline {section}{Acronyms}{iv}{section*.6}%
+\contentsline {section}{Acronyms}{v}{section*.6}%
 \vspace {1em}
 \contentsline {section}{\numberline {1}Overview and Introduction}{1}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Document Overview}{1}{subsection.1.1}%
@@ -48,27 +48,40 @@
 \contentsline {subsubsection}{\numberline {4.1.6}Secure Initialization}{18}{subsubsection.4.1.6}%
 \contentsline {subsubsection}{\numberline {4.1.7}Device Disconnected}{19}{subsubsection.4.1.7}%
 \contentsline {subsection}{\numberline {4.2}Modules}{19}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}adc.c and adc.h}{21}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.1}adc.c and adc.h}{20}{subsubsection.4.2.1}%
 \contentsline {subsubsection}{\numberline {4.2.2}gps.c and gps.h}{21}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}i2c.c and i2c.h}{22}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.3}i2c.c and i2c.h}{21}{subsubsection.4.2.3}%
 \contentsline {subsubsection}{\numberline {4.2.4}accel.c and accel.h}{22}{subsubsection.4.2.4}%
 \contentsline {subsubsection}{\numberline {4.2.5}color.c and color.h}{23}{subsubsection.4.2.5}%
-\contentsline {subsubsection}{\numberline {4.2.6}temp\_hum.c and temp\_hum.h}{24}{subsubsection.4.2.6}%
-\contentsline {subsubsection}{\numberline {4.2.7}board\_led.c and board\_led.h}{24}{subsubsection.4.2.7}%
-\contentsline {subsubsection}{\numberline {4.2.8}rgb\_led.c and rgb\_led.h}{25}{subsubsection.4.2.8}%
+\contentsline {subsubsection}{\numberline {4.2.6}temp\_hum.c and temp\_hum.h}{23}{subsubsection.4.2.6}%
+\contentsline {subsubsection}{\numberline {4.2.7}rgb\_led.c and rgb\_led.h}{24}{subsubsection.4.2.7}%
+\contentsline {subsubsection}{\numberline {4.2.8}board\_led.c and board\_led.h}{24}{subsubsection.4.2.8}%
 \contentsline {subsubsection}{\numberline {4.2.9}user\_button.c and user\_button.h}{25}{subsubsection.4.2.9}%
-\contentsline {subsection}{\numberline {4.3}Threads}{26}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Main Thread}{26}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Sensors Thread}{26}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}\acrshort {GPS} Thread}{29}{subsubsection.4.3.3}%
-\contentsline {subsection}{\numberline {4.4}Zephyr \acrshort {RTOS}}{31}{subsection.4.4}%
-\contentsline {subsubsection}{\numberline {4.4.1}prj\_nucleo\_wl55jc.conf}{31}{subsubsection.4.4.1}%
-\contentsline {subsubsection}{\numberline {4.4.2}nucleo\_wl55jc.overlay}{31}{subsubsection.4.4.2}%
-\contentsline {subsection}{\numberline {4.5}Thread Stack and \acrshort {CPU} Usage Analysis}{32}{subsection.4.5}%
-\contentsline {subsection}{\numberline {4.6}Compilation and Flashing Output Analysis}{33}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Flashing the Firmware onto the STM32WL55}{34}{subsection.4.7}%
-\contentsline {subsection}{\numberline {4.8}Code Documentation}{35}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.3}Threads}{25}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Sensors Thread}{25}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}\acrshort {GPS} Thread}{28}{subsubsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.4}Main}{30}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Zephyr \acrshort {RTOS}}{30}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}prj\_nucleo\_wl55jc.conf}{30}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}nucleo\_wl55jc.overlay}{31}{subsubsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.6}Thread Stack and \acrshort {CPU} Usage Analysis}{31}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Compilation and Flashing Output Analysis}{33}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Flashing the Firmware onto the STM32WL55}{33}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.9}Code Documentation}{34}{subsection.4.9}%
 \contentsline {section}{\numberline {5}Results}{36}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Unitary Tests}{36}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}System Tests}{36}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Initialisation}{36}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Measurements}{36}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Mode Changes}{36}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}\acrshort {RGB} Dominant color (TEST MODE)}{36}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.5}Limits Check (NORMAL MODE)}{36}{subsubsection.5.2.5}%
+\contentsline {subsubsection}{\numberline {5.2.6}\acrshort {RGB} Alarms (NORMAL MODE)}{36}{subsubsection.5.2.6}%
+\contentsline {subsubsection}{\numberline {5.2.7}Statistics Comprobation}{36}{subsubsection.5.2.7}%
+\contentsline {subsubsection}{\numberline {5.2.8}ADVANCED MODE}{36}{subsubsection.5.2.8}%
+\contentsline {subsection}{\numberline {5.3}External Tests}{36}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}CPP Check}{36}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Valgrind}{36}{subsubsection.5.3.2}%
 \contentsline {section}{\numberline {6}Advanced Specifications Implemented}{37}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Problem Statement}{37}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Implementation}{37}{subsection.6.2}%
