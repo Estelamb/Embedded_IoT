@@ -300,7 +300,7 @@ The system includes an MMA8451Q 3-axis digital accelerometer\cite{industriesAdaf
 
 The MMA8451Q outputs digital values corresponding to the acceleration experienced along each axis, which includes static acceleration due to gravity. By convention, the Z-axis measures the acceleration in the vertical direction, while X and Y correspond to horizontal directions.
 
-The raw digital readings from the sensor can be converted into acceleration in units of gravitational acceleration (\(g\)), using the sensor's sensitivity parameter (\(S_\text{range}\)), which depends on the configured full-scale range (e.g., ±2g, ±4g, or ±8g): \todo{revisar rangos del acelerometro}
+The raw digital readings from the sensor can be converted into acceleration in units of gravitational acceleration (\(g\)), using the sensor's sensitivity parameter (\(S_\text{range}\)), which depends on the configured full-scale range (e.g., ±2g, ±4g, or ±8g): 
 
 \[
 a_\text{axis} \,[g] = \frac{\text{Raw\_value}}{2^{12-1}} \cdot S_\text{range}

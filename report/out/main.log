@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.18)  12 DEC 2025 18:49
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.2.18)  13 DEC 2025 20:14
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1168,15 +1168,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 16--16
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.53 ...}i2c.c and i2c.h}{21}{subsubsection.4.2.3}
+l.53 ...}i2c.c and i2c.h}{23}{subsubsection.4.2.3}
                                                   % [1
 
 
-])
+] [2])
 \tf@toc=\write6
 \openout6 = `main.toc'.
 
- [2] (c:\Users\Estela\Embedded_IoT\report\out\main.lof)
+ [3] (c:\Users\Estela\Embedded_IoT\report\out\main.lof)
 \tf@lof=\write7
 \openout7 = `main.lof'.
 
@@ -1184,27 +1184,27 @@ l.53 ...}i2c.c and i2c.h}{21}{subsubsection.4.2.3}
 \tf@lot=\write8
 \openout8 = `main.lot'.
 
- (c:\Users\Estela\Embedded_IoT\report\out\main.lol)
+ (c:\Users\Estela\Embedded_IoT\report\out\main.lol [4
+
+])
 \tf@lol=\write9
 \openout9 = `main.lol'.
 
- [3
-
-]
+ [5]
 \openout2 = `files/Glossary.aux'.
 
  (files/Glossary.tex
 
 Package glossaries Info: Preparing to sort glossary `acronym' (total number of
-(glossaries)             referenced entries: 40)
+(glossaries)             referenced entries: 43)
 
-[4
+[6
 
-]) [5] (c:\Users\Estela\Embedded_IoT\report\out\main.tdo)
+]) [7] (c:\Users\Estela\Embedded_IoT\report\out\main.tdo)
 \tf@tdo=\write10
 \openout10 = `main.tdo'.
 
- [6
+ [8
 
 
 ]
@@ -1266,7 +1266,7 @@ Overfull \hbox (22.4115pt too wide) in paragraph at lines 119--133
 \openout2 = `files/3-Hardware.aux'.
 
  (files/3-Hardware.tex
-<images/block_diagram.png, id=798, 3038.35126pt x 1885.0425pt>
+<images/block_diagram.png, id=995, 3038.35126pt x 1885.0425pt>
 File: images/block_diagram.png Graphic file (type png)
 <use images/block_diagram.png>
 Package pdftex.def Info: images/block_diagram.png  used on input line 11.
@@ -1355,42 +1355,32 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 [7
 
 ]
-<images/rgb_circuit.png, id=963, 496.85625pt x 620.3175pt>
+<images/rgb_circuit.png, id=1159, 496.85625pt x 620.3175pt>
 File: images/rgb_circuit.png Graphic file (type png)
 <use images/rgb_circuit.png>
 Package pdftex.def Info: images/rgb_circuit.png  used on input line 209.
 (pdftex.def)             Requested size: 135.89174pt x 169.6555pt.
  [8 <./images/rgb_circuit.png>]
-<images/photo_circuit.png, id=977, 322.20375pt x 238.64156pt>
+<images/photo_circuit.png, id=1173, 322.20375pt x 238.64156pt>
 File: images/photo_circuit.png Graphic file (type png)
 <use images/photo_circuit.png>
 Package pdftex.def Info: images/photo_circuit.png  used on input line 222.
 (pdftex.def)             Requested size: 181.18439pt x 134.19911pt.
-<images/soil_circuit.png, id=982, 152.82094pt x 131.74219pt>
+<images/soil_circuit.png, id=1178, 152.82094pt x 131.74219pt>
 File: images/soil_circuit.png Graphic file (type png)
 <use images/soil_circuit.png>
 Package pdftex.def Info: images/soil_circuit.png  used on input line 252.
 (pdftex.def)             Requested size: 181.18439pt x 156.20021pt.
- [9 <./images/photo_circuit.png>] [10 <./images/soil_circuit.png>]
-Overfull \hbox (6.50009pt too wide) in paragraph at lines 303--303
-\OT1/cmr/m/n/10 acelerometro[]  
- []
-
-
-Overfull \hbox (6.50009pt too wide) in paragraph at lines 303--303
-\OT1/cmr/m/n/10 acelerometro[]  
- []
-
-[11]) [12]
+ [9 <./images/photo_circuit.png>] [10 <./images/soil_circuit.png>] [11]) [12]
 \openout2 = `files/4-Software.aux'.
 
  (files/4-Software.tex (files/global.tex
-<images/state_machine.png, id=1049, 602.25pt x 347.79938pt>
+<images/state_machine.png, id=1245, 602.25pt x 347.79938pt>
 File: images/state_machine.png Graphic file (type png)
 <use images/state_machine.png>
 Package pdftex.def Info: images/state_machine.png  used on input line 13.
 (pdftex.def)             Requested size: 448.4407pt x 258.98613pt.
-<images/test_mode.png, id=1055, 549.55313pt x 720.44156pt>
+<images/test_mode.png, id=1251, 549.55313pt x 720.44156pt>
 File: images/test_mode.png Graphic file (type png)
 <use images/test_mode.png>
 Package pdftex.def Info: images/test_mode.png  used on input line 39.
@@ -1400,13 +1390,13 @@ Package pdftex.def Info: images/test_mode.png  used on input line 39.
 
 
  <./images/state_machine.png>] [14 <./images/test_mode.png>]
-<images/normal_mode.png, id=1087, 720.44156pt x 737.00343pt>
+<images/normal_mode.png, id=1283, 720.44156pt x 737.00343pt>
 File: images/normal_mode.png Graphic file (type png)
 <use images/normal_mode.png>
 Package pdftex.def Info: images/normal_mode.png  used on input line 66.
 (pdftex.def)             Requested size: 448.4407pt x 458.74797pt.
  [15 <./images/normal_mode.png>]
-<images/advanced_mode.png, id=1103, 542.77782pt x 691.08188pt>
+<images/advanced_mode.png, id=1299, 542.77782pt x 691.08188pt>
 File: images/advanced_mode.png Graphic file (type png)
 <use images/advanced_mode.png>
 Package pdftex.def Info: images/advanced_mode.png  used on input line 87.
@@ -1416,30 +1406,28 @@ LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 115.
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 155.
  [17] [18]
-
-LaTeX Warning: Marginpar on page 19 moved.
-
-) (files/modules.tex
-<images/modules.png, id=1186, 277.911pt x 263.457pt>
+<images/no_init.png, id=1383, 310.91156pt x 170.13562pt>
+File: images/no_init.png Graphic file (type png)
+<use images/no_init.png>
+Package pdftex.def Info: images/no_init.png  used on input line 266.
+(pdftex.def)             Requested size: 317.07614pt x 173.51006pt.
+<images/no_measurements.png, id=1384, 526.257pt x 281.415pt>
+File: images/no_measurements.png Graphic file (type png)
+<use images/no_measurements.png>
+Package pdftex.def Info: images/no_measurements.png  used on input line 283.
+(pdftex.def)             Requested size: 407.66833pt x 217.99988pt.
+) [19 <./images/no_init.png>] [20 <./images/no_measurements.png>] (files/modules.tex
+<images/modules.png, id=1422, 277.911pt x 263.457pt>
 File: images/modules.png Graphic file (type png)
 <use images/modules.png>
 Package pdftex.def Info: images/modules.png  used on input line 7.
 (pdftex.def)             Requested size: 249.13371pt x 236.17647pt.
- [19 <./images/modules.png>]
 LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 19.
  (C:\Users\Estela\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmtt.fd
 File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
-) [20] [21]
-Overfull \hbox (6.50009pt too wide) in paragraph at lines 133--133
-\OT1/cmr/m/n/10 acelerometro[]  
- []
+) [21
 
-
-Overfull \hbox (6.50009pt too wide) in paragraph at lines 133--133
-\OT1/cmr/m/n/10 acelerometro[]  
- []
-
-[22] [23]
+ <./images/modules.png>] [22] [23] [24]
 Overfull \hbox (5.97122pt too wide) in paragraph at lines 195--196
 []\OT1/cmr/bx/n/10 Bus-Based [][]GPIO[] Ini-tial-iza-tion\OT1/cmr/m/n/10 : \OT1/cmtt/m/n/10 rgb[]led[]init() \OT1/cmr/m/n/10 it-er-ates over all pins de-fined in the \OT1/cmtt/m/n/10 bus[]rgb[]led
  []
@@ -1449,90 +1437,222 @@ Overfull \hbox (33.1371pt too wide) in paragraph at lines 199--200
 []\OT1/cmr/bx/n/10 Convenience Color Func-tions\OT1/cmr/m/n/10 : Func-tions such as \OT1/cmtt/m/n/10 rgb[]red()\OT1/cmr/m/n/10 , \OT1/cmtt/m/n/10 rgb[]green()\OT1/cmr/m/n/10 , \OT1/cmtt/m/n/10 rgb[]blue()\OT1/cmr/m/n/10 , \OT1/cmtt/m/n/10 rgb[]yellow()\OT1/cmr/m/n/10 ,
  []
 
-
+[25]
 Overfull \hbox (5.08247pt too wide) in paragraph at lines 219--220
 []\OT1/cmr/bx/n/10 Convenience Func-tions for Col-ors\OT1/cmr/m/n/10 : The mod-ule pro-vides higher-level func-tions (\OT1/cmtt/m/n/10 red()\OT1/cmr/m/n/10 , \OT1/cmtt/m/n/10 green()\OT1/cmr/m/n/10 ,
  []
 
-[24]) (files/threads.tex [25]
+[26]) [27] (files/threads.tex
 Overfull \hbox (39.39731pt too wide) in paragraph at lines 41--42
 [][][]\OT1/cmr/m/n/10 ADC[]-based sen-sors (bright-ness and soil mois-ture) are pro-cessed us-ing the util-ity func-tion \OT1/cmtt/m/n/10 read[]adc[]percentage()\OT1/cmr/m/n/10 ,
  []
 
-[26] [27]
+[28
+
+] [29]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\acrshort' on input line 168.
 
-[28] [29]
+[30] [31]
 Overfull \hbox (9.70232pt too wide) in paragraph at lines 255--256
 \OT1/cmr/m/n/10 fies the ini-tial-iza-tion func-tion and doc-u-ments the de-pen-dency on \OT1/cmtt/m/n/10 system[]context \OT1/cmr/m/n/10 and \OT1/cmtt/m/n/10 system[]measurement
  []
 
-) (files/main.tex)
+) [32] (files/main.tex [33
+
+] [34] [35] [36] [37] [38] [39] [40] [41] [42] [43] [44]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 706.
+
+[45] [46]) [47]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\acrshort' on input line 12.
 
-[30]
+[48
+
+]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\acrshort' on input line 92.
 
-<images/stack.png, id=1676, 402.00188pt x 210.7875pt>
+<images/stack.png, id=2700, 402.00188pt x 210.7875pt>
 File: images/stack.png Graphic file (type png)
 <use images/stack.png>
 Package pdftex.def Info: images/stack.png  used on input line 98.
 (pdftex.def)             Requested size: 362.37569pt x 190.00934pt.
-[31] [32 <./images/stack.png>]
-<images/build.png, id=1744, 300.3722pt x 67.0003pt>
+[49 <./images/stack.png>]
+<images/build.png, id=2745, 300.3722pt x 67.0003pt>
 File: images/build.png Graphic file (type png)
 <use images/build.png>
 Package pdftex.def Info: images/build.png  used on input line 176.
 (pdftex.def)             Requested size: 362.37569pt x 80.8375pt.
-
+ [50]
 Overfull \hbox (10.8657pt too wide) in paragraph at lines 193--194
 []\OT1/cmr/m/n/10 After load-ing the gen-er-ated \OT1/cmtt/m/n/10 zephyr.hex \OT1/cmr/m/n/10 file (57.64KB), the pro-gram-mer per-forms the fol-low-ing steps: 
  []
 
-[33 <./images/build.png>]
-<images/flash.png, id=1760, 432.86719pt x 536.75531pt>
+<images/flash.png, id=2758, 432.86719pt x 536.75531pt>
 File: images/flash.png Graphic file (type png)
 <use images/flash.png>
 Package pdftex.def Info: images/flash.png  used on input line 207.
 (pdftex.def)             Requested size: 362.37569pt x 449.36438pt.
-) [34 <./images/flash.png>] [35]
+[51 <./images/build.png>]) [52 <./images/flash.png>]
 \openout2 = `files/5-Results.aux'.
 
  (files/5-Results.tex
+<images/soil.png, id=2780, 110.66344pt x 130.98938pt>
+File: images/soil.png Graphic file (type png)
+<use images/soil.png>
+Package pdftex.def Info: images/soil.png  used on input line 15.
+(pdftex.def)             Requested size: 90.5922pt x 107.23808pt.
+<images/light.png, id=2783, 79.04532pt x 118.19156pt>
+File: images/light.png Graphic file (type png)
+<use images/light.png>
+Package pdftex.def Info: images/light.png  used on input line 26.
+(pdftex.def)             Requested size: 67.94241pt x 101.59767pt.
+
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\acrshort' on input line 17.
+(hyperref)                removing `\acrshort' on input line 31.
+
+<images/gps.png, id=2786, 493.845pt x 169.38281pt>
+File: images/gps.png Graphic file (type png)
+<use images/gps.png>
+Package pdftex.def Info: images/gps.png  used on input line 37.
+(pdftex.def)             Requested size: 448.4407pt x 153.80775pt.
+[53
+
+
+
+ <./images/soil.png> <./images/light.png>]
+<images/accel.png, id=2796, 383.93437pt x 169.38281pt>
+File: images/accel.png Graphic file (type png)
+<use images/accel.png>
+Package pdftex.def Info: images/accel.png  used on input line 48.
+(pdftex.def)             Requested size: 385.02547pt x 169.87604pt.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\acrshort' on input line 22.
+(hyperref)                removing `\acrshort' on input line 53.
 
-) [36
+<images/colores.png, id=2801, 766.5pt x 254.259pt>
+File: images/colores.png Graphic file (type png)
+<use images/colores.png>
+Package pdftex.def Info: images/colores.png  used on input line 59.
+(pdftex.def)             Requested size: 362.37569pt x 120.20784pt.
+<images/color.png, id=2802, 444.15938pt x 118.19156pt>
+File: images/color.png Graphic file (type png)
+<use images/color.png>
+Package pdftex.def Info: images/color.png  used on input line 66.
+(pdftex.def)             Requested size: 407.66833pt x 108.48146pt.
+[54 <./images/gps.png> <./images/accel.png> <./images/colores.png>]
+<images/th.png, id=2812, 292.09125pt x 68.50594pt>
+File: images/th.png Graphic file (type png)
+<use images/th.png>
+Package pdftex.def Info: images/th.png  used on input line 77.
+(pdftex.def)             Requested size: 271.7835pt x 63.74854pt.
 
 
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 82.
 
-]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 82.
+
+<images/rgb_led.png, id=2820, 166.659pt x 120.45pt>
+File: images/rgb_led.png Graphic file (type png)
+<use images/rgb_led.png>
+Package pdftex.def Info: images/rgb_led.png  used on input line 88.
+(pdftex.def)             Requested size: 135.89174pt x 98.21457pt.
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 93.
+
+<images/board_led.png, id=2829, 195.129pt x 55.407pt>
+File: images/board_led.png Graphic file (type png)
+<use images/board_led.png>
+Package pdftex.def Info: images/board_led.png  used on input line 99.
+(pdftex.def)             Requested size: 181.18439pt x 51.44763pt.
+[55 <./images/color.png> <./images/th.png> <./images/rgb_led.png> <./images/board_led.png>]
+<images/button.png, id=2842, 79.04532pt x 115.93312pt>
+File: images/button.png Graphic file (type png)
+<use images/button.png>
+Package pdftex.def Info: images/button.png  used on input line 111.
+(pdftex.def)             Requested size: 67.94241pt x 99.65631pt.
+<images/init.png, id=2844, 481.8pt x 464.4853pt>
+File: images/init.png Graphic file (type png)
+<use images/init.png>
+Package pdftex.def Info: images/init.png  used on input line 127.
+(pdftex.def)             Requested size: 339.72592pt x 327.52597pt.
+ [56 <./images/button.png> <./images/init.png>]
+<images/measurements.png, id=2853, 497.60907pt x 169.38281pt>
+File: images/measurements.png Graphic file (type png)
+<use images/measurements.png>
+Package pdftex.def Info: images/measurements.png  used on input line 138.
+(pdftex.def)             Requested size: 339.72592pt x 115.64142pt.
+<images/modes.png, id=2855, 482.55281pt x 561.59813pt>
+File: images/modes.png Graphic file (type png)
+<use images/modes.png>
+Package pdftex.def Info: images/modes.png  used on input line 150.
+(pdftex.def)             Requested size: 317.07614pt x 369.02774pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 156.
+
+[57 <./images/measurements.png> <./images/modes.png>]
+<images/dom_color.png, id=2867, 475.449pt x 207.612pt>
+File: images/dom_color.png Graphic file (type png)
+<use images/dom_color.png>
+Package pdftex.def Info: images/dom_color.png  used on input line 162.
+(pdftex.def)             Requested size: 448.4407pt x 195.82056pt.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\acrshort' on input line 168.
+
+<images/stats.png, id=2874, 295.1025pt x 131.74219pt>
+File: images/stats.png Graphic file (type png)
+<use images/stats.png>
+Package pdftex.def Info: images/stats.png  used on input line 180.
+(pdftex.def)             Requested size: 271.7835pt x 121.33493pt.
+[58 <./images/dom_color.png> <./images/stats.png>]
+<images/cppcheck.png, id=2886, 570.63188pt x 397.485pt>
+File: images/cppcheck.png Graphic file (type png)
+<use images/cppcheck.png>
+Package pdftex.def Info: images/cppcheck.png  used on input line 209.
+(pdftex.def)             Requested size: 448.4407pt x 312.37212pt.
+ [59 <./images/cppcheck.png>]
+<images/valgrind.png, id=2897, 1045.65656pt x 64.74188pt>
+File: images/valgrind.png Graphic file (type png)
+<use images/valgrind.png>
+Package pdftex.def Info: images/valgrind.png  used on input line 227.
+(pdftex.def)             Requested size: 448.4407pt x 27.76535pt.
+) [60 <./images/valgrind.png>]
 \openout2 = `files/6-Advanced.aux'.
 
- (files/6-Advanced.tex [37
+ (files/6-Advanced.tex [61
 
 
 
-] [38] [39]
-Overfull \hbox (13.73553pt too wide) in paragraph at lines 153--154
+] [62] [63]
+Overfull \hbox (13.73553pt too wide) in paragraph at lines 174--175
 []\OT1/cmr/m/n/10 After sleep-ing, the loop checks \OT1/cmtt/m/n/10 k[]sem[]take(&main[]sem, K[]NO[]WAIT) \OT1/cmr/m/n/10 to de-ter-mine whether a semaphore
  []
 
-) [40]
+<images/pwm_res.png, id=3021, 641.451pt x 221.19pt>
+File: images/pwm_res.png Graphic file (type png)
+<use images/pwm_res.png>
+Package pdftex.def Info: images/pwm_res.png  used on input line 183.
+(pdftex.def)             Requested size: 448.4407pt x 154.63618pt.
+) [64 <./images/pwm_res.png>]
 \openout2 = `files/7-Conclusions.aux'.
 
- (files/7-Conclusions.tex) [41
+ (files/7-Conclusions.tex) [65
 
 
 
@@ -1541,42 +1661,42 @@ Overfull \hbox (3.62962pt too wide) in paragraph at lines 45--45
 []\OT1/cmr/m/n/10 A. In-dus-tries. \  Adafruit Si7021 Tem-per-a-ture & Hu-mid-ity Sen-sor Break-out Board," Ac-cessed: Nov. 24,
  []
 
-[42
+[66
 
 
 ]
 \openout2 = `files/A-GitHub.aux'.
 
- (files/A-GitHub.tex [43
+ (files/A-GitHub.tex [67
 
 ]
 Overfull \hbox (30.07632pt too wide) in paragraph at lines 65--67
 [][][][][][][][][][][][][][][][][][][][][][][]  
  []
 
-[44]) [45] (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/A-GitHub.aux))
+[68]) [69] (c:\Users\Estela\Embedded_IoT\report\out\main.aux (c:\Users\Estela\Embedded_IoT\report\out\cover.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/Glossary.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/1-Introduction.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/2-Specifications.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/3-Hardware.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/4-Software.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/5-Results.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/6-Advanced.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/7-Conclusions.aux) (c:\Users\Estela\Embedded_IoT\report\out\files/A-GitHub.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7D9834E2FEE58848B23A6D9505C4B469;17223.
+(rerunfilecheck)             Checksum: 3C538A646951F1C5CE07C0CF3B3C5D02;20369.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45577 strings out of 474486
- 890687 string characters out of 5743283
- 2058542 words of memory out of 5000000
- 66318 multiletter control sequences out of 15000+600000
+ 46907 strings out of 474486
+ 911283 string characters out of 5743283
+ 2056542 words of memory out of 5000000
+ 66872 multiletter control sequences out of 15000+600000
  565864 words of font info for 64 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,19n,90p,2548b,2307s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcbx1000.pk> <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tctt0900.pk> <C:\Users\Estela\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Users/Estela/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on c:\Users\Estela\Embedded_IoT\report\out\main.pdf (52 pages, 1755441 bytes).
+Output written on c:\Users\Estela\Embedded_IoT\report\out\main.pdf (78 pages, 21197159 bytes).
 PDF statistics:
- 2331 PDF objects out of 2487 (max. 8388607)
- 849 named destinations out of 1000 (max. 500000)
- 849 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 3633 PDF objects out of 4296 (max. 8388607)
+ 1625 named destinations out of 1728 (max. 500000)
+ 1133 words of extra memory for PDF output out of 10000 (max. 10000000)
 

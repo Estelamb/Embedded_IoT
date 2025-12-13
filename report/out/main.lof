@@ -3,11 +3,31 @@
 \contentsline {figure}{\numberline {2}{\ignorespaces RGB LED circuit diagram}}{8}{figure.caption.18}%
 \contentsline {figure}{\numberline {3}{\ignorespaces Phototransistor circuit diagram}}{9}{figure.caption.19}%
 \contentsline {figure}{\numberline {4}{\ignorespaces Soil moisture sensor circuit diagram}}{10}{figure.caption.21}%
-\contentsline {figure}{\numberline {5}{\ignorespaces System behaviour}}{13}{figure.caption.24}%
-\contentsline {figure}{\numberline {6}{\ignorespaces Test mode behaviour}}{14}{figure.caption.25}%
-\contentsline {figure}{\numberline {7}{\ignorespaces Normal mode behaviour}}{15}{figure.caption.26}%
-\contentsline {figure}{\numberline {8}{\ignorespaces Advanced mode behaviour}}{16}{figure.caption.27}%
-\contentsline {figure}{\numberline {9}{\ignorespaces Modules overview}}{19}{figure.caption.31}%
-\contentsline {figure}{\numberline {10}{\ignorespaces Thread stack and \gls {CPU} usage}}{32}{figure.caption.34}%
-\contentsline {figure}{\numberline {11}{\ignorespaces Compilation memory usage report}}{33}{figure.caption.35}%
-\contentsline {figure}{\numberline {12}{\ignorespaces Flashing process using STM32CubeProgrammer}}{34}{figure.caption.36}%
+\contentsline {figure}{\numberline {5}{\ignorespaces System behaviour}}{13}{figure.caption.23}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Test mode behaviour}}{14}{figure.caption.24}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Normal mode behaviour}}{15}{figure.caption.25}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Advanced mode behaviour}}{16}{figure.caption.26}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Stopped initialisation}}{19}{figure.caption.27}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Disconnected and Connected sensor measurements}}{20}{figure.caption.28}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Modules overview}}{21}{figure.caption.29}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Thread stack and \gls {CPU} usage}}{49}{figure.caption.30}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Compilation memory usage report}}{51}{figure.caption.31}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Flashing process using STM32CubeProgrammer}}{52}{figure.caption.32}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Soil Moisture Measurement}}{53}{figure.caption.33}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Light Measurement}}{53}{figure.caption.34}%
+\contentsline {figure}{\numberline {17}{\ignorespaces GPS Measurement}}{54}{figure.caption.35}%
+\contentsline {figure}{\numberline {18}{\ignorespaces Accelerometer Measurement}}{54}{figure.caption.36}%
+\contentsline {figure}{\numberline {19}{\ignorespaces Colours}}{54}{figure.caption.37}%
+\contentsline {figure}{\numberline {20}{\ignorespaces Color Measurement}}{55}{figure.caption.38}%
+\contentsline {figure}{\numberline {21}{\ignorespaces Temperature and Humidity Measurement}}{55}{figure.caption.39}%
+\contentsline {figure}{\numberline {22}{\ignorespaces \acrshort {RGB} \acrshort {LED}}}{55}{figure.caption.40}%
+\contentsline {figure}{\numberline {23}{\ignorespaces Board \acrshort {LED}s}}{55}{figure.caption.41}%
+\contentsline {figure}{\numberline {24}{\ignorespaces User Button}}{56}{figure.caption.42}%
+\contentsline {figure}{\numberline {25}{\ignorespaces Initialization}}{56}{figure.caption.43}%
+\contentsline {figure}{\numberline {26}{\ignorespaces Measurements}}{57}{figure.caption.44}%
+\contentsline {figure}{\numberline {27}{\ignorespaces Mode Changes}}{57}{figure.caption.45}%
+\contentsline {figure}{\numberline {28}{\ignorespaces \acrshort {RGB} Dominant Color (TEST MODE)}}{58}{figure.caption.46}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Measurements Statistics}}{58}{figure.caption.48}%
+\contentsline {figure}{\numberline {30}{\ignorespaces CPPcheck}}{59}{figure.caption.49}%
+\contentsline {figure}{\numberline {31}{\ignorespaces Valgrind}}{60}{figure.caption.50}%
+\contentsline {figure}{\numberline {32}{\ignorespaces \acrshort {PWM} emulated for \textit {ADVANCED} mode}}{64}{figure.caption.51}%

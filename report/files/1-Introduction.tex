@@ -10,7 +10,7 @@ The purpose of the final project is to design and implement a fully functional \
 
 The system must continuously acquire, process, and report multiple physical variables, including temperature, relative humidity, ambient light intensity, soil moisture, and colour characteristics of a plant leaf. Additional inertial data are collected through an accelerometer to detect events such as impacts, falls, tilting, or abnormal movements. The global position of the plant is obtained via a \gls{GPS} module, ensuring timestamped logging of all monitored parameters.
 
-This project integrates both hardware and software development activities. Students must interface several digital and analog sensors, configure low-level peripherals (\gls{I2C}, \gls{UART}, \gls{ADC}, \gls{GPIO}, \gls{PWM}), and implement multitasking using Zephyr \gls{OS}. 
+This project integrates both hardware and software development activities. Students must interface several digital and analog sensors, configure low-level peripherals (\gls{I2C}, \gls{UART}, \gls{ADC}, \gls{GPIO}, \gls{PWM}), and implement multitasking using Zephyr \gls{RTOS}. 
 
 The final embedded application must operate in distinct modes, manage periodic measurements, compute statistical parameters, handle event-based notifications, and provide visual feedback via a \gls{RGB} \gls{LED}.
 
@@ -20,7 +20,7 @@ This section provides a consolidated overview of the work completed throughout t
 
 \subsubsection{Requirements Analysis}
 
-The project began with an in-depth study of the provided technical specifications and sensor documentation. All functional, hardware, and timing requirements were reviewed to establish a clear design baseline. This included understanding the sensing ranges, communication interfaces, and operating constraints imposed by the STM32WL55JC microcontroller and Zephyr \gls{OS}.
+The project began with an in-depth study of the provided technical specifications and sensor documentation. All functional, hardware, and timing requirements were reviewed to establish a clear design baseline. This included understanding the sensing ranges, communication interfaces, and operating constraints imposed by the STM32WL55JC microcontroller and Zephyr \gls{RTOS}.
 
 \subsubsection{Hardware Integration}
 
@@ -39,7 +39,7 @@ The hardware development stage consisted of identifying, wiring, and validating 
 
 \subsubsection{Software Development}
 
-Software implementation was carried out using Zephyr \gls{OS}, structured with a multitasking architecture. Key activities included:
+Software implementation was carried out using Zephyr \gls{RTOS}, structured with a multitasking architecture. Key activities included:
 
 \begin{itemize}
     \item Configuration of device tree overlays and config options for all peripherals.
@@ -73,7 +73,7 @@ The completed work includes:
 
 \begin{itemize}
     \item A functional embedded system integrating all sensors and the STM32WL55JC \gls{MCU}.
-    \item Clean, documented source code developed under Zephyr \gls{OS}.
+    \item Clean, documented source code developed under Zephyr \gls{RTOS}.
     \item A complete technical report detailing the system design, implementation, and results.
     \item Final project documentation and code submitted according to course requirements.
 \end{itemize}

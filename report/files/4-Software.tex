@@ -2,13 +2,13 @@
 
 \input{files/global.tex}
 
+\clearpage
 \input{files/modules.tex}
-
+\clearpage
 \input{files/threads.tex}
-
+\clearpage
 \input{files/main.tex}
-
-\todo{chequear en todo el docuemnto si zephyr es os o rtos}
+\clearpage
 \subsection{Zephyr \acrshort{RTOS}} 
 
 \subsubsection{prj\_nucleo\_wl55jc.conf}
@@ -44,7 +44,7 @@ The following configuration file (\texttt{prj\_nucleo\_wl55jc.conf}) specifies t
 
 \subsubsection{nucleo\_wl55jc.overlay}
 
-Additionally, the DeviceTree overlay file (\texttt{nucleo\_wl55jc.overlay}) extends the hardware description of the Nucleo-WL55JC board by defining an \gls{RGB} \gls{LED} structure implemented through \gls{GPIO}-controlled \gls{LED} nodes. Corresponding aliases are included to simplify application-level access to these components. The overlay also configures the \gls{USART}1 peripheral with its associated pin assignments and baud rate, enabling serial communication capabilities required by the console or other \gls{UART}-based interfaces.
+Additionally, the DeviceTree overlay file (\texttt{nucleo\_wl55jc.overlay}) extends the hardware description of the Nucleo-WL55JC board by defining a \gls{RGB} \gls{LED} structure implemented through \gls{GPIO}-controlled \gls{LED} nodes. Corresponding aliases are included to simplify application-level access to these components. The overlay also configures the \gls{USART}1 peripheral with its associated pin assignments and baud rate, enabling serial communication capabilities required by the console or other \gls{UART}-based interfaces.
 
 \begin{lstlisting}[caption={nucleo\_wl55jc.overlay}]
     #include <zephyr/dt-bindings/pinctrl/stm32-pinctrl.h>

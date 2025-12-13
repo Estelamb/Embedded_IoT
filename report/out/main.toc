@@ -1,9 +1,9 @@
 \babel@toc {english}{}\relax 
 \contentsline {section}{List of Contents}{i}{Doc-Start}%
-\contentsline {section}{List of Figures}{iii}{section*.1}%
-\contentsline {section}{List of Tables}{iii}{section*.2}%
-\contentsline {section}{List of Listings}{iii}{section*.3}%
-\contentsline {section}{Acronyms}{v}{section*.6}%
+\contentsline {section}{List of Figures}{iv}{section*.1}%
+\contentsline {section}{List of Tables}{iv}{section*.2}%
+\contentsline {section}{List of Listings}{iv}{section*.3}%
+\contentsline {section}{Acronyms}{vii}{section*.6}%
 \vspace {1em}
 \contentsline {section}{\numberline {1}Overview and Introduction}{1}{section.1}%
 \contentsline {subsection}{\numberline {1.1}Document Overview}{1}{subsection.1.1}%
@@ -47,53 +47,76 @@
 \contentsline {subsubsection}{\numberline {4.1.5}Peripheral Configuration Structure}{18}{subsubsection.4.1.5}%
 \contentsline {subsubsection}{\numberline {4.1.6}Secure Initialization}{18}{subsubsection.4.1.6}%
 \contentsline {subsubsection}{\numberline {4.1.7}Device Disconnected}{19}{subsubsection.4.1.7}%
-\contentsline {subsection}{\numberline {4.2}Modules}{19}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}adc.c and adc.h}{20}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}gps.c and gps.h}{21}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}i2c.c and i2c.h}{21}{subsubsection.4.2.3}%
-\contentsline {subsubsection}{\numberline {4.2.4}accel.c and accel.h}{22}{subsubsection.4.2.4}%
-\contentsline {subsubsection}{\numberline {4.2.5}color.c and color.h}{23}{subsubsection.4.2.5}%
-\contentsline {subsubsection}{\numberline {4.2.6}temp\_hum.c and temp\_hum.h}{23}{subsubsection.4.2.6}%
-\contentsline {subsubsection}{\numberline {4.2.7}rgb\_led.c and rgb\_led.h}{24}{subsubsection.4.2.7}%
-\contentsline {subsubsection}{\numberline {4.2.8}board\_led.c and board\_led.h}{24}{subsubsection.4.2.8}%
-\contentsline {subsubsection}{\numberline {4.2.9}user\_button.c and user\_button.h}{25}{subsubsection.4.2.9}%
-\contentsline {subsection}{\numberline {4.3}Threads}{25}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Sensors Thread}{25}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}\acrshort {GPS} Thread}{28}{subsubsection.4.3.2}%
-\contentsline {subsection}{\numberline {4.4}Main}{30}{subsection.4.4}%
-\contentsline {subsection}{\numberline {4.5}Zephyr \acrshort {RTOS}}{30}{subsection.4.5}%
-\contentsline {subsubsection}{\numberline {4.5.1}prj\_nucleo\_wl55jc.conf}{30}{subsubsection.4.5.1}%
-\contentsline {subsubsection}{\numberline {4.5.2}nucleo\_wl55jc.overlay}{31}{subsubsection.4.5.2}%
-\contentsline {subsection}{\numberline {4.6}Thread Stack and \acrshort {CPU} Usage Analysis}{31}{subsection.4.6}%
-\contentsline {subsection}{\numberline {4.7}Compilation and Flashing Output Analysis}{33}{subsection.4.7}%
-\contentsline {subsection}{\numberline {4.8}Flashing the Firmware onto the STM32WL55}{33}{subsection.4.8}%
-\contentsline {subsection}{\numberline {4.9}Code Documentation}{34}{subsection.4.9}%
-\contentsline {section}{\numberline {5}Results}{36}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Unitary Tests}{36}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}System Tests}{36}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Initialisation}{36}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Measurements}{36}{subsubsection.5.2.2}%
-\contentsline {subsubsection}{\numberline {5.2.3}Mode Changes}{36}{subsubsection.5.2.3}%
-\contentsline {subsubsection}{\numberline {5.2.4}\acrshort {RGB} Dominant color (TEST MODE)}{36}{subsubsection.5.2.4}%
-\contentsline {subsubsection}{\numberline {5.2.5}Limits Check (NORMAL MODE)}{36}{subsubsection.5.2.5}%
-\contentsline {subsubsection}{\numberline {5.2.6}\acrshort {RGB} Alarms (NORMAL MODE)}{36}{subsubsection.5.2.6}%
-\contentsline {subsubsection}{\numberline {5.2.7}Statistics Comprobation}{36}{subsubsection.5.2.7}%
-\contentsline {subsubsection}{\numberline {5.2.8}ADVANCED MODE}{36}{subsubsection.5.2.8}%
-\contentsline {subsection}{\numberline {5.3}External Tests}{36}{subsection.5.3}%
-\contentsline {subsubsection}{\numberline {5.3.1}CPP Check}{36}{subsubsection.5.3.1}%
-\contentsline {subsubsection}{\numberline {5.3.2}Valgrind}{36}{subsubsection.5.3.2}%
-\contentsline {section}{\numberline {6}Advanced Specifications Implemented}{37}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Problem Statement}{37}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Implementation}{37}{subsection.6.2}%
-\contentsline {subsubsection}{\numberline {6.2.1}Macro definitions and timing parameters}{38}{subsubsection.6.2.1}%
-\contentsline {subsubsection}{\numberline {6.2.2}Sensor clear-channel safety check and normalisation}{38}{subsubsection.6.2.2}%
-\contentsline {subsubsection}{\numberline {6.2.3}Diagnostic logging}{38}{subsubsection.6.2.3}%
-\contentsline {subsubsection}{\numberline {6.2.4}Duty-cycle computation}{39}{subsubsection.6.2.4}%
-\contentsline {subsubsection}{\numberline {6.2.5}Main PWM loop and per-step evaluation}{39}{subsubsection.6.2.5}%
-\contentsline {subsection}{\numberline {6.3}Result}{40}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Conclusions and Future Works}{41}{section.7}%
-\contentsline {section}{\numberline {8}Bibliography}{42}{section.8}%
-\contentsline {section}{Appendix \numberline {A}- GitHub}{43}{appendix.1.A}%
-\contentsline {subsection}{\numberline {A.1}GitHub Repository - Source Code}{43}{subsection.1.A.1}%
-\contentsline {subsection}{\numberline {A.2}GitHub Pages - Documentation}{43}{subsection.1.A.2}%
-\contentsline {subsection}{\numberline {A.3}GitHub Action - Workflow}{43}{subsection.1.A.3}%
+\contentsline {subsection}{\numberline {4.2}Modules}{21}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}adc.c and adc.h}{22}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}gps.c and gps.h}{22}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}i2c.c and i2c.h}{23}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}accel.c and accel.h}{23}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}color.c and color.h}{24}{subsubsection.4.2.5}%
+\contentsline {subsubsection}{\numberline {4.2.6}temp\_hum.c and temp\_hum.h}{25}{subsubsection.4.2.6}%
+\contentsline {subsubsection}{\numberline {4.2.7}rgb\_led.c and rgb\_led.h}{25}{subsubsection.4.2.7}%
+\contentsline {subsubsection}{\numberline {4.2.8}board\_led.c and board\_led.h}{26}{subsubsection.4.2.8}%
+\contentsline {subsubsection}{\numberline {4.2.9}user\_button.c and user\_button.h}{26}{subsubsection.4.2.9}%
+\contentsline {subsection}{\numberline {4.3}Threads}{28}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Sensors Thread}{28}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}\acrshort {GPS} Thread}{30}{subsubsection.4.3.2}%
+\contentsline {subsection}{\numberline {4.4}Main}{33}{subsection.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.1}Macro definitions}{33}{subsubsection.4.4.1}%
+\contentsline {subsubsection}{\numberline {4.4.2}Peripheral configuration}{34}{subsubsection.4.4.2}%
+\contentsline {subsubsection}{\numberline {4.4.3}Data}{36}{subsubsection.4.4.3}%
+\contentsline {subsubsection}{\numberline {4.4.4}Initialization}{38}{subsubsection.4.4.4}%
+\contentsline {subsubsection}{\numberline {4.4.5}Modes}{39}{subsubsection.4.4.5}%
+\contentsline {subsubsection}{\numberline {4.4.6}Main timer}{40}{subsubsection.4.4.6}%
+\contentsline {subsubsection}{\numberline {4.4.7}Button}{40}{subsubsection.4.4.7}%
+\contentsline {subsubsection}{\numberline {4.4.8}TEST MODE}{41}{subsubsection.4.4.8}%
+\contentsline {subsubsection}{\numberline {4.4.9}Get Measurements}{42}{subsubsection.4.4.9}%
+\contentsline {subsubsection}{\numberline {4.4.10}Display Measurements}{43}{subsubsection.4.4.10}%
+\contentsline {subsubsection}{\numberline {4.4.11}NORMAL MODE}{43}{subsubsection.4.4.11}%
+\contentsline {subsubsection}{\numberline {4.4.12}Check Limits}{44}{subsubsection.4.4.12}%
+\contentsline {subsubsection}{\numberline {4.4.13}\acrshort {RGB} Alarms}{45}{subsubsection.4.4.13}%
+\contentsline {subsubsection}{\numberline {4.4.14}Stats Management}{46}{subsubsection.4.4.14}%
+\contentsline {subsubsection}{\numberline {4.4.15}ADVANCED MODE}{47}{subsubsection.4.4.15}%
+\contentsline {subsection}{\numberline {4.5}Zephyr \acrshort {RTOS}}{48}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}prj\_nucleo\_wl55jc.conf}{48}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}nucleo\_wl55jc.overlay}{48}{subsubsection.4.5.2}%
+\contentsline {subsection}{\numberline {4.6}Thread Stack and \acrshort {CPU} Usage Analysis}{49}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Compilation and Flashing Output Analysis}{50}{subsection.4.7}%
+\contentsline {subsection}{\numberline {4.8}Flashing the Firmware onto the STM32WL55}{51}{subsection.4.8}%
+\contentsline {subsection}{\numberline {4.9}Code Documentation}{52}{subsection.4.9}%
+\contentsline {section}{\numberline {5}Results}{53}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Unitary Tests}{53}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Soil Moisture}{53}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Phototransistor}{53}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}\acrshort {GPS}}{53}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Accelerometer}{54}{subsubsection.5.1.4}%
+\contentsline {subsubsection}{\numberline {5.1.5}\acrshort {RGB} Colour Sensor}{54}{subsubsection.5.1.5}%
+\contentsline {subsubsection}{\numberline {5.1.6}Temperature and Humidity Sensor}{55}{subsubsection.5.1.6}%
+\contentsline {subsubsection}{\numberline {5.1.7}\acrshort {RGB} \acrshort {LED}}{55}{subsubsection.5.1.7}%
+\contentsline {subsubsection}{\numberline {5.1.8}Board \acrshort {LED}s}{55}{subsubsection.5.1.8}%
+\contentsline {subsubsection}{\numberline {5.1.9}User button}{56}{subsubsection.5.1.9}%
+\contentsline {subsection}{\numberline {5.2}System Tests}{56}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Initialization}{56}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Measurements}{57}{subsubsection.5.2.2}%
+\contentsline {subsubsection}{\numberline {5.2.3}Mode Changes}{57}{subsubsection.5.2.3}%
+\contentsline {subsubsection}{\numberline {5.2.4}\acrshort {RGB} Dominant color (TEST MODE)}{58}{subsubsection.5.2.4}%
+\contentsline {subsubsection}{\numberline {5.2.5}Limits and \acrshort {RGB} Alarms (NORMAL MODE)}{58}{subsubsection.5.2.5}%
+\contentsline {subsubsection}{\numberline {5.2.6}Statistics Report (NORMAL MODE)}{58}{subsubsection.5.2.6}%
+\contentsline {subsubsection}{\numberline {5.2.7}ADVANCED MODE}{58}{subsubsection.5.2.7}%
+\contentsline {subsection}{\numberline {5.3}External Tests}{58}{subsection.5.3}%
+\contentsline {subsubsection}{\numberline {5.3.1}CPPcheck}{59}{subsubsection.5.3.1}%
+\contentsline {subsubsection}{\numberline {5.3.2}Valgrind}{59}{subsubsection.5.3.2}%
+\contentsline {section}{\numberline {6}Advanced Specifications Implemented}{61}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Problem Statement}{61}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Implementation}{61}{subsection.6.2}%
+\contentsline {subsubsection}{\numberline {6.2.1}Macro definitions and timing parameters}{62}{subsubsection.6.2.1}%
+\contentsline {subsubsection}{\numberline {6.2.2}Sensor clear-channel safety check and normalisation}{62}{subsubsection.6.2.2}%
+\contentsline {subsubsection}{\numberline {6.2.3}Diagnostic logging}{63}{subsubsection.6.2.3}%
+\contentsline {subsubsection}{\numberline {6.2.4}Duty-cycle computation}{63}{subsubsection.6.2.4}%
+\contentsline {subsubsection}{\numberline {6.2.5}Main PWM loop and per-step evaluation}{63}{subsubsection.6.2.5}%
+\contentsline {subsection}{\numberline {6.3}Result}{64}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Conclusions and Future Works}{65}{section.7}%
+\contentsline {section}{\numberline {8}Bibliography}{66}{section.8}%
+\contentsline {section}{Appendix \numberline {A}- GitHub}{67}{appendix.1.A}%
+\contentsline {subsection}{\numberline {A.1}GitHub Repository - Source Code}{67}{subsection.1.A.1}%
+\contentsline {subsection}{\numberline {A.2}GitHub Pages - Documentation}{67}{subsection.1.A.2}%
+\contentsline {subsection}{\numberline {A.3}GitHub Action - Workflow}{67}{subsection.1.A.3}%

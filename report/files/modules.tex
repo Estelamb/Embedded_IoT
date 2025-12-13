@@ -130,7 +130,7 @@ All \gls{I2C} communication relies on the generic register helpers defined in th
 
     \item \textbf{Standby and Active Mode Control}: Ensures that configuration registers are only modified while the device is in standby mode, as required by the hardware design. The module automatically returns the device to active mode after configuration.
 
-    \item \textbf{Measurement Range Configuration}: Supports ±2g, ±4g, and ±8g ranges via the \texttt{XYZ\_DATA\_CFG} register. The system uses ±2g for improved resolution and noise performance. \todo{chequear gs del acelerometro}
+    \item \textbf{Measurement Range Configuration}: Supports ±2g, ±4g, and ±8g ranges via the \texttt{XYZ\_DATA\_CFG} register. The system uses ±2g for improved resolution and noise performance. 
 
     \item \textbf{Burst Read of 6 Output Registers}: Performs a single multi-register transaction to retrieve X, Y, and Z values consistently, minimizing communication overhead and avoiding partial updates.
 

@@ -257,14 +257,30 @@ In case of initialization failures (e.g., \gls{I2C} device not found), the syste
         return -1;
     }
 
-\end{lstlisting} \todo{Añadir captura}
+\end{lstlisting} 
+
+\autoref{fig:no_init} shows an example of the log printed when initialization fails. In this case, the accelerometer is disconnected.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/no_init.png}
+    \caption{Stopped initialisation}
+    \label{fig:no_init}
+\end{figure}
 
 \subsubsection{Device Disconnected}
 
-In case one device is disconnected during operation, an error message is printed, but the program continues running. It shows the last valid measurement for that sensor.
+In case one device is disconnected during operation, an error message is printed, but the program continues running. It shows the last valid measurement for that sensor. If the device is reconnected, normal operation resumes.
 
-\todo{Añadir captura}
+\begin{itemize}
+    \item In GREEN, the log that shows the sensor is disconnected.
+    \item In BLUE is highlighted the same value of the measurement, demonstrating that the system shows the last valid measurement. 
+    \item In RED, there isn't log of sensor disconnected, because the sensor is connected again. The value of the measurement is updated.
+\end{itemize}
 
-If the device is reconnected, normal operation resumes.
-
-\todo{Añadir captura}
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/no_measurements.png}
+    \caption{Disconnected and Connected sensor measurements}
+    \label{fig:no_measure}
+\end{figure}

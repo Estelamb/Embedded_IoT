@@ -1,4 +1,4 @@
-\section{Advanced Specifications Implemented}
+\section{Advanced Specifications Implemented}\label{adv_mode_section}
 
 \subsection{Problem Statement}
 The objective of the \textit{ADVANCED} mode is to extend the behaviour of the baseline system so that the \gls{RGB} \gls{LED} reproduces, the colour measured by the \gls{RGB} sensor. Unlike the \textit{NORMAL} mode, where the \gls{LED} output follows predefined patterns, the \textit{ADVANCED} mode must directly map the sensor's \gls{RGB} data to the \gls{LED} output using the same relative chromatic composition.
@@ -13,43 +13,64 @@ A software-based \gls{PWM} mechanism is implemented to generate duty cycles prop
 The following code fragment corresponds to the execution flow in \textit{ADVANCED} mode, after acquiring and displaying the colour measurements:
 
 \begin{lstlisting}[language=C, caption={Software-based PWM implementation for ADVANCED mode}]
-#define PWM_STEP    1                          /**< PWM step in milliseconds. */
-#define PWM_PERIOD  15                         /**< PWM period in milliseconds. */
-#define PWM_STEPS   (PWM_PERIOD / PWM_STEP) /**< Number of PWM steps per period. */
+    #define PWM_STEP    1                          /**< PWM step in milliseconds. */
+    #define PWM_PERIOD  15                         /**< PWM period in milliseconds. */
+    #define PWM_STEPS   (PWM_PERIOD / PWM_STEP) /**< Number of PWM steps per period. */
 
-/* In ADVANCED mode */
-if (main_data.c <= 0.0f) {
-    printk("[WARN] - Color clear channel == 0\n");
-    r_norm = g_norm = b_norm = 0.0f;
-} else {
-    r_norm = (main_data.r / main_data.c) * 100.0f;
-    g_norm = (main_data.g / main_data.c) * 100.0f;
-    b_norm = (main_data.b / main_data.c) * 100.0f;
-}
+    case ADVANCED_MODE:
+        red(&leds);
 
-printk("NORMALIZED COLOR VALUES: R: %.2f%%, G: %.2f%%, B: %.2f%%\n\n",
-        (double)r_norm, (double)g_norm, (double)b_norm);
+        if(previous_mode != ADVANCED_MODE) {
+            k_timer_stop(&rgb_timer);
+            rgb_led_off(&rgb_leds);
 
-r_duty = (int)(r_norm * PWM_STEPS / 100);
-g_duty = (int)(g_norm * PWM_STEPS / 100);
-b_duty = (int)(b_norm * PWM_STEPS / 100);
-
-keep_running = true;
-while (keep_running) {
-    for (int t = 0; t < PWM_PERIOD; t += PWM_STEP) {
-        r_value = (t < r_duty) ? 1 : 0;
-        g_value = (t < g_duty) ? 1 : 0;
-        b_value = (t < b_duty) ? 1 : 0;
-
-        rgb_led_pwm_step(&rgb_leds, r_value, g_value, b_value);
-        k_sleep(K_MSEC(PWM_STEP));
-
-        if (k_sem_take(&main_sem, K_NO_WAIT) == 0) {
-            keep_running = false;
-            break;
+            k_timer_stop(&main_timer);
+            k_timer_start(&main_timer, K_MSEC(NORMAL_PERIOD), K_MSEC(NORMAL_PERIOD));
+            previous_mode = ADVANCED_MODE;
         }
-    }
-}
+
+        k_sem_give(ctx.sensors_sem);
+        k_sem_give(ctx.gps_sem);
+
+        k_sem_take(ctx.main_sensors_sem, K_FOREVER);
+        k_sem_take(ctx.main_gps_sem, K_FOREVER);
+
+        get_measurements();
+
+        display_measurements();
+
+        if (main_data.c <= 0.0f) {
+            printk("[WARN] - Color clear channel == 0\n");
+            r_norm = g_norm = b_norm = 0.0f;
+        } else {
+            r_norm = (main_data.r / main_data.c) * 100.0f;
+            g_norm = (main_data.g / main_data.c) * 100.0f;
+            b_norm = (main_data.b / main_data.c) * 100.0f;
+        }
+        
+        printk("NORMALIZED COLOR VALUES: R: %.2f%%, G: %.2f%%, B: %.2f%%\n\n",
+                (double)r_norm, (double)g_norm, (double)b_norm);
+        
+        r_duty = (int)(r_norm * PWM_STEPS / 100);
+        g_duty = (int)(g_norm * PWM_STEPS / 100);
+        b_duty = (int)(b_norm * PWM_STEPS / 100);
+        
+        keep_running = true;
+        while (keep_running) {
+            for (int t = 0; t < PWM_PERIOD; t += PWM_STEP) {
+                r_value = (t < r_duty) ? 1 : 0;
+                g_value = (t < g_duty) ? 1 : 0;
+                b_value = (t < b_duty) ? 1 : 0;
+        
+                rgb_led_pwm_step(&rgb_leds, r_value, g_value, b_value);
+                k_sleep(K_MSEC(PWM_STEP));
+        
+                if (k_sem_take(&main_sem, K_NO_WAIT) == 0) {
+                    keep_running = false;
+                    break;
+                }
+            }
+        }
 \end{lstlisting}
 
 During development, several timing constraints were encountered when attempting to reduce the \gls{PWM} step below the millisecond scale. The Zephyr scheduler, together with the hardware capabilities of the target board, prevented reliable delays shorter than one millisecond when using \texttt{k\_sleep()}. 
@@ -154,5 +175,15 @@ Step-by-step explanation:
 \end{enumerate}
 
 \subsection{Result}\label{adv_results}
-\todo{capturas}
-The software-based \gls{PWM} strategy successfully reproduces the colour detected by the \gls{RGB} sensor. The \gls{LED} output maintains the same chromatic proportions observed in the ambient light, while ensuring smooth transitions and stable operation. The system preserves full compatibility with the existing hardware configuration and maintains identical behaviour to the \textit{NORMAL} mode regarding synchronisation, timing, and user interaction.
+
+The software-based \gls{PWM} strategy successfully reproduces the colour detected by the \gls{RGB} sensor. The \gls{LED} output maintains the chromatic proportions observed in the ambient light, while ensuring smooth transitions and stable operation. The colour is not exact since the \gls{PWM} resolution is limited to 1 ms steps and the light reflection on the measured object affects the perceived colour, but the representation is sufficiently precise for visual indication applications.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{images/pwm_res.png}
+    \caption{\acrshort{PWM} emulated for \textit{ADVANCED} mode}
+    \label{fig:pwm_res}
+\end{figure}
+
+The system preserves full compatibility with the existing hardware configuration and maintains identical behaviour to the \textit{NORMAL} mode regarding synchronisation, timing, and user interaction.
+
