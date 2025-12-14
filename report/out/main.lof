@@ -27,7 +27,8 @@
 \contentsline {figure}{\numberline {26}{\ignorespaces Measurements}}{57}{figure.caption.38}%
 \contentsline {figure}{\numberline {27}{\ignorespaces Mode Changes}}{57}{figure.caption.39}%
 \contentsline {figure}{\numberline {28}{\ignorespaces \acrshort {RGB} Dominant Color (TEST MODE)}}{58}{figure.caption.40}%
-\contentsline {figure}{\numberline {29}{\ignorespaces Measurements Statistics}}{58}{figure.caption.41}%
-\contentsline {figure}{\numberline {30}{\ignorespaces CPPcheck}}{59}{figure.caption.42}%
-\contentsline {figure}{\numberline {31}{\ignorespaces Valgrind}}{60}{figure.caption.43}%
-\contentsline {figure}{\numberline {32}{\ignorespaces \acrshort {PWM} emulated for \textit {ADVANCED} mode}}{64}{figure.caption.44}%
+\contentsline {figure}{\numberline {29}{\ignorespaces Limits and \acrshort {RGB} Alarms (NORMAL MODE)}}{58}{figure.caption.41}%
+\contentsline {figure}{\numberline {30}{\ignorespaces Measurements Statistics}}{59}{figure.caption.42}%
+\contentsline {figure}{\numberline {31}{\ignorespaces CPPcheck}}{60}{figure.caption.43}%
+\contentsline {figure}{\numberline {32}{\ignorespaces Valgrind}}{60}{figure.caption.44}%
+\contentsline {figure}{\numberline {33}{\ignorespaces \acrshort {PWM} emulated for \textit {ADVANCED} mode}}{64}{figure.caption.45}%

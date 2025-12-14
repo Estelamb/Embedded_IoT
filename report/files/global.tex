@@ -101,13 +101,13 @@ The user button controls mode transitions. The button interrupt triggers a defer
 During a mode change:
 
 \begin{itemize}
-    \item timers associated with the previous mode are stopped,
-    \item mode-specific timers are started (measurement, \gls{RGB} warning, statistics),
+    \item Timers associated with the previous mode are stopped,
+    \item Mode-specific timers are started (measurement, \gls{RGB} warning, statistics),
     \item \glspl{LED} are updated to reflect the new mode,
     \item \texttt{main\_sem} is released to unblock the main loop.
 \end{itemize}
 
-\subsubsection{Semaphore Synchronisation and Thread Interactions}
+\subsubsection{Semaphore Synchronization and Thread Interactions}
 
 Inter-thread coordination relies on multiple named semaphores.
 
@@ -146,7 +146,7 @@ Inter-thread coordination relies on multiple named semaphores.
     The main thread blocks until this semaphore is obtained, ensuring consistent data.
 \end{itemize}
 
-Together, these semaphores serialise measurement flow and guarantee no partial or inconsistent samples.
+Together, these semaphores serialize measurement flow and guarantee no partial or inconsistent samples.
 
 \subsubsection{Atomic Shared Measurement Structure}
 
@@ -187,7 +187,7 @@ Properties:
 
 \subsubsection{Peripheral Configuration Structure}
 
-All peripherals and synchronisation objects are referenced through a single shared structure:
+All peripherals and synchronization objects are referenced through a single shared structure:
 
 \begin{lstlisting}[language=C, caption={Peripheral configuration and synchronization structure}]
 struct system_context {

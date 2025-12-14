@@ -29,7 +29,7 @@
 #define INITIAL_MODE TEST_MODE  /**< Initial operating mode at startup. */
 
 #define TEST_PERIOD 2000      /**< Test mode measurement period in milliseconds. */
-#define NORMAL_PERIOD 10000    /**< Normal mode measurement period in milliseconds. */
+#define NORMAL_PERIOD 60000    /**< Normal mode measurement period in milliseconds. */
 
 #define RGB_TIMER_PERIOD 500 /**< RGB LED timer period in milliseconds. */
 #define STATS_TIMER_PERIOD 3600000 /**< Statistics reporting period (ms). */
@@ -449,13 +449,13 @@ static void stats_timer_handler(struct k_timer *timer)
                 (double)stats_data.moisture_mean, (double)stats_data.moisture_max, (double)stats_data.moisture_min);
 
         printk("Acceleration X-axis: Max: %.2f m/s2, Min: %.2f m/s2\n",
-                (double)stats_data.x_axis_max * 9.8, (double)stats_data.x_axis_min * 9.8);
+                (double)stats_data.x_axis_max, (double)stats_data.x_axis_min);
 
         printk("Acceleration Y-axis: Max: %.2f m/s2, Min: %.2f m/s2\n",
-                (double)stats_data.y_axis_max * 9.8, (double)stats_data.y_axis_min * 9.8);
+                (double)stats_data.y_axis_max, (double)stats_data.y_axis_min);
 
         printk("Acceleration Z-axis: Max: %.2f m/s2, Min: %.2f m/s2\n",
-                (double)stats_data.z_axis_max * 9.8, (double)stats_data.z_axis_min * 9.8);
+                (double)stats_data.z_axis_max, (double)stats_data.z_axis_min);
 
         if(stats_data.red_count >= stats_data.green_count && stats_data.red_count >= stats_data.blue_count) {
             printk("Dominant Color Detected: RED (%d times)\n", stats_data.red_count);

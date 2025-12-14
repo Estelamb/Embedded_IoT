@@ -169,7 +169,16 @@ The measurements test, illustrated in \autoref{fig:measure_res}, demonstrates th
 
 In Normal Mode, sensor measurements are continuously validated against predefined limits. When a measurement exceeds its allowed range, the corresponding alarm is activated and displayed through the \gls{RGB} \gls{LED}. Multiple simultaneous alarms are handled by cyclic color indication, ensuring clear and intuitive visual feedback to the user.
 
+For this example, the maximum temperature is set to 10C, while the minimum soil moisture is set to 10\%. As shown in \autoref{fig:alarms_res}, the alarms are triggered when the values exceed these limits. In this case, the temperature is below than 10C (red alarm) and the relative humidity is higher than 75\% (blue alarm). Later (second 16), when the soil moisture drops below 10\%, the cyan alarm is also activated. These values are clipped to the nearest limit.
 
+\href{https://upm365-my.sharepoint.com/:v:/g/personal/estela_mora_barba_upm_es/IQAcrwEj6volTIWrmzzSXfVRAXxYS2n1ZRkFSphvheN9NaU?e=jgf2FQ&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D}{Video demonstration (click here)}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/rgb_alarm.png}
+    \caption{Limits and \acrshort{RGB} Alarms (NORMAL MODE)}
+    \label{fig:alarms_res}
+\end{figure}
 
 \subsubsection{Statistics Report (NORMAL MODE)}
 
@@ -197,19 +206,19 @@ Both CPPcheck and Valgrind are executed through GitHub Actions as part of the co
 
 CPPcheck is used to perform static code analysis on the C/C++ modules of the project. As shown in \autoref{fig:cppcheck}, the reported warnings are limited and expected.
 
-Most of the messages indicate that Zephyr-specific headers and libraries cannot be found. This is caused by the fact that the GitHub Actions environment does not provide a complete Zephyr build context, and CPPcheck is executed without access to the full toolchain and board support packages required by the operating system. 
-
-Additionally, CPPcheck reports several unused functions. This behavior is considered acceptable, as the analyzed modules are implemented as libraries, not directly for the this specific system.
-
-No critical errors or defects were detected during this analysis, and the reported warnings do not indicate functional issues in the codebase.
-
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.99\textwidth]{images/cppcheck.png}
     \caption{CPPcheck}
     \label{fig:cppcheck}
 \end{figure}
+
+Most of the messages indicate that Zephyr-specific headers and libraries cannot be found. This is caused by the fact that the GitHub Actions environment does not provide a complete Zephyr build context, and CPPcheck is executed without access to the full toolchain and board support packages required by the operating system. 
+
+Additionally, CPPcheck reports several unused functions. This behavior is considered acceptable, as the analyzed modules are implemented as libraries, not directly for the this specific system.
+
+No critical errors or defects were detected during this analysis, and the reported warnings do not indicate functional issues in the codebase.
+
 
 
 \subsubsection{Valgrind}
