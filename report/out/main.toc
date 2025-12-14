@@ -115,6 +115,8 @@
 \contentsline {subsubsection}{\numberline {6.2.5}Main PWM loop and per-step evaluation}{63}{subsubsection.6.2.5}%
 \contentsline {subsection}{\numberline {6.3}Result}{64}{subsection.6.3}%
 \contentsline {section}{\numberline {7}Conclusions and Future Works}{65}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Conclusions}{65}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Future Work}{65}{subsection.7.2}%
 \contentsline {section}{\numberline {8}Bibliography}{66}{section.8}%
 \contentsline {section}{Appendix \numberline {A}- GitHub}{67}{appendix.1.A}%
 \contentsline {subsection}{\numberline {A.1}GitHub Repository - Source Code}{67}{subsection.1.A.1}%

@@ -489,10 +489,6 @@ OUTPUT c:\Users\Estela\Embedded_IoT\report\out\files\Glossary.aux
 INPUT .\files\Glossary.tex
 INPUT .\files\Glossary.tex
 INPUT files\Glossary.tex
-INPUT c:\Users\Estela\Embedded_IoT\report\out\main.tdo
-INPUT c:\Users\Estela\Embedded_IoT\report\out\main.tdo
-INPUT c:\Users\Estela\Embedded_IoT\report\out\main.tdo
-OUTPUT c:\Users\Estela\Embedded_IoT\report\out\main.tdo
 INPUT .\files\1-Introduction.tex
 INPUT .\files\1-Introduction.tex
 OUTPUT c:\Users\Estela\Embedded_IoT\report\out\files\1-Introduction.aux
@@ -624,9 +620,9 @@ INPUT C:\Users\Estela\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcbx10
 INPUT .\files\threads.tex
 INPUT .\files\threads.tex
 INPUT files\threads.tex
-INPUT .\files\main.tex
-INPUT .\files\main.tex
-INPUT files\main.tex
+INPUT .\files\main_thread.tex
+INPUT .\files\main_thread.tex
+INPUT files\main_thread.tex
 INPUT .\images\stack.png
 INPUT .\images\stack.png
 INPUT .\images\stack.png

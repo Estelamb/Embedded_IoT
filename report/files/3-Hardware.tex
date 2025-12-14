@@ -1,4 +1,4 @@
-\section{Hardware Analysis} \todo{acronimos, vcc, vin?}
+\section{Hardware Analysis}
 
 \subsection{Block diagram}
 
@@ -20,8 +20,6 @@ In addition, three \gls{GPIO} pins are configured as digital outputs to drive th
 \subsection{Interfaces of the system}
 
 \autoref{tab:system_connections} details all electrical interfaces used in the system. Each sensor or module is mapped to the corresponding STM32WL55JC pins, specifying power connections, communication buses, and signal types. The design integrates a mix of digital and analog interfaces, including \gls{I2C} for multi-sensor communication, \gls{UART} for \gls{GPS} data, and \gls{ADC} channels for analog measurements such as soil moisture and ambient light. In addition, several \gls{GPIO} pins are used for driving the RGB LED. 
-
-\todo{comparar con las diapos}
 
 \begin{table}[H]
     \centering
@@ -224,7 +222,7 @@ By sampling the \gls{ADC} input, the system can monitor changes in illumination 
     \label{fig:phototransistor_circuit}
 \end{figure}
 
-To express the ambient light as a percentage, the \gls{ADC} reading is first converted to a voltage using the reference voltage \(V_\text{ref}\) of 3.3V: \todo{comprobar formulas}
+To express the ambient light as a percentage, the \gls{ADC} reading is first converted to a voltage using the reference voltage \(V_\text{ref}\) of 3.3V: 
 
 \[
 V_\text{phototransistor} = \frac{\text{ADC\_value}}{\text{ADC\_max}} \cdot V_\text{ref}
@@ -254,10 +252,11 @@ The sensor is powered by the 3.3V supply from the board, with a common ground sh
     \label{fig:soil_moisture_circuit}
 \end{figure}
 
-A direct reading of the \gls{ADC} value can be converted into a soil moisture percentage using a similar normalization method as for the phototransistor:  \todo{comprobar formulas}
+A direct reading of the \gls{ADC} value can be converted into a soil moisture percentage using a similar normalization method as for the phototransistor: 
 
 \[
-\text{Moisture\%} = \frac{\text{ADC\_value}}{\text{ADC\_max}} \times 100
+\text{Moisture\%} = \frac{V_\text{soil\_sensor}}{V_\text{ref}} \cdot 100
+= \frac{\text{ADC\_value}}{\text{ADC\_max}} \cdot 100
 \]
 
 This provides a simple and effective way to represent soil moisture from 0\% (completely dry) to 100\% (fully saturated). 
